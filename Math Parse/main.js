@@ -5,7 +5,7 @@ var functions = {"hulloh" : hulloh, "*" : mul,
                  "^" : exp};
 
 function main() {
-  console.log(toRPN("-1.74ehulloh(piIe) * (2 + 4^2)*3I".split(" ")));
+  console.log(toRPN("-1.74ehulloh(piIe)".split(" ")));
 }
 
 function add(){

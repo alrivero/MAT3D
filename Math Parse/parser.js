@@ -1,4 +1,4 @@
-var ops = { "+": 1, "-": 1, "*": 2, "/": 2, "^": 3, "(": 4} // Op presedence dictionary
+var ops = { "+": 1, "-": 1, "*": 2, "/": 2, "^": 3, "(": 4}; // Op presedence dictionary
 
 // Breaks down the user's mathematical expression into reverse polish notation.
 // Based on Shunting-Yard.
@@ -14,75 +14,98 @@ function toRPN(rawIn) {
     var j = 0;
     while (j < rawIn[i].length) {
       var currChar = rawIn[i].charAt(j);  // Character currently read
-      console.log(currChar);
 
       try {
         // Check if the character read is invalid
         if ("|\":<>[]{}`';@#$%&_=?!,~".indexOf(currChar) != -1)
           throw "Expression has invalid characters: *|\":<>[]{}`';@#$%&_=?!,~";
 
-        // If the character read is a number/letter
+        // If the currChar is a number
         if (currChar.match(/^[.0-9]+$/)) {
-          // Gather the rest of the number/letter string
+          // Gather the rest of the number characters
           do {
-            if ("|\":<>[]{}`';@#$%&_=?!,~".indexOf(currChar) != -1)
-              throw "Expression has invalid characters: *|\":<>[]{}`';@#$%&_=?!,~";
-
             itemRead = itemRead.concat(currChar);
             j++;
-            if (j < rawIn[i].length){
+            if (j < rawIn[i].length)
               currChar = rawIn[i].charAt(j);
-            }
-          } while (currChar.match(/^[.0-9]+$/) && j < rawIn[i].length)
+          } while (j < rawIn[i].length && currChar.match(/^[.0-9]+$/))
 
+          // Turn the number characters into a float
           itemRead = parseFloat(itemRead, 10);
           if (itemRead == NaN) {
-            throw "Periods \".\" must be followed/preceeded by a number";
+            throw "Invalid number: Periods possibly used incorrectly";
           }
 
-          rpnOut.push(itemRead);
-          if ((j + 1 != rawIn[i].length && rawIn[i].charAt(j + 1) in ops) || (i + 1 != rawIn.length && rawIn[i + 1].charAt(0) in ops)) {
+          // Check if the number was preceeded by an operator. If not, previous
+          // Item must have be a variable/function so add "*" inbetween
+          if (!hadOpPrev) {
+            while (opStack.length > 0 && ops[opStack[opStack.length - 1]] <= ops["*"])
+              rpnOut.push(opStack.pop());
             opStack.push("*");
           }
+          // Push number to the stack
+          rpnOut.push(itemRead);
 
+          // Reset itemRead to the empty string
           itemRead = "";
           hadOpPrev = false;
         }
+        // If currChar is a letter
         else if (currChar.match(/^[A-Za-z]+$/)) {
-          // Gather the rest of the number/letter string
+          // Gather the rest of the letter string
           do {
-            if ("|\":<>[]{}`';@#$%&_=?!,~".indexOf(currChar) != -1)
-              throw "Expression has invalid characters: *|\":<>[]{}`';@#$%&_=?!,~";
             itemRead = itemRead.concat(currChar);
             j++;
-            if (j < rawIn[i].length){
+            if (j < rawIn[i].length)
               currChar = rawIn[i].charAt(j);
-            }
           } while (currChar.match(/^[A-Za-z]+$/) && j < rawIn[i].length)
 
+          // Use wordBreak algorithm to deconstruct letter string into array of
+          // best combination of variables/functions
           itemRead = wordBreak(itemRead);
           if (itemRead == [])
             throw "Undefined scalars/matrices/functions";
 
+          // Check if the number was preceeded by an operator. If not, previous
+          // Item must have be a variable/function so add "*" inbetween
+          if (!hadOpPrev) {
+            while (opStack.length > 0 && ops[opStack[opStack.length - 1]] <= ops["*"])
+              rpnOut.push(opStack.pop());
+            opStack.push("*");
+          }
+
+          // Step through each element in itemRead array and manipulate rpnOut
+          // and opStack
           for (var k = 0; k < itemRead.length; k++) {
+            // If what is in the array is a number or matrix
             if (!isNaN(itemRead[k]) || typeof(itemRead[k]) == "object") {
               rpnOut.push(itemRead[k]);
+
+              // If the number/matrix is followed by another element in itemRead
+              // add a "*" operator between the two elements
+              if (k < itemRead.length - 1) {
+                while (opStack.length > 0 && ops[opStack[opStack.length - 1]] <= ops["*"])
+                  rpnOut.push(opStack.pop());
+                opStack.push("*");
+              }
             }
+            // If what is in the array is a function
             else {
               opStack.push(itemRead[k]);
             }
-            opStack.push("*");
           }
-          opStack.pop();
 
+          // Reset itemRead to the empty string
           itemRead = "";
           hadOpPrev = false;
         }
         // If currChar is a negative sign (NOT SUBTRACTION)
         else if (currChar == "-" && hadOpPrev) {
           rpnOut.push(0);
+          while (opStack.length > 0 && ops[opStack[opStack.length - 1]] <= ops["-"])
+            rpnOut.push(opStack.pop());
           opStack.push(currChar);
-          hadOpPrev = false;
+          hadOpPrev = true;
           j++;
         }
         // If currChar is an operator
@@ -107,7 +130,7 @@ function toRPN(rawIn) {
             rpnOut.push(opStack.pop());
           }
           opStack.pop();
-          if (opStack.length > 0 && opStack[opStack.length - 1] in functions) {
+          if (opStack.length > 0 && typeof(opStack[opStack.length - 1]) = "function") {
             rpnOut.push(opStack.pop());
           }
           hadOpPrev = false;
