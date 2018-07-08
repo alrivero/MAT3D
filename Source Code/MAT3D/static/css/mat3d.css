@@ -1,0 +1,31 @@
+/* ============ Used in index.html ============ */
+.mat3d {
+    font-size: 36px;
+    color: #16b859;
+}
+
+.matrices {
+    padding: 10px;
+    border: black 5px;
+    border-style: solid;
+}
+
+.matrix_parser {
+    margin-left: 10px;
+    padding: 10px;
+    border: black 5px;
+    border-style: solid;
+}
+
+.matrix_array {
+    margin-left: 10px;
+    padding: 10px;
+    border: black 5px;
+    border-style: solid;
+}
+
+/* ============ Used in layout.html ============ */
+#copyright {
+    text-align: center;
+    color: black;
+}
