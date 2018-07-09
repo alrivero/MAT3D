@@ -1,28 +1,13 @@
-var matrices = {"ANS" : math.matrix(), I : math.matrix()};
+// Defined matrices
+var matrices = {"ANS" : math.matrix()};
+// Defined scalar variables
 var scalars = {"e" : math.e, "pi" : math.pi, "i" : math.complex(0, 1)};
-var functions = {"hulloh" : hulloh, "*" : mul,
-                 "+" : add, "-" : sub, "\\" : div,
-                 "^" : exp};
+// Functions used when computing matrices or scalars
+var functions = { "inv" : findInverse, "transpose": findTranspose,
+                  "det" : findDeterminant, "abs" : findAbs, "log10" : findLog10,
+                  "ln" : findNaturalLog, "sqrt" : findSqrt, "lu" : findLU,
+                  "rank" : rankOfMatrix, "cholesky" : choleskyDecomp };
 
 function main() {
-  console.log(toRPN("-1.74ehulloh(piIe)".split(" ")));
-}
-
-function add(){
-  return true
-}
-function sub(){
-  return true
-}
-function mul(){
-  return true
-}
-function div(){
-  return true
-}
-function hulloh(){
-  return true
-}
-function exp(){
-  return true
+  console.log("389pisqrt(4)");
 }
