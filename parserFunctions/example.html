@@ -6,9 +6,12 @@
 	<meta charset="utf-8">
 	<script src="math.js" type="text/javascript"></script>
 	<script src="parserFunctions.js" type="text/javascript"></script>
+	<script src="parser.js" type="text/javascript"></script>
+	<script src="main.js" type="text/javascript"></script>
 </head>
 
 <body>
+	<input type="text" name="textbox" id="textbox"><br>
 	<button type="button" id="button1">Button</button>
 	<script type="text/javascript">
 		document.getElementById("button1").onclick = function () {
@@ -64,29 +67,27 @@
 				[2, 1],
 				[1, 4]
 			], "4", "*", "+"];
-			var ans = readStack(stack);
+			var ans = readStack2(stack);
 			console.log(ans);
 			print(ans);
 
-			console.log("error check working test");
-			var sta = [2, "+"];
-			//var rs = readStack(sta);
-			//print(rs);
-
-			console.log("det test");
-			var arr1 = [ "det"];
-			//var arr1r = readStack(arr1);
-			//print(arr1r);
+			console.log("input test");
+			var currentString=document.getElementById('textbox').value;
+			console.log(currentString);
+			var ex=parseExpression(currentString);
+			print(ex);
+			//console.log(ex);
 
 			console.log("current test");
-			var arr2 = [ [[4, 12, -16],
+			var arr1 = [["inv("],[
+				[4, 12, -16],
 				[12, 37, -43],
-				[-16, -43, 98]
-			], "cholesky"];
-			var arr3 = [[1], "cholesky"];
-			var arr4 = [[1, 2, 3], [4, 5, 6]];
-			print(readStack(arr3));
-
+				[-16, -43, 98]], [")"]
+			];
+			var str = "inv(";
+			//console.log(str);
+			//var arr2 = parseExpression(arr1);
+			//print(arr2);
 		}
 	</script>
 </body>
