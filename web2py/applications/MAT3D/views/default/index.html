@@ -1,0 +1,140 @@
+{{extend 'layout.html'}}
+
+{{block head}}
+
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+<script>
+    // Define your URLs here.
+    var add_matrix_url = "{{=URL('api', 'add_matrix')}}";
+    var parse_string_url = "{{=URL('api', 'parse_string')}}";
+    var get_matrix_url = "{{=URL('api', 'get_matrix')}}";
+</script>
+
+
+{{end}}
+
+<div class="main_content">
+
+    <div id="vue-div" class="display:none">
+        <!-- Your code goes here.  Remember to call $("#vue-div").show() once you get the data for the first time. -->
+
+        <div class="container padded">
+
+            <div class="mat3d" quarter>
+                <b>[MAT3D]</b>
+            </div>
+
+            <div class="matrices quarter">
+
+                <!-- Left part of the page -->
+
+                <!-- Form to add matrices -->
+                <div v-if="is_adding_matrix" id="add_matrix_div">
+                    <form action="#" v-on:submit.prevent class="form-horizontal" enctype="multipart/form-data" method="post">
+                        <div class="form-group" id="no_table_name__row">
+                            <div>
+                               Matrix Name: <input class="form-control string" id="no_table_name" v-model="form_name" placeholder="Name" type="text" />
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                        <div class="form-group" id="no_table_rowsize__row">
+                            <div>
+                                Rows: <input class="form-control string" id="no_table_row" name="row" type="number" v-model="form_row" placeholder="1" min="1" />
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                        <div class="form-group" id="no_table_colsize__row">
+                            <div>
+                                Columns:<input class="form-control string" id="no_table_col" name="col" type="number" v-model="form_col" placeholder="1" min="1" />
+                                <span class="help-block"></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Add buttons -->
+                <div class="button_bar">
+                    <div>
+                        <button v-if="!is_adding_matrix" class="btn red rounded" v-on:click="add_matrix_button()">
+                            <i class="fa fa-plus"></i>  Add Matrix
+                        </button>
+                        <button v-if="is_adding_matrix" class="btn red rounded" v-on:click="add_matrix()">
+                            <i class="fa fa-plus"></i> Add
+                        </button>
+                        <button v-if="is_adding_matrix" class="btn rounded" v-on:click="add_matrix_button()">
+                            <i class="fa fa-times"></i> Close
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Display saved matrices -->
+                <table class="fill" id="matrix_selector">
+                    <tbody v-for="matrix in matrices">
+                        <tr class="center">
+                            <th v-on:click="get_this_matrix(matrix.matrix_id)">${matrix.name} (${matrix.row} x ${matrix.col})</th>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="matrix_space threequarters">
+                <!-- Right part of the page -->
+
+                <div class=" matrix_parser">
+
+                    <!-- Form to add matrix parser text -->
+                    <div id="add_parsertext_div">
+                        <form action="#" v-on:submit.prevent class="form-horizontal" enctype="multipart/form-data" method="post">
+                            <div class="form-group" id="no_table_parsertext__row">
+                                <div>
+                                    Input:  <input class="form-control string" id="no_table_parsertext" v-model="form_parsertext" placeholder="type an equation..." type="text" />
+                                    <span class="help-block"></span>
+                                </div>
+
+                                <div>
+                                    <button class="btn green rounded" v-on:click="parse_string">
+                                        <i class="fa fa-calculator" aria-hidden="true"></i> Compute
+                                    </button>
+                                </div>
+
+                                ${return_message}
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+                <br>
+
+                <div class="matrix_array">
+
+                    <table class="current_matrix">
+                        <tr>
+                            <td contenteditable='true'>0</td>
+                            <td contenteditable='true'>0</td>
+                            <td contenteditable='true'>0</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable='true'>0</td>
+                            <td contenteditable='true'>0</td>
+                            <td contenteditable='true'>0</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable='true'>0</td>
+                            <td contenteditable='true'>0</td>
+                            <td contenteditable='true'>0</td>
+                        </tr>
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="{{=URL('static', 'js/default_index2.js')}}"></script>
