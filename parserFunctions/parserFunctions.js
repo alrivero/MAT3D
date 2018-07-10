@@ -11,9 +11,28 @@ function exampleFunction(){
 	console.log("exampole function is working");
 }
 
+function readStack(stack){
+
+	var stackLength = stack.length;
+	var arr = [];
+	for(var i =0; i < stackLength; i++){
+		var element = stack[i];
+		if(typeof(element) == "function"){
+			var val = element(arr)
+			arr.push(val);
+		}
+		else{
+			arr.push(element);
+		}
+	}
+	var re=arr.pop();
+	//console.log("arr " + stack.pop());
+	return re;
+}
+
 //FUNCTION readStack(stack)
 //reads a rpn stack and calls functions in order
-function readStack(stack){
+function readStack2(stack){
 	var stackLength = stack.length;
 	//console.log("stack length " + stackLength);
 	var arr = [];
@@ -165,37 +184,65 @@ function print (value) {
   console.log(math.format(value, precision))
 }
 
+function findAdd(a){
+	var operator1 = a.pop();
+	var operator2 = a.pop();
+	return math.add(operator1, operator2);
+}
+
+function findSub(a){
+	var operator1 = a.pop();
+	var operator2 = a.pop();
+	return math.subtract(operator2, operator1);
+}
+
+function findDiv(a){
+	var operator1 = a.pop();
+	var operator2 = a.pop();
+	return math.divide(operator2, operator1);
+}
+
 //matrixMultiplication-multiplies two matrices together
 //NOTE WORKS FOR ALL INPUT MATRICES AND SCALARS
 //RETURNS A MATRIX
-function matrixMultiplication(a, b){
+function matrixMultiplication(stack){
+	var a = stack.pop();
+	var b = stack.pop();
+	console.log(a);
+	console.log(b);
 	var c = math.multiply(a, b);
+	//print(c);
+	//stack.push(c);
 	return c;
 }
 
 //findInverse() return the inverse of the input matrixMultiplication
 function findInverse(a){
-	var c = math.inv(a);
+	var operator = a.pop();
+	var c = math.inv(operator);
 	return c;	
 }
 
 //findTranspose()
 //RETURNS TRANSPOSE OF GIVEN MATRIX
 function findTranspose(a){
-	var c = math.transpose(a);
+	var operator = a.pop();
+	var c = math.transpose(operator);
 	return c;
 }
 
 //findDiagonal
 //RETURNS DIAGONAL OF MATRIX
-function findDiagonal(a){
-	var c = math.diag(a);
+function findDiagonal(a){ 
+	var operator = a.pop();
+	var c = math.diag(operator);
 	return c;
 }
 
 //findDeterminant
 function findDeterminant(a){
-	var c = math.det(a);
+	var operator = a.pop();
+	var c = math.det(operator);
 	return c;
 }
 
@@ -237,26 +284,37 @@ function findTrig(a, angle, bit){
 
 //log base 10
 function findLog10(a){
-	var c = math.log10(a);
+	var operator = a.pop();
+	var c = math.log10(operator);
 	
 	return c;
 }
 
 //natural log
 function findNaturalLog(a){
-	var c = math.log(a);
+	var operator = a.pop();
+	var c = math.log(operator);
 	return c;
+}
+
+//find exponent
+function findExp(a){
+	var operator1 = a.pop();
+	var operator2 = a.pop();
+	return math.pow(operator2, operator1);
 }
 
 //find sqrt
 function findSqrt(a){
-	var c = math.sqrt(a);
+	var operator = a.pop();
+	var c = math.sqrt(operator);
 	return c;
 }
 
 //find absolute value
 function findAbs(a){
-	var c = math.abs(a);
+	var operator = a.pop();
+	var c = math.abs(operator);
 	return c;
 }
 
@@ -264,13 +322,22 @@ function findAbs(a){
 //note will accept matrix with only integer values
 //see math.js documentation
 function findFactorial(a){
-	var c = math.factorial(a);
+	var operator = a.pop();
+	var c = math.factorial(operator);
 	return c;
 }
 
 function findLu(a){
-	var c = math.lup(a);
+	var operator = a.pop();
+	var c = math.lup(operator);
 	return c;
+}
+
+function findRank(a){
+	var operator = a.pop();
+	var size = math.size(operator);
+	return rankOfMatrix(operator, size[0], size[1]);
+
 }
 
 //function to find rank of a matrix
@@ -345,6 +412,12 @@ function rankOfMatrix(mat, r, c){
 	}
 	//return 
 	return rank;
+}
+
+function findCholesky(a){
+	var operator = a.pop();
+	var size = math.size(a);
+	return choleskyDecomp2(operator, size[0]);
 }
 
 //function for cholesky decomposition
