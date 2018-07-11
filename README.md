@@ -7,4 +7,3 @@ By Matrix Masters:
 	Tim Tang
 	Jacob Schwartz
 	Alfredo Rivero
-
