@@ -16,7 +16,8 @@
 <div class="main_content">
 
     <div id="vue-div" class="display:none">
-        <!-- Your code goes here.  Remember to call $("#vue-div").show() once you get the data for the first time. -->
+        <!-- Your code goes here.  Remember to call $("#vue-div").show() once you get the data
+        for the first time. -->
 
         <div class="container padded">
 
@@ -25,27 +26,33 @@
             </div>
 
             <div class="matrices quarter">
-
                 <!-- Left part of the page -->
 
                 <!-- Form to add matrices -->
                 <div v-if="is_adding_matrix" id="add_matrix_div">
-                    <form action="#" v-on:submit.prevent class="form-horizontal" enctype="multipart/form-data" method="post">
+                    <form action="#" v-on:submit.prevent class="form-horizontal"
+                          enctype="multipart/form-data" method="post">
                         <div class="form-group" id="no_table_name__row">
                             <div>
-                               Matrix Name: <input class="form-control string" id="no_table_name" v-model="form_name" placeholder="Name" type="text" />
+                               Matrix Name: <input class="form-control string" id="no_table_name"
+                                                   v-model="form_name" placeholder="Name"
+                                                   type="text" />
                                 <span class="help-block"></span>
                             </div>
                         </div>
                         <div class="form-group" id="no_table_rowsize__row">
                             <div>
-                                Rows: <input class="form-control string" id="no_table_row" name="row" type="number" v-model="form_row" placeholder="1" min="1" />
+                                Rows: <input class="form-control string" id="no_table_row"
+                                             name="row" type="number" v-model="form_row"
+                                             placeholder="1" min="1" />
                                 <span class="help-block"></span>
                             </div>
                         </div>
                         <div class="form-group" id="no_table_colsize__row">
                             <div>
-                                Columns:<input class="form-control string" id="no_table_col" name="col" type="number" v-model="form_col" placeholder="1" min="1" />
+                                Columns:<input class="form-control string" id="no_table_col"
+                                               name="col" type="number" v-model="form_col"
+                                               placeholder="1" min="1" />
                                 <span class="help-block"></span>
                             </div>
                         </div>
@@ -55,13 +62,16 @@
                 <!-- Add buttons -->
                 <div class="button_bar">
                     <div>
-                        <button v-if="!is_adding_matrix" class="btn red rounded" v-on:click="add_matrix_button()">
+                        <button v-if="!is_adding_matrix" class="btn red rounded"
+                                v-on:click="add_matrix_button()">
                             <i class="fa fa-plus"></i>  Add Matrix
                         </button>
-                        <button v-if="is_adding_matrix" class="btn red rounded" v-on:click="add_matrix()">
+                        <button v-if="is_adding_matrix" class="btn red rounded"
+                                v-on:click="add_matrix()">
                             <i class="fa fa-plus"></i> Add
                         </button>
-                        <button v-if="is_adding_matrix" class="btn rounded" v-on:click="add_matrix_button()">
+                        <button v-if="is_adding_matrix" class="btn rounded"
+                                v-on:click="add_matrix_button()">
                             <i class="fa fa-times"></i> Close
                         </button>
                     </div>
@@ -71,7 +81,9 @@
                 <table class="fill" id="matrix_selector">
                     <tbody v-for="matrix in matrices">
                         <tr class="center">
-                            <th v-on:click="get_this_matrix(matrix.matrix_id)">${matrix.name} (${matrix.row} x ${matrix.col})</th>
+                            <th v-on:click="get_this_matrix(matrix.matrix_id)">
+                                ${matrix.name} (${matrix.row} x ${matrix.col})
+                            </th>
                         </tr>
                     </tbody>
                 </table>
@@ -85,10 +97,13 @@
 
                     <!-- Form to add matrix parser text -->
                     <div id="add_parsertext_div">
-                        <form action="#" v-on:submit.prevent class="form-horizontal" enctype="multipart/form-data" method="post">
+                        <form action="#" v-on:submit.prevent class="form-horizontal"
+                              enctype="multipart/form-data" method="post">
                             <div class="form-group" id="no_table_parsertext__row">
                                 <div>
-                                    Input:  <input class="form-control string" id="no_table_parsertext" v-model="form_parsertext" placeholder="type an equation..." type="text" />
+                                    Input:  <input class="form-control string" id="no_table_parsertext"
+                                                   v-model="form_parsertext" placeholder="type an equation..."
+                                                   type="text" />
                                     <span class="help-block"></span>
                                 </div>
 
@@ -105,9 +120,9 @@
 
                 </div>
 
-                <br>
+                <br/>
 
-                <div class="matrix_array">
+                <div v-if="!is_populating_matrix" class="matrix_array">
 
                     <table class="current_matrix">
                         <tr>
@@ -124,6 +139,19 @@
                             <td contenteditable='true'>0</td>
                             <td contenteditable='true'>0</td>
                             <td contenteditable='true'>0</td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <div v-if="is_populating_matrix" class="matrix_array">
+
+                    <table class="current_matrix">
+                        ${populate_matrix_name}
+                        <tr v-for="rows in populate_rows">
+                            <td v-for="cols in populate_cols" contenteditable='true'>
+                                0
+                            </td>
                         </tr>
                     </table>
 

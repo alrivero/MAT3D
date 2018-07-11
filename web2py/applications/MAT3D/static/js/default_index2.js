@@ -35,11 +35,15 @@ var app = function() {
                 $.web2py.enableElement($("#add_matrix_submit"));
                 self.vue.matrices.unshift(data.matrix);
                 enumerate(self.vue.matrices);
+                self.vue.populate_matrix_name = self.vue.form_name;
+                self.vue.populate_cols = self.vue.form_col;
+                self.vue.populate_rows = self.vue.form_row;
                 self.vue.form_name = "";
                 self.vue.form_row = "";
                 self.vue.form_col = "";
                 self.vue.form_matrix_id = self.vue.form_matrix_id + 1;
                 self.vue.is_adding_matrix = !self.vue.is_adding_matrix
+                self.vue.is_populating_matrix = true;
             });
     };
 
@@ -52,7 +56,7 @@ var app = function() {
             function (data) {
                 self.vue.return_message = data.returnmessage;
             });
-    }
+    };
 
     self.get_user_matrix = function (matrix_id) {
         $.post(get_matrix_url,
@@ -80,7 +84,12 @@ var app = function() {
             form_matrix_id: 0,
             return_message: null,
             returnmessage: null,
-            self_page: false
+            self_page: false,
+            populate_matrix_name: null,
+            populate_cols: null,
+            populate_rows: null,
+            is_populating_matrix: false
+
         },
         methods: {
             add_matrix_button: self.add_matrix_button,
