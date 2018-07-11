@@ -1,5 +1,4 @@
-/*
-Cloned from:
+/* Cloned from:
 https://www.w3schools.com/html/tryit.asp?filename=tryhtml_table_intro
 */
 
@@ -32,13 +31,18 @@ https://www.w3schools.com/html/tryit.asp?filename=tryhtml_table_intro
 .current_matrix {
     font-family: arial, sans-serif;
     border-collapse: separate;
-    width: 50%;
+    width: 100%;
 }
 
 td {
     border: 1px solid #dddddd;
     text-align: center;
     padding: 15px;
+
+    margin-top: 50px;
+    margin-bottom: 50px;
+    margin-left: 50px;
+    margin-bottom: 50px;
 }
 
 /* ============ Used in layout.html ============ */
