@@ -1,9 +1,28 @@
+/*
+ *  AUTHOR: Abraham Cardenas (acarde12@ucsc.edu)
+ *  VERSION: 1.0
+ *
+ */
+
+// global program variables
 var renderer;
 var controls;
 var scene;
 var camera;
 var objMesh;
 var object;
+
+// global transformations variables (somehow set by the matrix calculator)
+var xTrans;
+var yTrans;
+var zTrans;
+var aScale;
+var bScale;
+var cScale;
+var dScale;
+var eScale;
+var fScale;
+var thetaRot;
 
 function init(){
   // setting up the canvas, scene, and camera
@@ -59,9 +78,32 @@ function init(){
 
   });
 
- // coordinate system
+  // coordinate system
   var gridHelper = new THREE.GridHelper(20, 20);
   scene.add(gridHelper);
+
+  var fileInput = document.getElementById('fileInput');
+
+  fileInput.addEventListener('change', function(e){
+    removeEntity(object);
+
+    // load obj and mtl file
+
+    /*
+    // set your file encoding
+    var encoding = 'ISO-8859-1';
+    // create a file reader
+    var reader = new FileReader();
+
+    // set on load handler for reader
+    reader.onload = function(e){
+        var result = reader.result;
+        loader.parse(result);
+    }
+    // read the file as text using the reader
+    reader.readAsText(file, encoding);
+    */
+  });
 
   // temporary transformation controls
   var transControls = new function(){
@@ -128,16 +170,6 @@ function init(){
       objMesh.geometry.verticesNeedUpdate = true;
     }
 
-    this.loadOBJFiles = function(){
-      removeEntity(object);
-      // have a "Browse" option that allows the user to load an object file and/or a materials file
-      /*
-       *
-       *   code here
-       *
-       */
-    }
-
   };
   addControls(transControls);
   animate();
@@ -149,7 +181,6 @@ function addControls(controlObject){
   gui.add(controlObject, 'doScale');
   gui.add(controlObject, 'doShearing');
   gui.add(controlObject, 'doRotationY');
-  gui.add(controlObject, 'loadOBJFiles');
 }
 
 function removeEntity(object){

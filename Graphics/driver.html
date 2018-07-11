@@ -11,10 +11,14 @@
 	<body>
 		<canvas id="canvas"></canvas>
 		<script src="lib/three.min.js"></script>
-		<script src="lib/OrbitControls.js"></script>
-		<script src="lib/OBJLoader.js"></script>
-		<script src="lib/MTLLoader.js"></script>
 		<script src="lib/dat.gui.min.js"></script>
+		<script src="lib/OrbitControls.js"></script>
+		<script src="loaders/OBJLoader.js"></script>
+		<script src="loaders/MTLLoader.js"></script>
+		<script src="loaders/Loader.js"></script>
+		<script src="exporters/OBJExporter.js"></script>
 		<script src="driver.js"></script>
+
+		<input type="file" id="fileInput" />
 	</body>
 </html>
