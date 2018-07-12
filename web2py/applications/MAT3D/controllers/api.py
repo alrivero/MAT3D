@@ -21,31 +21,25 @@ def parse_string():
 
 def get_matrix():
     matrices = []
-
     request.vars.self_page = True
-
-
-
-
-
-    images = []
-
-    # Get a list of the images of the user selected
-    if auth.user.id == long(request.vars.user_id):
-        request.vars.self_page = True
-    else:
-        request.vars.self_page = False
-
-    # Sort the user's 20 most recent images first
-    rows = db(db.user_images.created_by == request.vars.user_id).select(orderby=~db.user_images.created_on,
-                                                                        limitby=(0, 20))
-    for i, r in enumerate(rows):
-        t = dict(
-            image_src=r.image_url
-        )
-        images.append(t)
-
-    return response.json(dict(
-        images=images,
-        self_page=request.vars.self_page
-    ))
+    # images = []
+    #
+    # # Get a list of the images of the user selected
+    # if auth.user.id == long(request.vars.user_id):
+    #     request.vars.self_page = True
+    # else:
+    #     request.vars.self_page = False
+    #
+    # # Sort the user's 20 most recent images first
+    # rows = db(db.user_images.created_by == request.vars.user_id).select(orderby=~db.user_images.created_on,
+    #                                                                     limitby=(0, 20))
+    # for i, r in enumerate(rows):
+    #     t = dict(
+    #         image_src=r.image_url
+    #     )
+    #     images.append(t)
+    #
+    # return response.json(dict(
+    #     images=images,
+    #     self_page=request.vars.self_page
+    # ))

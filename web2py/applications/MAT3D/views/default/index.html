@@ -81,8 +81,12 @@
                 <table class="fill" id="matrix_selector">
                     <tbody v-for="matrix in matrices">
                         <tr class="center">
-                            <th v-on:click="get_this_matrix(matrix.matrix_id)">
+                            <th v-on:click="get_this_matrix(matrix._idx)">
                                 ${matrix.name} (${matrix.row} x ${matrix.col})
+                                <button class="btn rounded red"
+                                        v-on:click="delete_matrix(matrix._idx)">
+                                    <i class="fa fa-trash fa-lg"></i>
+                                </button>
                             </th>
                         </tr>
                     </tbody>
@@ -101,9 +105,9 @@
                               enctype="multipart/form-data" method="post">
                             <div class="form-group" id="no_table_parsertext__row">
                                 <div>
-                                    Input:  <input class="form-control string" id="no_table_parsertext"
-                                                   v-model="form_parsertext" placeholder="type an equation..."
-                                                   type="text" />
+                                    Input:  <input class="form-control string"
+                                                   id="no_table_parsertext" v-model="form_parsertext"
+                                                   placeholder="type an equation..." type="text" />
                                     <span class="help-block"></span>
                                 </div>
 
@@ -120,7 +124,7 @@
 
                 </div>
 
-                <br/>
+                <br>
 
                 <div v-if="!is_populating_matrix" class="matrix_array">
 
