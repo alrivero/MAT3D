@@ -5,8 +5,8 @@
  * @version 1.0
  */
 
- // Operator presedence dictionary
- var ops = { "+": 1, "-": 1, "*": 2, "/": 2, "^": 3, "(": 0};
+// Operator presedence dictionary
+var ops = { "+": 1, "-": 1, "*": 2, "/": 2, "^": 3, "(": 0 };
 
 /**
 * Computes the matheamtical expression provided as input
@@ -39,7 +39,7 @@ function toRPN(splitIn) {
 
       var j = 0;
       while (j < splitIn[i].length) {
-      var currChar = splitIn[i].charAt(j);  // Character currently read
+        var currChar = splitIn[i].charAt(j);  // Character currently read
 
         // Check if the character read is invalid
         if ("|\":<>[]{}`';@#$%&_=?!,~".indexOf(currChar) != -1)
@@ -54,7 +54,7 @@ function toRPN(splitIn) {
             if (j < splitIn[i].length)
               currChar = splitIn[i].charAt(j);
           } while (j < splitIn[i].length && currChar.match(/^[0-9.]+$/))
-            // Turn the number characters into a float
+          // Turn the number characters into a float
           itemRead = parseFloat(itemRead, 10);
           if (itemRead == NaN) {
             throw "Invalid number: Periods possibly used incorrectly";
@@ -102,7 +102,7 @@ function toRPN(splitIn) {
           // and opStack
           for (var k = 0; k < itemRead.length; k++) {
             // If what is in the array is a number or matrix
-            if (!isNaN(itemRead[k]) || typeof(itemRead[k]) == "object") {
+            if (!isNaN(itemRead[k]) || typeof (itemRead[k]) == "object") {
               rpnOut.push(itemRead[k]);
 
               // If the number/matrix is followed by another element in itemRead
@@ -127,7 +127,7 @@ function toRPN(splitIn) {
         else if (currChar == "-" && hadOpPrev) {
           rpnOut.push(0);
           while (opStack.length > 0 && ops[opStack[opStack.length - 1]] >= ops["-"])
-          rpnOut.push(functions[opStack.pop()]);
+            rpnOut.push(functions[opStack.pop()]);
           opStack.push(currChar);
           hadOpPrev = true;
           j++;
@@ -136,7 +136,7 @@ function toRPN(splitIn) {
         else if ("+-*/^".indexOf(currChar) != -1) {
           // If currChar is of higher presedence, keep poping the stack into rpnOut
           while (ops[opStack[opStack.length - 1]] >= ops[currChar])
-          rpnOut.push(functions[opStack.pop()]);
+            rpnOut.push(functions[opStack.pop()]);
           // Push currChar to operator stack
           opStack.push(currChar);
           hadOpPrev = true;
@@ -154,7 +154,7 @@ function toRPN(splitIn) {
             rpnOut.push(functions[opStack.pop()]);
           }
           opStack.pop();
-          if (opStack.length > 0 && typeof(opStack[opStack.length - 1]) == "function") {
+          if (opStack.length > 0 && typeof (opStack[opStack.length - 1]) == "function") {
             rpnOut.push(opStack.pop());
           }
           hadOpPrev = false;
@@ -167,7 +167,7 @@ function toRPN(splitIn) {
       }
     }
   }
-  catch(err) {
+  catch (err) {
     // NECESSARY ERROR HANDELING GOES HERE
     console.log(err);
   }
@@ -254,7 +254,7 @@ function wordBreak(word) {
  * @param {number} i Index used to traverse pos recursively
  * @return {object} Return possOuts full of possible deconstructions
  */
-function dfs (pos, possOuts, current, i) {
+function dfs(pos, possOuts, current, i) {
   if (i == 0) {
     possOuts.push(current.slice(0));
     return;
@@ -288,7 +288,7 @@ function bestComb(possOuts) {
   }
 
   // Sort the possibilites based on the below criteria
-  possOuts.sort(function(list1, list2) {
+  possOuts.sort(function (list1, list2) {
     // If a function is at the end of a possiblity, weight it higher
     if ((list1[list1.length - 2][0] in functions) && !(list2[list2.length - 2][0] in functions)) {
       return -1

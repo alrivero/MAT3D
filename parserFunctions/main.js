@@ -6,7 +6,7 @@ var scalars = {"e" : math.e, "pi" : math.pi, "i" : math.complex(0, 1)};
 var functions = { "inv" : findInverse, "transpose": findTranspose,
                   "det" : findDeterminant, "abs" : findAbs, "log10" : findLog10,
                   "ln" : findNaturalLog, "sqrt" : findSqrt, "lu" : findLu,
-                  "rank" : rankOfMatrix, "cholesky" : choleskyDecomp,
+                  "rank" : findRank, "cholesky" : findCholesky,
                   "+" : findAdd, "-" : findSub, "/" : findDiv,
                   "*" : matrixMultiplication, "^": findExp };
 

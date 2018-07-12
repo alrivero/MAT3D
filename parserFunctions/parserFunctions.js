@@ -416,14 +416,13 @@ function rankOfMatrix(mat, r, c){
 
 function findCholesky(a){
 	var operator = a.pop();
-	var size = math.size(a);
-	return choleskyDecomp2(operator, size[0]);
+	return choleskyDecomp2(operator);
 }
 
 //function for cholesky decomposition
 //algorithm taken and translated from geeksforgeeks
 //https://www.geeksforgeeks.org/cholesky-decomposition-matrix-decomposition/
-function choleskyDecomp(matrix, n){
+function choleskyDecomp2(matrix, n){
 	var lower=jagArray(n);
 	//memset from c -- should not be necessary in js
 	
@@ -450,7 +449,12 @@ function choleskyDecomp(matrix, n){
 	return lower;
 }
 
-function choleskyDecomp2(a, n){
+//FUNCTION choleskyDecomp
+//algorithm taken from rosetta code.org
+//https://rosettacode.org/wiki/Cholesky_decomposition#Java
+function choleskyDecomp(a){
+	var size = math.size(a);
+	var n = size[0];
 	var l = jagArray(n);
 	for(var i = 0; i < n; i++){
 		for(var k = 0; k < (i+1); k++){
@@ -458,8 +462,17 @@ function choleskyDecomp2(a, n){
 			for(var j = 0; j < k; j++){
 				sum += l[i][j] * l[k][j];
 			}
-			l[i][k] = (i == k) ? Math.sqrt(a[i][i] - sum) :
-			(1.0 / l[k][k] * (a[i][k] - sum));
+			//l[i][k] = (i == k) ? math.sqrt(a[i][i] - sum) :
+			//(1.0 / l[k][k] * (a[i][k] - sum));
+
+			if(i == k){
+				l[i][k] = math.sqrt(a[i][i] - sum);
+				//l[i][k] = 0;
+			}
+			else{
+				l[i][k] = (1.0 / l[k][k] * (a[i][k] - sum));
+				//l[i][k] = 0;
+			}
 		}
 	}
 	return l;
@@ -495,7 +508,8 @@ function jagArray(n){
 	for(var x = 0; x < n; x++){
 		arr[x]=[];
 		for(var y =0; y < n; y++){
-			arr[x][y] = x*y;
+			//arr[x][y] = x*y;
+			arr[x][y] = 0.0;
 		}
 	}
 	return arr;
