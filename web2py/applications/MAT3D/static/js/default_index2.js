@@ -40,7 +40,8 @@ var app = function() {
                 self.vue.form_name = "";
                 self.vue.form_row = "";
                 self.vue.form_col = "";
-                self.vue.is_adding_matrix = !self.vue.is_adding_matrix;
+                self.vue.form_matrix_id = self.vue.form_matrix_id + 1;
+                self.vue.is_adding_matrix = !self.vue.is_adding_matrix
                 self.vue.is_populating_matrix = true;
             });
     };
@@ -56,10 +57,11 @@ var app = function() {
             });
     }
 
-    self.get_this_matrix = function (matrix_idx) {
+    /*
+    self.get_user_matrix = function (matrix_id) {
         $.post(get_matrix_url,
             {
-                matrix_idx: matrix_idx
+                matrix_id: matrix_id
             },
             function (data) {
                 self.vue.self_page = data.self_page;
@@ -67,10 +69,25 @@ var app = function() {
                 enumerate(self.vue.matrices);
         })
     };
+    */
 
-    self.delete_matrix = function(matrix_idx) {
+     self.delete_matrix = function(matrix_idx) {
+         /*Delete Main Matrix */
         self.vue.matrices.splice(matrix_idx, 1);
         enumerate(self.vue.matrices);
+        /* Delete data portion */
+        self.vue.matrices_data.splice(matrix_idx, 1);
+        enumerate(self.vue.matrices_data);
+    };
+
+
+     self.get_this_matrix = function (matrix_idx) {
+
+    };
+
+     self.add_data_matrix = function () {
+        /* Write data matrix data elements to --> matrices_data */
+
     };
 
     self.vue = new Vue({
@@ -80,10 +97,12 @@ var app = function() {
         data: {
             is_adding_matrix: false,
             matrices: [],
+            matrices_data: [],
             form_name: null,
             form_parsertext: null,
             form_row: null,
             form_col: null,
+            form_matrix_id: 0,
             return_message: null,
             returnmessage: null,
             self_page: false,
@@ -91,13 +110,15 @@ var app = function() {
             populate_cols: null,
             populate_rows: null,
             is_populating_matrix: false
+
         },
         methods: {
             add_matrix_button: self.add_matrix_button,
             add_matrix: self.add_matrix,
             parse_string: self.parse_string,
-            get_this_matrix: self.get_this_matrix(),
+            get_this_matrix: self.get_this_matrix,
             delete_matrix: self.delete_matrix,
+            add_data_matrix: self.add_data_matrix
         }
 
     });
