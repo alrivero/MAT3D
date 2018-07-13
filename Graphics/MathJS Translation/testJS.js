@@ -20,11 +20,11 @@ function main() {
   tranQueue.addMatrix(invI4, 8);
   tranQueue.addMatrix(invNum, 8);
   tranQueue.addMatrix(I4x4, 0);
-  tranQueue.addMatrix(I3x3, tranQueue.length());
-  tranQueue.addMatrix(test1, tranQueue.length() + 1);
+  tranQueue.addMatrix(I3x3, tranQueue.getLength());
+  tranQueue.addMatrix(test1, tranQueue.getLength() + 1);
   tranQueue.addMatrix(test1, -1);
-  tranQueue.addMatrix(test1, tranQueue.length());
-  tranQueue.addMatrix(test2, tranQueue.length() - 1);
+  tranQueue.addMatrix(test1, tranQueue.getLength());
+  tranQueue.addMatrix(test2, tranQueue.getLength() - 1);
   tranQueue.addMatrix(test3, 2);
   tranQueue.addMatrix(test4, 1);
   // tranQueue should have: I4x4, I3x3, test4, test2, test3, test1

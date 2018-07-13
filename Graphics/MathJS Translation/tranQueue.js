@@ -8,13 +8,14 @@
 */
 function TranQueue() {
   this.queue = [];  // Queue containing matrix objects
+  this.threeMatrix = math.identity([4,4]);  // Matrix computed by queue
 }
 
 /**
 * Adds a 3x3/4x4 mathJS matrix object into the TranQueue. Index bounds are
 * [0 - TranQueue.length()].
 *
-* @param {SparseMatrix, DenseMatrix} addedMatrix Matrix added to TranQueue
+* @param {Array, SparseMatrix, DenseMatrix} addedMatrix Matrix added to TranQueue
 * @param {number} index Index of where in the queue you want to add addedMatrix
 * @throws Message if addedmatrix is not mathJS matrix or index is out of bounds
 *
@@ -52,11 +53,174 @@ TranQueue.prototype.addMatrix = function(addedMatrix, index) {
       default:
         this.queue.splice(index, 0, addedMatrix);
     }
+
+    // Multiply the queue considering the new matrix.
+    this.multQueue()
   }
   catch (err) {
     // ERROR HANDELING GOES HERE
     console.log(err);
   }
+}
+
+/**
+* Removes a specified mathJS matrix from the TranQueue.
+*
+* @param {SparseMatrix, DenseMatrix} remMatrix Matrix removed from TranQueue
+* @throws Message if addedmatrix is not mathJS matrix or remMatrix is not found
+*/
+TranQueue.prototype.removeMatrix = function(remMatrix) {
+  try {
+    var index = this.queue.indexOf(remMatrix);
+    if (index == -1) {
+      throw "Tried to remove an element that is not present in TranQueue."
+    }
+
+    this.queue.splice(index, 1);
+
+    // Multiply the queue considering the new matrix.
+    this.multQueue()
+  }
+  catch (err) {
+    // ERROR HANDELING GOES HERE
+    console.log(err);
+  }
+}
+
+/**
+* Moves a specified mathJS matrix from one position in the TranQueue to
+* another position. Index bounds are [0 - TranQueue.length()].
+*
+* @param {SparseMatrix, DenseMatrix} matrix Matrix moved in TranQueue
+* @param {number} matInc Increment/Decrement in position within TranQueue
+* @throws Message if addedmatrix is not valid mathJS matrix or if
+* increment causes out of bounds
+*/
+TranQueue.prototype.moveMatrix = function(matrix, matInc) {
+  try {
+    if (matInc == 0) {
+      return;
+    }
+
+    var matIndex = this.queue.indexOf(matrix);
+    if (matIndex == -1) {
+      throw "Trying to move an element that is not present in transQueue."
+    }
+
+    var newPos = matIndex + matInc;
+    if (this.indexOutOfBounds(newPos)) {
+      throw " Trying to move a matrix beyond TranQueue length"
+    }
+
+    var movedTemp = this.queue.splice(matIndex, 1);
+    switch (newPos) {
+      case this.queue.length:
+        this.queue.push(matrix);
+        break;
+      case 0:
+        this.queue.unshift(matrix);
+        break;
+      default:
+        this.queue.splice(newPos, 0, matrix);
+    }
+
+    // Multiply the queue considering the new matrix.
+    this.multQueue()
+  }
+  catch (err) {
+    // ERROR HANDELING GOES HERE
+    console.log(err);
+  }
+}
+
+/**
+* Computes the transformation matrix represented by multiplying all elements
+* within the queue. Returns a three.js Matrix4 object.
+*/
+TranQueue.prototype.multQueue = function() {
+  // Initial identity matrix
+  var transform = math.identity(4,4);
+
+  // Multiply all the matrices within the TranQueue
+  for (var i = 0; i < this.queue.length; i++) {
+    var matrix;
+    if (this.queue[i].length[0] == 3) {
+      matrix = threeToFour(matrix);
+    }
+    else {
+      matrix = this.queue[i];
+    }
+
+    transform = math.multiply(matrix, transform);
+  }
+
+  // Turn transform into an array accepted by three.js in row major form
+  var out = [];
+  if (!(transform instanceof Array)) {
+    transform = transform._data;
+  }
+  for (var j = 0; j < 4; j++) {
+    for (var k = 0; k < 4; k++) {
+      out.push(transform[j][k]);
+    }
+  }
+
+  // turn transform array into a Matrix4 three.js object
+  this.threeMatrix = new Matrix4(new Float32Array(out));
+}
+
+/**
+* Turns a clone of a mathJS 3x3 matrix into a mathJS 4x4 matrix ready for 3D
+* transformations.
+*
+* @param {SparseMatrix, DenseMatrix} matrix 3x3 mathJS matrix
+* @returns {SparseMatrix, DenseMatrix} A cloned, 4x4 matrix
+* @throws Message if param is not a 3x3 matrix
+*/
+TranQueue.prototype.threeToFour = function(matrix) {
+  try {
+    if (math.size(matrix)[0] != 3) {
+      throw "Not a 3x3 matrix!"
+    }
+
+    var fxfclone = math.clone(matrix);
+    fxfclone = math.resize(fxfclone, [4,4]);
+    fxfclone = math.subset(fxfclone, math.index(3,3), 1);  // change bottom-rightest number to 1
+
+    return fxfclone;
+  }
+  catch (err) {
+    // ERROR HANDELING GOES HERE
+    console.log(err);
+  }
+}
+
+/**
+* Returns the transformation matrix represented by multiplying all elements
+* within the queue.
+*
+* @returns {Matrix4} The transformation matrix as a three.js Matrix4 object.
+*/
+TranQueue.prototype.getThreeMatrix = function() {
+  return this.threeMatrix;
+}
+
+/**
+* Returns the length of the TranQueue
+*
+* @returns {number} transQueue length
+*/
+TranQueue.prototype.getLength = function() {
+  return this.queue.length;
+}
+
+/**
+* Returns the array used within TranQueue
+*
+* @returns {Array} transQueue's internal Array
+*/
+TranQueue.prototype.getQueue = function() {
+  return this.queue;
 }
 
 /**
@@ -106,148 +270,4 @@ TranQueue.prototype.elemInMatAreNotNum = function(addedMatrix, dim) {
   }
 
   return false;
-}
-
-/**
-* Removes a specified mathJS matrix from the TranQueue.
-*
-* @param {SparseMatrix, DenseMatrix} remMatrix Matrix removed from TranQueue
-* @throws Message if addedmatrix is not mathJS matrix or remMatrix is not found
-*/
-TranQueue.prototype.removeMatrix = function(remMatrix) {
-  try {
-    var index = this.queue.indexOf(remMatrix);
-    if (index == -1) {
-      throw "Tried to remove an element that is not present in TranQueue."
-    }
-
-    this.queue.splice(index, 1);
-  }
-  catch (err) {
-    // ERROR HANDELING GOES HERE
-    console.log(err);
-  }
-}
-
-/**
-* Moves a specified mathJS matrix from one position in the TranQueue to
-* another position. Index bounds are [0 - TranQueue.length()].
-*
-* @param {SparseMatrix, DenseMatrix} matrix Matrix moved in TranQueue
-* @param {number} matInc Increment/Decrement in position within TranQueue
-* @throws Message if addedmatrix is not valid mathJS matrix or if
-* increment causes out of bounds
-*/
-TranQueue.prototype.moveMatrix = function(matrix, matInc) {
-  try {
-    if (matInc == 0) {
-      return;
-    }
-
-    var matIndex = this.queue.indexOf(matrix);
-    if (matIndex == -1) {
-      throw "Trying to move an element that is not present in transQueue."
-    }
-
-    var newPos = matIndex + matInc;
-    if (this.indexOutOfBounds(newPos)) {
-      throw " Trying to move a matrix beyond TranQueue length"
-    }
-
-    var movedTemp = this.queue.splice(matIndex, 1);
-    switch (newPos) {
-      case this.queue.length:
-        this.queue.push(matrix);
-        break;
-      case 0:
-        this.queue.unshift(matrix);
-        break;
-      default:
-        this.queue.splice(newPos, 0, matrix);
-    }
-  }
-  catch (err) {
-    // ERROR HANDELING GOES HERE
-    console.log(err);
-  }
-}
-
-/**
-* Computes the transformation matrix represented by multiplying all elements
-* within the queue. Returns a three.js Matrix4 object.
-*
-* @returns {Matrix4} three.js matrix representing a transform. Returns
-* identity matrix if TranQueue is empty.
-*/
-TranQueue.prototype.compThreeJSMatrix = function() {
-  // Initial identity matrix
-  var transform = math.identity(4,4);
-
-  // Multiply all the matrices within the TranQueue
-  for (var i = 0; i < this.queue.length; i++) {
-    var matrix;
-    if (this.queue[i].length[0] == 3) {
-      matrix = threeToFour(matrix);
-    }
-    else {
-      matrix = this.queue[i];
-    }
-
-    transform = math.multiply(matrix, transform);
-  }
-
-  // Turn transform into an array accepted by three.js in row major form
-  var out = [];
-  for (var j = 0; j < 4; j++) {
-    for (var k = 0; k < 4; k++) {
-      out.push(transform[j][k]);
-    }
-  }
-
-  // turn transform array into a Matrix4 three.js object
-  return new Matrix4(new Float32Array(out));
-}
-
-/**
-* Turns a clone of a mathJS 3x3 matrix into a mathJS 4x4 matrix ready for 3D
-* transformations.
-*
-* @param {SparseMatrix, DenseMatrix} matrix 3x3 mathJS matrix
-* @returns {SparseMatrix, DenseMatrix} A cloned, 4x4 matrix
-* @throws Message if param is not a 3x3 matrix
-*/
-TranQueue.prototype.threeToFour = function(matrix) {
-  try {
-    if (math.size(matrix)[0] != 3) {
-      throw "Not a 3x3 matrix!"
-    }
-
-    var fxfclone = math.clone(matrix);
-    fxfclone = math.resize(fxfclone, [4,4]);
-    fxfclone = math.subset(fxfclone, math.index(3,3), 1);  // change bottom-rightest number to 1
-
-    return fxfclone;
-  }
-  catch (err) {
-    // ERROR HANDELING GOES HERE
-    console.log(err);
-  }
-}
-
-/**
-* Returns the length of the TranQueue
-*
-* @returns {number} transQueue length
-*/
-TranQueue.prototype.length = function() {
-  return this.queue.length;
-}
-
-/**
-* Returns the array used within TranQueue
-*
-* @returns {Array} transQueue's internal Array
-*/
-TranQueue.prototype.returnQueue = function() {
-  return this.queue;
 }
