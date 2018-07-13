@@ -115,6 +115,14 @@
 
                 <div v-if="!is_populating_matrix" class="matrix_array">
 
+                    <!-- Toggle button between 2D and 3D mode -->
+                    <button v-if="!is_3D" class="btn red rounded" v-on:click="is_3D_button()">
+                        2D Mode
+                    </button>
+                    <button v-if="is_3D" class="btn red rounded" v-on:click="is_3D_button()">
+                        3D Mode
+                    </button>
+
                     <table id="retrieved_data_matrix">
                         ${populate_matrix_name}
                         <tr v-for="matrix_row in one_matrix">
@@ -127,6 +135,15 @@
                 </div>
 
                 <div v-if="is_populating_matrix" class="matrix_array">
+
+                    <!-- Toggle button between 2D and 3D mode -->
+                    <button v-if="!is_3D" class="btn red rounded" v-on:click="is_3D_button()">
+                        2D Mode
+                    </button>
+                    <button v-if="is_3D" class="btn red rounded" v-on:click="is_3D_button()">
+                        3D Mode
+                    </button>
+
                     <form action="#" v-on:submit.prevent class="form-horizontal" enctype="multipart/form-data" method="post">
                         <table id="data_matrix">
                             ${populate_matrix_name}

@@ -110,6 +110,11 @@ var app = function() {
 
     };
 
+    self.is_3D_button = function () {
+        // button to toggle between 3D mode and 2D mode
+        self.vue.is_3D = !self.vue.is_3D;
+    };
+
     self.vue = new Vue({
         el: "#vue-div",
         delimiters: ['${', '}'],
@@ -129,8 +134,8 @@ var app = function() {
             populate_matrix_name: null,
             populate_cols: null,
             populate_rows: null,
-            is_populating_matrix: false
-
+            is_populating_matrix: false,
+            is_3D: false
         },
         methods: {
             add_matrix_button: self.add_matrix_button,
@@ -138,7 +143,8 @@ var app = function() {
             parse_string: self.parse_string,
             get_this_matrix: self.get_this_matrix,
             delete_matrix: self.delete_matrix,
-            add_data_matrix: self.add_data_matrix
+            add_data_matrix: self.add_data_matrix,
+            is_3D_button: self.is_3D_button
         }
 
     });
