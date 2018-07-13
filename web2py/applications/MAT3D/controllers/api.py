@@ -9,8 +9,7 @@ def add_matrix():
     t = dict(
         name=request.vars.name,
         row=request.vars.row,
-        col=request.vars.col,
-        matrix_id=request.vars.matrix_id
+        col=request.vars.col
     )
     return response.json(dict(matrix=t))
 
@@ -25,7 +24,3 @@ def get_matrix():
     matrices = []
     request.vars.self_page = True
 
-    return response.json(dict(
-        matrices=matrices,
-        self_page=request.vars.self_page
-    ))

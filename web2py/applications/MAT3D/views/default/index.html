@@ -73,12 +73,10 @@
                         <tr class="center">
                             <th v-on:click="get_this_matrix(matrix._idx)">
                                 ${matrix.name} ${matrix._idx} (${matrix.row} x ${matrix.col})
-
                                     <button class="btn rounded red"
                                             v-on:click="delete_matrix(matrix._idx)">
                                         <i class="fa fa-trash fa-lg"></i>
                                     </button>
-
                             </th>
                         </tr>
                     </tbody>
@@ -117,23 +115,33 @@
 
                 <div v-if="!is_populating_matrix" class="matrix_array">
 
+                    <table id="retrieved_data_matrix">
+                        ${populate_matrix_name}
+                        <tr v-for="matrix_row in one_matrix">
+                            <td v-for="matrix_col in matrix_row">
+                                ${matrix_col}
+                            </td>
+                        </tr>
+                    </table>
+
                 </div>
 
                 <div v-if="is_populating_matrix" class="matrix_array">
+                    <form action="#" v-on:submit.prevent class="form-horizontal" enctype="multipart/form-data" method="post">
+                        <table id="data_matrix">
+                            ${populate_matrix_name}
+                            <tr v-for="rows in populate_rows">
+                                <td v-for="cols in populate_cols" contenteditable='true'>
 
-                    <table class="current_matrix">
-                        ${populate_matrix_name}
-                        <tr v-for="rows in populate_rows">
-                            <td v-for="cols in populate_cols" contenteditable='true'>
-                                0
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
 
-                    </table>
-                    <button class="btn rounded red"
-                            v-on:click="add_data_matrix()">
-                        <i class="fa fa-check fa-lg"></i> Submit
-                    </button>
+                        </table>
+                        <button class="btn rounded red"
+                                v-on:click="add_data_matrix">
+                            <i class="fa fa-check fa-lg"></i> Submit
+                        </button>
+                    </form>
                 </div>
 
             </div>
