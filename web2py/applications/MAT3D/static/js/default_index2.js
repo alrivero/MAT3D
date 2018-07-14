@@ -56,27 +56,24 @@ var app = function() {
             function (data) {
                 self.vue.return_message = data.returnmessage;
             });
-    }
+    };
 
-
-
-     self.delete_matrix = function(matrix_idx) {
-         /*Delete Main Matrix */
+    self.delete_matrix = function(matrix_idx) {
+        // Delete Main Matrix
         self.vue.matrices.splice(matrix_idx, 1);
         enumerate(self.vue.matrices);
-        /* Delete data portion */
+        // Delete data portion
         self.vue.matrices_data.splice(matrix_idx, 1);
         enumerate(self.vue.matrices_data);
     };
 
-
-     self.get_this_matrix = function (matrix_idx) {
-         //Retrieve name of Matrix
-         self.vue.populate_matrix_name = self.vue.matrices[matrix_idx].name;
-         //Retrieve the clicked matrix's data
-         self.vue.one_matrix = self.vue.matrices_data[matrix_idx];
-         //To ensure the html codes goes to logic that only displays the matrix data
-         self.vue.is_populating_matrix = false;
+    self.get_this_matrix = function (matrix_idx) {
+        // Retrieve name of Matrix
+        self.vue.populate_matrix_name = self.vue.matrices[matrix_idx].name;
+        // Retrieve the clicked matrix's data
+        self.vue.one_matrix = self.vue.matrices_data[matrix_idx];
+        // To ensure the html codes goes to logic that only displays the matrix data
+        self.vue.is_populating_matrix = false;
     };
 
     self.add_data_matrix = function () {
@@ -90,22 +87,22 @@ var app = function() {
         for ( var i = 0; row = entered_table.rows[i]; i++ ) {
             row = entered_table.rows[i];
             for ( var j = 0; col = row.cells[j]; j++ ) {
-                //create individual array rows from HTML
-                    individual_row.push(col.firstChild.nodeValue);
+                // create individual array rows from HTML
+                individual_row.push(col.firstChild.nodeValue);
             }
-            //Add the individual array row to the individual matrix
+            // Add the individual array row to the individual matrix
             individual_matrix.push(individual_row);
-            individual_row = []
+            individual_row = [];
         }
+
         // For debugging, to be displayed on html
         self.vue.one_matrix = individual_matrix;
         // Store matrix created from html into matrices_data []
         self.vue.matrices_data.push(individual_matrix);
-        //Reset is_populating_matrix to false to prevent entry
+        // Reset is_populating_matrix to false to prevent entry
         self.vue.is_populating_matrix = false;
 
-
-        //Popup Alert message
+        // Popup Alert message
         alert("Matrix Data Saved");
 
     };
@@ -113,6 +110,14 @@ var app = function() {
     self.is_3D_button = function () {
         // button to toggle between 3D mode and 2D mode
         self.vue.is_3D = !self.vue.is_3D;
+    };
+
+    self.determinant = function () {
+        document.getElementById("no_table_parsertext").value = "det( )";
+    };
+
+    self.inverse = function () {
+        document.getElementById("no_table_parsertext").value = "inv( )";
     };
 
     self.vue = new Vue({
@@ -144,7 +149,9 @@ var app = function() {
             get_this_matrix: self.get_this_matrix,
             delete_matrix: self.delete_matrix,
             add_data_matrix: self.add_data_matrix,
-            is_3D_button: self.is_3D_button
+            is_3D_button: self.is_3D_button,
+            determinant: self.determinant,
+            inverse: self.inverse
         }
 
     });

@@ -20,12 +20,19 @@
 
         <div class="container padded">
 
-            <div class="mat3d" quarter>
+            <div class="mat3d">
                 <b>[MAT3D]</b>
+
+                <!-- Toggle button between 2D and 3D mode -->
+                <button v-if="!is_3D" class="btn rounded" v-on:click="is_3D_button()">
+                    2D Mode
+                </button>
+                <button v-if="is_3D" class="btn blue rounded" v-on:click="is_3D_button()">
+                    3D Mode
+                </button>
             </div>
 
-            <div class="matrices quarter">
-
+            <div class="matrices quarter container">
                 <!-- Left part of the page -->
 
                 <!-- Form to add matrices -->
@@ -73,10 +80,10 @@
                         <tr class="center">
                             <th v-on:click="get_this_matrix(matrix._idx)">
                                 ${matrix.name} ${matrix._idx} (${matrix.row} x ${matrix.col})
-                                    <button class="btn rounded red"
-                                            v-on:click="delete_matrix(matrix._idx)">
-                                        <i class="fa fa-trash fa-lg"></i>
-                                    </button>
+                                <button class="btn rounded red"
+                                        v-on:click="delete_matrix(matrix._idx)">
+                                    <i class="fa fa-trash fa-lg"></i>
+                                </button>
                             </th>
                         </tr>
                     </tbody>
@@ -84,7 +91,7 @@
 
             </div>
 
-            <div class="matrix_space threequarters">
+            <div class="matrix_space threequarters container">
                 <!-- Right part of the page -->
 
                 <div class=" matrix_parser">
@@ -97,6 +104,8 @@
                                     Input:  <input class="form-control string" id="no_table_parsertext" v-model="form_parsertext" placeholder="type an equation..." type="text" />
                                     <span class="help-block"></span>
                                 </div>
+
+                                <br/>
 
                                 <div>
                                     <button class="btn green rounded" v-on:click="parse_string">
@@ -111,54 +120,55 @@
 
                 </div>
 
-                <br>
+                <br/>
 
-                <div v-if="!is_populating_matrix" class="matrix_array">
+                <div class="matrix_array threequarters">
 
-                    <!-- Toggle button between 2D and 3D mode -->
-                    <button v-if="!is_3D" class="btn red rounded" v-on:click="is_3D_button()">
-                        2D Mode
-                    </button>
-                    <button v-if="is_3D" class="btn red rounded" v-on:click="is_3D_button()">
-                        3D Mode
-                    </button>
+                    <div v-if="!is_populating_matrix">
 
-                    <table id="retrieved_data_matrix">
-                        ${populate_matrix_name}
-                        <tr v-for="matrix_row in one_matrix">
-                            <td v-for="matrix_col in matrix_row">
-                                ${matrix_col}
-                            </td>
-                        </tr>
-                    </table>
+                        <table id="retrieved_data_matrix">
+                            <h5>${populate_matrix_name}</h5>
+                            <br/>
+                            <tr v-for="matrix_row in one_matrix">
+                                <td v-for="matrix_col in matrix_row">
+                                    ${matrix_col}
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                    <div v-if="is_populating_matrix">
+
+                        <form action="#" v-on:submit.prevent class="form-horizontal" enctype="multipart/form-data" method="post">
+                            <table id="data_matrix">
+                                <h5>${populate_matrix_name}</h5>
+                                <br/>
+                                <tr v-for="rows in populate_rows">
+                                    <td v-for="cols in populate_cols" contenteditable='true'>
+
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <br/>
+
+                            <button class="btn green rounded" v-on:click="add_data_matrix">
+                                <i class="fa fa-check fa-lg"></i> Submit
+                            </button>
+                        </form>
+
+                    </div>
 
                 </div>
 
-                <div v-if="is_populating_matrix" class="matrix_array">
-
-                    <!-- Toggle button between 2D and 3D mode -->
-                    <button v-if="!is_3D" class="btn red rounded" v-on:click="is_3D_button()">
-                        2D Mode
+                <div class="matrix_buttons quarter">
+                    <button v-on:click="determinant()">
+                        Determinant
                     </button>
-                    <button v-if="is_3D" class="btn red rounded" v-on:click="is_3D_button()">
-                        3D Mode
+                    <button v-on:click="inverse()">
+                        Inverse
                     </button>
-
-                    <form action="#" v-on:submit.prevent class="form-horizontal" enctype="multipart/form-data" method="post">
-                        <table id="data_matrix">
-                            ${populate_matrix_name}
-                            <tr v-for="rows in populate_rows">
-                                <td v-for="cols in populate_cols" contenteditable='true'>
-
-                                </td>
-                            </tr>
-
-                        </table>
-                        <button class="btn rounded red"
-                                v-on:click="add_data_matrix">
-                            <i class="fa fa-check fa-lg"></i> Submit
-                        </button>
-                    </form>
                 </div>
 
             </div>
