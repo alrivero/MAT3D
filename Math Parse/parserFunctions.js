@@ -1,5 +1,5 @@
 //MAT3D
-//JAVASCRIPT FILE CONTAINING 
+//JAVASCRIPT FILE CONTAINING
 //MATHMATICAL FUNCTIONS FROM PARSER
 //lib-used: math.js from external javascript library
 
@@ -11,9 +11,28 @@ function exampleFunction(){
 	console.log("exampole function is working");
 }
 
+function readStack(stack){
+
+	var stackLength = stack.length;
+	var arr = [];
+	for(var i =0; i < stackLength; i++){
+		var element = stack[i];
+		if(typeof(element) == "function"){
+			var val = element(arr)
+			arr.push(val);
+		}
+		else{
+			arr.push(element);
+		}
+	}
+	var re=arr.pop();
+	//console.log("arr " + stack.pop());
+	return re;
+}
+
 //FUNCTION readStack(stack)
 //reads a rpn stack and calls functions in order
-function readStack(stack){
+function readStack2(stack){
 	var stackLength = stack.length;
 	//console.log("stack length " + stackLength);
 	var arr = [];
@@ -104,7 +123,7 @@ function readStack(stack){
 					var size = math.size(operator1);
 					arr.push(choleskyDecomp2(operator1, size[0]));
 				}
-			} 
+			}
 			else arr.push(element);
 		} //end for
 		// /*
@@ -130,7 +149,7 @@ function isOperator(string){
 	else if(string == "inv")
 		return true;
 	else if(string == "transpose")
-		return true;	
+		return true;
 	else if(string == "abs")
 		return true;
 	else if(string == "log10")
@@ -140,13 +159,13 @@ function isOperator(string){
 	else if(string == "sqrt")
 		return true;
 	else if(string == "lu")
-		return true;	
+		return true;
 	else if(string == "rank")
-		return true;	
+		return true;
 	else if(string == "cholesky")
-		return true;			
+		return true;
 
-	
+
 	else return false;
 }
 
@@ -165,37 +184,88 @@ function print (value) {
   console.log(math.format(value, precision))
 }
 
+function findAdd(a){
+	var operator1 = a.pop();
+	var operator2 = a.pop();
+	return math.add(operator1, operator2);
+}
+
+function findSub(a){
+	var operator1 = a.pop();
+	var operator2 = a.pop();
+	return math.subtract(operator2, operator1);
+}
+
+function findDiv(a){
+	var operator1 = a.pop();
+	var operator2 = a.pop();
+	return math.divide(operator2, operator1);
+}
+
 //matrixMultiplication-multiplies two matrices together
 //NOTE WORKS FOR ALL INPUT MATRICES AND SCALARS
 //RETURNS A MATRIX
-function matrixMultiplication(a, b){
+function matrixMultiplication(stack){
+	var a = stack.pop();
+	var b = stack.pop();
+	console.log(a);
+	console.log(b);
+
+	if (typeof(a) == "function" || typeof(b) == "function") {
+		return composeFunction(a,b);
+	}
+
 	var c = math.multiply(a, b);
+	//print(c);
+	//stack.push(c);
 	return c;
+}
+
+function composeFunction (a, b) {
+	if (typeof(a) != "function") {
+		return function(stack) {
+			return math.multiply(a, b(stack));
+		}
+	}
+	else if(typeof(b) != "function") {
+		return function(stack) {
+			return math.multiply(b, a(stack));
+		}
+	}
+	else {
+		return function(stack) {
+			return a(b(stack));
+		}
+	}
 }
 
 //findInverse() return the inverse of the input matrixMultiplication
 function findInverse(a){
-	var c = math.inv(a);
-	return c;	
+	var operator = a.pop();
+	var c = math.inv(operator);
+	return c;
 }
 
 //findTranspose()
 //RETURNS TRANSPOSE OF GIVEN MATRIX
 function findTranspose(a){
-	var c = math.transpose(a);
+	var operator = a.pop();
+	var c = math.transpose(operator);
 	return c;
 }
 
 //findDiagonal
 //RETURNS DIAGONAL OF MATRIX
 function findDiagonal(a){
-	var c = math.diag(a);
+	var operator = a.pop();
+	var c = math.diag(operator);
 	return c;
 }
 
 //findDeterminant
 function findDeterminant(a){
-	var c = math.det(a);
+	var operator = a.pop();
+	var c = math.det(operator);
 	return c;
 }
 
@@ -218,7 +288,7 @@ function findTrig(a, angle, bit){
 	else if(bit == 2){
 		val = math.multiply(Math.tan(toRadians(angle)), a);
 	}
-	
+
 	//arcsin
 	else if(bit == 3){
 		val = math.multiply(Math.asin(toRadians(angle)), a);
@@ -227,36 +297,47 @@ function findTrig(a, angle, bit){
 	else if(bit == 4){
 		val = math.multiply(Math.acos(toRadians(angle)), a);
 	}
-	
+
 	else if(bit == 5){
 		val = math.multiply(Math.atan(toRadians(angle)), a);
 	}
-	
+
 	return val;
 }
 
 //log base 10
 function findLog10(a){
-	var c = math.log10(a);
-	
+	var operator = a.pop();
+	var c = math.log10(operator);
+
 	return c;
 }
 
 //natural log
 function findNaturalLog(a){
-	var c = math.log(a);
+	var operator = a.pop();
+	var c = math.log(operator);
 	return c;
+}
+
+//find exponent
+function findExp(a){
+	var operator1 = a.pop();
+	var operator2 = a.pop();
+	return math.pow(operator2, operator1);
 }
 
 //find sqrt
 function findSqrt(a){
-	var c = math.sqrt(a);
+	var operator = a.pop();
+	var c = math.sqrt(operator);
 	return c;
 }
 
 //find absolute value
 function findAbs(a){
-	var c = math.abs(a);
+	var operator = a.pop();
+	var c = math.abs(operator);
 	return c;
 }
 
@@ -264,13 +345,22 @@ function findAbs(a){
 //note will accept matrix with only integer values
 //see math.js documentation
 function findFactorial(a){
-	var c = math.factorial(a);
+	var operator = a.pop();
+	var c = math.factorial(operator);
 	return c;
 }
 
 function findLu(a){
-	var c = math.lup(a);
+	var operator = a.pop();
+	var c = math.lup(operator);
 	return c;
+}
+
+function findRank(a){
+	var operator = a.pop();
+	var size = math.size(operator);
+	return rankOfMatrix(operator, size[0], size[1]);
+
 }
 
 //function to find rank of a matrix
@@ -278,13 +368,13 @@ function findLu(a){
 // https://www.geeksforgeeks.org/program-for-rank-of-matrix/
 function rankOfMatrix(mat, r, c){
 	var rank = c;
-	
+
 	for(var row = 0; row < rank; row++){
-		// Before we visit current row 
-            // 'row', we make sure that 
+		// Before we visit current row
+            // 'row', we make sure that
             // mat[row][0],....mat[row][row-1]
             // are 0.
-     
+
             // Diagonal element is not zero
 			if(mat[row][row] != 0){
 				for(var col = 0; col < r; col++){
@@ -298,20 +388,20 @@ function rankOfMatrix(mat, r, c){
 					}
 				}
 			}//end if
-			// Diagonal element is already zero. 
+			// Diagonal element is already zero.
             // Two cases arise:
-            // 1) If there is a row below it 
-            // with non-zero entry, then swap 
-            // this row with that row and process 
+            // 1) If there is a row below it
+            // with non-zero entry, then swap
+            // this row with that row and process
             // that row
-            // 2) If all elements in current 
-            // column below mat[r][row] are 0, 
-            // then remvoe this column by 
+            // 2) If all elements in current
+            // column below mat[r][row] are 0,
+            // then remvoe this column by
             // swapping it with last column and
             // reducing number of columns by 1.
 			else {
 				var reduce = true;
-				
+
 				//find the non-zero element
 				//in current column
 				for(var i = row + 1; i < r; i++){
@@ -323,41 +413,46 @@ function rankOfMatrix(mat, r, c){
 						break;
 					}
 				}
-				// If we did not find any row with 
-                // non-zero element in current 
-                // columnm, then all values in 
+				// If we did not find any row with
+                // non-zero element in current
+                // columnm, then all values in
                 // this column are 0.
 				if(reduce){
 					//reduce number of columns
 					rank--;
-					
+
 					//copy the last column here
 					for(var i =0; i < r; i++){
 						mat[i][row] = mat[i][rank];
 					}
 				}
-				
+
 				//Process this row again
 				row--;
 			}//end else
-			
-			
+
+
 	}
-	//return 
+	//return
 	return rank;
+}
+
+function findCholesky(a){
+	var operator = a.pop();
+	return choleskyDecomp2(operator);
 }
 
 //function for cholesky decomposition
 //algorithm taken and translated from geeksforgeeks
 //https://www.geeksforgeeks.org/cholesky-decomposition-matrix-decomposition/
-function choleskyDecomp(matrix, n){
+function choleskyDecomp2(matrix, n){
 	var lower=jagArray(n);
 	//memset from c -- should not be necessary in js
-	
+
 	for(var i = 0; i < n; i++){
 		for(var j = 0; j <= i; j++){
 			var sum = 0;
-				
+
 			if(j == i){//summation for diagonals
 				for(var k = 0; k < j; k++){
 					sum += Math.pow(lower[j][k], 2);
@@ -369,7 +464,7 @@ function choleskyDecomp(matrix, n){
 				for(var k = 0; k < j; k++){
 					sum += (lower[i][k] * lower[j][k]);
 				}
-				lower[i][j] = (matrix[i][j] - sum) / lower[j][j]; 
+				lower[i][j] = (matrix[i][j] - sum) / lower[j][j];
 			}
 		}
 	}//end for
@@ -377,7 +472,12 @@ function choleskyDecomp(matrix, n){
 	return lower;
 }
 
-function choleskyDecomp2(a, n){
+//FUNCTION choleskyDecomp
+//algorithm taken from rosetta code.org
+//https://rosettacode.org/wiki/Cholesky_decomposition#Java
+function choleskyDecomp(a){
+	var size = math.size(a);
+	var n = size[0];
 	var l = jagArray(n);
 	for(var i = 0; i < n; i++){
 		for(var k = 0; k < (i+1); k++){
@@ -385,8 +485,17 @@ function choleskyDecomp2(a, n){
 			for(var j = 0; j < k; j++){
 				sum += l[i][j] * l[k][j];
 			}
-			l[i][k] = (i == k) ? Math.sqrt(a[i][i] - sum) :
-			(1.0 / l[k][k] * (a[i][k] - sum));
+			//l[i][k] = (i == k) ? math.sqrt(a[i][i] - sum) :
+			//(1.0 / l[k][k] * (a[i][k] - sum));
+
+			if(i == k){
+				l[i][k] = math.sqrt(a[i][i] - sum);
+				//l[i][k] = 0;
+			}
+			else{
+				l[i][k] = (1.0 / l[k][k] * (a[i][k] - sum));
+				//l[i][k] = 0;
+			}
 		}
 	}
 	return l;
@@ -404,7 +513,7 @@ function toRadians(angle){
 	return val;
 }
 
-//function swap 
+//function swap
 //function for rankOfMatrix
 function swap(mat, row1, row2, col){
 	for(var i = 0; i < col; i++){
@@ -412,7 +521,7 @@ function swap(mat, row1, row2, col){
 		mat[row1][i] = mat[row2][i];
 		mat[row2][i] = temp;
 	}
-	
+
 }
 
 //function jagArray
@@ -422,10 +531,9 @@ function jagArray(n){
 	for(var x = 0; x < n; x++){
 		arr[x]=[];
 		for(var y =0; y < n; y++){
-			arr[x][y] = x*y;
+			//arr[x][y] = x*y;
+			arr[x][y] = 0.0;
 		}
 	}
 	return arr;
 }
-
-	
