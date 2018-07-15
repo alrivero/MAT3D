@@ -7,7 +7,6 @@
 <script>
     // Define your URLs here.
     var add_matrix_url = "{{=URL('api', 'add_matrix')}}";
-    var get_matrix_url = "{{=URL('api', 'get_matrix')}}";
 </script>
 
 
@@ -219,6 +218,15 @@
                             </button>
                             <button v-on:click="tangent()">
                                 tan
+                            </button>
+                            <button v-on:click="secant()">
+                                sec
+                            </button>
+                            <button v-on:click="cosecant()">
+                                csc
+                            </button>
+                            <button v-on:click="cotangent()">
+                                cot
                             </button>
                         </div>
                         <div class="inverse_trig_function_buttons">

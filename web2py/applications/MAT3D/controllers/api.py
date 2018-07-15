@@ -13,7 +13,3 @@ def add_matrix():
     )
     return response.json(dict(matrix=t))
 
-def get_matrix():
-    matrices = []
-    request.vars.self_page = True
-

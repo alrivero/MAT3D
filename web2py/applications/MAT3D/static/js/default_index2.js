@@ -48,7 +48,10 @@ var app = function() {
     };
 
     self.parse_string = function() {
-        // The compute button has been pressed and will parse the input string.
+        // Parsing code goes here. Input variable: self.vue.form_parsertext (Example: A+B)
+        // The compute button has been pressed and will parse the input string. (This would come out as "A B +")
+        // If parser needs to get the matrix by name, use self.get_matrix_by_name(name) and it
+        // will return the data of the matrix based on the name (name would be A or B in this case).
         self.vue.x = self.get_matrix_by_name(self.vue.form_parsertext);
         alert(self.vue.x);
 
@@ -184,6 +187,18 @@ var app = function() {
         document.getElementById("no_table_parsertext").value = "tan(";
     };
 
+    self.secant = function () {
+        document.getElementById("no_table_parsertext").value = "sec(";
+    };
+
+    self.cosecant = function () {
+        document.getElementById("no_table_parsertext").value = "csc(";
+    };
+
+    self.cotangent = function () {
+        document.getElementById("no_table_parsertext").value = "cot(";
+    };
+
 
     /* Inverse trig function buttons */
 
@@ -246,6 +261,9 @@ var app = function() {
             sine: self.sine,
             cosine: self.cosine,
             tangent: self.tangent,
+            secant: self.secant,
+            cosecant: self.cosecant,
+            cotangent: self.cotangent,
             arcsine: self.arcsine,
             arccosine: self.arccosine,
             arctangent: self.arctangent
