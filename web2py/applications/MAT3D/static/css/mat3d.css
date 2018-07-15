@@ -30,24 +30,84 @@ https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_button_group_verti
     border-style: solid;
 }
 
-.matrix_buttons button {
-    margin-left: 25px;
+.matrix_function_buttons button {
+    margin-left: 15px;
     background-color: #4CAF50; /* Green background */
     border: 1px solid green; /* Green border */
     color: white; /* White text */
-    padding: 10px 24px; /* Some padding */
+    padding: 10px 14px; /* Some padding */
     cursor: pointer; /* Pointer/hand icon */
     width: 80%; /* Set a width if needed */
     display: block; /* Make the buttons appear below each other */
 }
 
-.matrix_buttons button:not(:last-child) {
+.matrix_function_buttons button:not(:last-child) {
     border-bottom: none; /* Prevent double borders */
 }
 
 /* Add a background color on hover */
-.matrix_buttons button:hover {
+.matrix_function_buttons button:hover {
     background-color: #3e8e41;
+}
+
+.other_function_buttons button {
+    margin-left: 15px;
+    background-color: #af4e4c; /* Red background */
+    border: 1px solid red; /* Red border */
+    color: white; /* White text */
+    padding: 10px 14px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    width: 80%; /* Set a width if needed */
+    display: block; /* Make the buttons appear below each other */
+}
+
+.other_function_buttons button:not(:last-child) {
+    border-bottom: none; /* Prevent double borders */
+}
+
+/* Add a background color on hover */
+.other_function_buttons button:hover {
+    background-color: #8e3f3e;
+}
+
+.trig_function_buttons button {
+    margin-right: 15px;
+    background-color: #af7f4c; /* Brown background */
+    border: 1px solid brown; /* Brown border */
+    color: white; /* White text */
+    padding: 10px 14px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    width: 80%; /* Set a width if needed */
+    display: block; /* Make the buttons appear below each other */
+}
+
+.trig_function_buttons button:not(:last-child) {
+    border-bottom: none; /* Prevent double borders */
+}
+
+/* Add a background color on hover */
+.trig_function_buttons button:hover {
+    background-color: #8e673e;
+}
+
+.inverse_trig_function_buttons button {
+    margin-right: 15px;
+    background-color: #4e4caf; /* Purple background */
+    border: 1px solid blue; /* Blue border */
+    color: white; /* White text */
+    padding: 10px 14px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    width: 80%; /* Set a width if needed */
+    display: block; /* Make the buttons appear below each other */
+}
+
+.inverse_trig_function_buttons button:not(:last-child) {
+    border-bottom: none; /* Prevent double borders */
+}
+
+/* Add a background color on hover */
+.inverse_trig_function_buttons button:hover {
+    background-color: #3f3e8e;
 }
 
 .current_matrix {

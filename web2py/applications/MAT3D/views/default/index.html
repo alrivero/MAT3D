@@ -3,6 +3,7 @@
 {{block head}}
 
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
+<script src="{{=URL('static', 'js/math.js')}}"></script>
 <script>
     // Define your URLs here.
     var add_matrix_url = "{{=URL('api', 'add_matrix')}}";
@@ -122,7 +123,7 @@
 
                 <br/>
 
-                <div class="matrix_array threequarters">
+                <div class="matrix_array twothirds">
 
                     <div v-if="!is_populating_matrix">
 
@@ -162,13 +163,70 @@
 
                 </div>
 
-                <div class="matrix_buttons quarter">
-                    <button v-on:click="determinant()">
-                        Determinant
-                    </button>
-                    <button v-on:click="inverse()">
-                        Inverse
-                    </button>
+                <div class="matrix_buttons third container">
+
+                    <div class="half">
+                        <div class="matrix_function_buttons">
+                            <button v-on:click="determinant()">
+                                Determinant
+                            </button>
+                            <button v-on:click="inverse()">
+                                Inverse
+                            </button>
+                            <button v-on:click="transpose()">
+                                Transpose
+                            </button>
+                            <button v-on:click="lu_decomposition()">
+                                LU-Decomposition
+                            </button>
+                            <button v-on:click="rank()">
+                                Rank
+                            </button>
+                            <button v-on:click="cholesky_decomposition()">
+                                Cholesky-Decomposition
+                            </button>
+                        </div>
+                        <div class="other_function_buttons">
+                            <button v-on:click="absolute_value()">
+                                |  |
+                            </button>
+                            <button v-on:click="log_base_10()">
+                                log<sub>10</sub>
+                            </button>
+                            <button v-on:click="natural_log()">
+                                ln
+                            </button>
+                            <button v-on:click="square_root()">
+                                &radic;
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="half">
+                        <div class="trig_function_buttons">
+                            <button v-on:click="sine()">
+                                sin
+                            </button>
+                            <button v-on:click="cosine()">
+                                cos
+                            </button>
+                            <button v-on:click="tangent()">
+                                tan
+                            </button>
+                        </div>
+                        <div class="inverse_trig_function_buttons">
+                            <button v-on:click="arcsine()">
+                                sin<sup>-1</sup>
+                            </button>
+                            <button v-on:click="arccosine()">
+                                cos<sup>-1</sup>
+                            </button>
+                            <button v-on:click="arctangent()">
+                                tan<sup>-1</sup>
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
 
             </div>

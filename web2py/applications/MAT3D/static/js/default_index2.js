@@ -112,13 +112,82 @@ var app = function() {
         self.vue.is_3D = !self.vue.is_3D;
     };
 
+
+    /* Matrix function buttons */
+
     self.determinant = function () {
-        document.getElementById("no_table_parsertext").value = "det( )";
+        document.getElementById("no_table_parsertext").value = "det(";
     };
 
     self.inverse = function () {
-        document.getElementById("no_table_parsertext").value = "inv( )";
+        document.getElementById("no_table_parsertext").value = "inv(";
     };
+
+    self.transpose = function () {
+        document.getElementById("no_table_parsertext").value = "transpose(";
+    };
+
+    self.lu_decomposition = function () {
+        document.getElementById("no_table_parsertext").value = "lu(";
+    };
+
+    self.rank = function () {
+        document.getElementById("no_table_parsertext").value = "rank(";
+    };
+
+    self.cholesky_decomposition = function () {
+        document.getElementById("no_table_parsertext").value = "cholesky(";
+    };
+
+
+    /* Other function buttons */
+
+    self.absolute_value = function () {
+        document.getElementById("no_table_parsertext").value = "abs(";
+    };
+
+    self.log_base_10 = function () {
+        document.getElementById("no_table_parsertext").value = "log10(";
+    };
+
+    self.natural_log = function () {
+        document.getElementById("no_table_parsertext").value = "ln(";
+    };
+
+    self.square_root = function () {
+        document.getElementById("no_table_parsertext").value = "sqrt(";
+    };
+
+
+    /* Trig function buttons */
+
+    self.sine = function () {
+        document.getElementById("no_table_parsertext").value = "sin(";
+    };
+
+    self.cosine = function () {
+        document.getElementById("no_table_parsertext").value = "cos(";
+    };
+
+    self.tangent = function () {
+        document.getElementById("no_table_parsertext").value = "tan(";
+    };
+
+
+    /* Inverse trig function buttons */
+
+    self.arcsine = function () {
+        document.getElementById("no_table_parsertext").value = "arcsin(";
+    };
+
+    self.arccosine = function () {
+        document.getElementById("no_table_parsertext").value = "arccos(";
+    };
+
+    self.arctangent = function () {
+        document.getElementById("no_table_parsertext").value = "arctan(";
+    };
+
 
     self.vue = new Vue({
         el: "#vue-div",
@@ -151,7 +220,21 @@ var app = function() {
             add_data_matrix: self.add_data_matrix,
             is_3D_button: self.is_3D_button,
             determinant: self.determinant,
-            inverse: self.inverse
+            inverse: self.inverse,
+            transpose: self.transpose,
+            lu_decomposition: self.lu_decomposition,
+            rank: self.rank,
+            cholesky_decomposition: self. cholesky_decomposition,
+            absolute_value: self.absolute_value,
+            log_base_10: self.log_base_10,
+            natural_log: self.natural_log,
+            square_root: self.square_root,
+            sine: self.sine,
+            cosine: self.cosine,
+            tangent: self.tangent,
+            arcsine: self.arcsine,
+            arccosine: self.arccosine,
+            arctangent: self.arctangent
         }
 
     });
