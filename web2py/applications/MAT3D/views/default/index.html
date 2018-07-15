@@ -3,10 +3,10 @@
 {{block head}}
 
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
+<script src="{{=URL('static', 'js/math.js')}}"></script>
 <script>
     // Define your URLs here.
     var add_matrix_url = "{{=URL('api', 'add_matrix')}}";
-    var parse_string_url = "{{=URL('api', 'parse_string')}}";
     var get_matrix_url = "{{=URL('api', 'get_matrix')}}";
 </script>
 
@@ -20,13 +20,24 @@
 
         <div class="container padded">
 
-            <div class="mat3d" quarter>
-                <b>[MAT3D]</b>
-            </div>
-
-            <div class="matrices quarter">
-
+            <div class="matrices quarter container">
                 <!-- Left part of the page -->
+
+                <div class="mat3d">
+                    <b>[MAT3D]</b>
+
+                    &nbsp;&nbsp;&nbsp;
+
+                    <!-- Toggle button between 2D and 3D mode -->
+                    <button v-if="!is_3D" class="rounded" id="toggle-btn" v-on:click="is_3D_button()">
+                        2D Mode
+                    </button>
+                    <button v-if="is_3D" class="blue rounded" id="toggle-btn" v-on:click="is_3D_button()">
+                        3D Mode
+                    </button>
+                </div>
+
+                <br/><br/>
 
                 <!-- Form to add matrices -->
                 <div v-if="is_adding_matrix" id="add_matrix_div">
@@ -55,28 +66,30 @@
                 <!-- Add buttons -->
                 <div class="button_bar">
                     <div>
-                        <button v-if="!is_adding_matrix" class="btn red rounded" v-on:click="add_matrix_button()">
+                        <button v-if="!is_adding_matrix" class="mat3d_btns green rounded" v-on:click="add_matrix_button()">
                             <i class="fa fa-plus"></i>  Add Matrix
                         </button>
-                        <button v-if="is_adding_matrix" class="btn red rounded" v-on:click="add_matrix()">
+                        <button v-if="is_adding_matrix" class="mat3d_btns green rounded" v-on:click="add_matrix()">
                             <i class="fa fa-plus"></i> Add
                         </button>
-                        <button v-if="is_adding_matrix" class="btn rounded" v-on:click="add_matrix_button()">
+                        <button v-if="is_adding_matrix" class="mat3d_btns rounded" v-on:click="add_matrix_button()">
                             <i class="fa fa-times"></i> Close
                         </button>
                     </div>
                 </div>
+
+                <br/>
 
                 <!-- Display saved matrices -->
                 <table class="fill" id="matrix_selector">
                     <tbody v-for="matrix in matrices">
                         <tr class="center">
                             <th v-on:click="get_this_matrix(matrix._idx)">
-                                ${matrix.name} ${matrix._idx} (${matrix.row} x ${matrix.col})
-                                    <button class="btn rounded red"
-                                            v-on:click="delete_matrix(matrix._idx)">
-                                        <i class="fa fa-trash fa-lg"></i>
-                                    </button>
+                                ${matrix.name} ${matrix._idx} (${matrix.row} x ${matrix.col})&nbsp;&nbsp;&nbsp;
+                                <button class="btn rounded black"
+                                        v-on:click="delete_matrix(matrix._idx)">
+                                    <i class="fa fa-trash fa-lg"></i>
+                                </button>
                             </th>
                         </tr>
                     </tbody>
@@ -84,7 +97,7 @@
 
             </div>
 
-            <div class="matrix_space threequarters">
+            <div class="matrix_space threequarters container">
                 <!-- Right part of the page -->
 
                 <div class=" matrix_parser">
@@ -98,50 +111,129 @@
                                     <span class="help-block"></span>
                                 </div>
 
+                                <br/>
+
                                 <div>
                                     <button class="btn green rounded" v-on:click="parse_string">
                                         <i class="fa fa-calculator" aria-hidden="true"></i> Compute
                                     </button>
                                 </div>
 
-                                ${return_message}
+                                <!-- need to add return_message here -->
                             </div>
                         </form>
                     </div>
 
                 </div>
 
-                <br>
+                <br/>
 
-                <div v-if="!is_populating_matrix" class="matrix_array">
+                <div class="matrix_array twothirds">
 
-                    <table id="retrieved_data_matrix">
-                        ${populate_matrix_name}
-                        <tr v-for="matrix_row in one_matrix">
-                            <td v-for="matrix_col in matrix_row">
-                                ${matrix_col}
-                            </td>
-                        </tr>
-                    </table>
+                    <div v-if="!is_populating_matrix">
+
+                        <table id="retrieved_data_matrix">
+                            <h5>${populate_matrix_name}</h5>
+                            <br/>
+                            <tr v-for="matrix_row in one_matrix">
+                                <td v-for="matrix_col in matrix_row">
+                                    ${matrix_col}
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                    <div v-if="is_populating_matrix">
+
+                        <form action="#" v-on:submit.prevent class="form-horizontal" enctype="multipart/form-data" method="post">
+                            <table id="data_matrix">
+                                <h5>${populate_matrix_name}</h5>
+                                <br/>
+                                <tr v-for="rows in populate_rows">
+                                    <td v-for="cols in populate_cols" contenteditable='true'>
+
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <br/>
+
+                            <button class="btn green rounded" v-on:click="add_data_matrix">
+                                <i class="fa fa-check fa-lg"></i> Submit
+                            </button>
+                        </form>
+
+                    </div>
 
                 </div>
 
-                <div v-if="is_populating_matrix" class="matrix_array">
-                    <form action="#" v-on:submit.prevent class="form-horizontal" enctype="multipart/form-data" method="post">
-                        <table id="data_matrix">
-                            ${populate_matrix_name}
-                            <tr v-for="rows in populate_rows">
-                                <td v-for="cols in populate_cols" contenteditable='true'>
+                <div class="matrix_buttons third container">
 
-                                </td>
-                            </tr>
+                    <div class="half">
+                        <div class="matrix_function_buttons">
+                            <button v-on:click="determinant()">
+                                Determinant
+                            </button>
+                            <button v-on:click="inverse()">
+                                Inverse
+                            </button>
+                            <button v-on:click="transpose()">
+                                Transpose
+                            </button>
+                            <button v-on:click="lu_decomposition()">
+                                LU-Decomposition
+                            </button>
+                            <button v-on:click="rank()">
+                                Rank
+                            </button>
+                            <button v-on:click="cholesky_decomposition()">
+                                Cholesky-Decomposition
+                            </button>
+                        </div>
+                        <div class="other_function_buttons">
+                            <button v-on:click="absolute_value()">
+                                |&nbsp;&nbsp;&nbsp;|
+                            </button>
+                            <button v-on:click="log_base_10()">
+                                log<sub>10</sub>
+                            </button>
+                            <button v-on:click="natural_log()">
+                                ln
+                            </button>
+                            <button v-on:click="square_root()">
+                                <span id="sqrt-btn-1">
+                                    &radic;<span id="sqrt-btn-2">&nbsp;&nbsp;</span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
 
-                        </table>
-                        <button class="btn rounded red"
-                                v-on:click="add_data_matrix">
-                            <i class="fa fa-check fa-lg"></i> Submit
-                        </button>
-                    </form>
+                    <div class="half">
+                        <div class="trig_function_buttons">
+                            <button v-on:click="sine()">
+                                sin
+                            </button>
+                            <button v-on:click="cosine()">
+                                cos
+                            </button>
+                            <button v-on:click="tangent()">
+                                tan
+                            </button>
+                        </div>
+                        <div class="inverse_trig_function_buttons">
+                            <button v-on:click="arcsine()">
+                                sin<sup>-1</sup>
+                            </button>
+                            <button v-on:click="arccosine()">
+                                cos<sup>-1</sup>
+                            </button>
+                            <button v-on:click="arctangent()">
+                                tan<sup>-1</sup>
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
 
             </div>

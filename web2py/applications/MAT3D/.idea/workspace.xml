@@ -28,11 +28,25 @@
           <provider selected="true" editor-type-id="text-editor">
             <state>
               <caret column="24" lean-forward="true" selection-start-column="24" selection-end-column="24" />
+              <folding>
+                <element signature="e#756#762#0#HTML" expanded="true" />
+                <element signature="e#762#768#0#HTML" expanded="true" />
+                <element signature="e#768#774#0#HTML" expanded="true" />
+                <element signature="e#3914#3920#0#HTML" expanded="true" />
+                <element signature="e#3920#3926#0#HTML" expanded="true" />
+                <element signature="e#3926#3932#0#HTML" expanded="true" />
+                <element signature="e#8478#8484#0#HTML" expanded="true" />
+                <element signature="e#8484#8490#0#HTML" expanded="true" />
+                <element signature="e#8490#8496#0#HTML" expanded="true" />
+                <element signature="e#8979#8986#0#HTML" expanded="true" />
+                <element signature="e#9008#9014#0#HTML" expanded="true" />
+                <element signature="e#9014#9020#0#HTML" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="default_index2.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="default_index2.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/static/js/default_index2.js">
           <provider selected="true" editor-type-id="text-editor">
             <state>
@@ -45,16 +59,16 @@
         <entry file="file://$PROJECT_DIR$/static/css/mat3d.css">
           <provider selected="true" editor-type-id="text-editor">
             <state>
-              <caret column="2" selection-start-column="2" selection-end-column="2" />
+              <caret column="2" lean-forward="true" selection-start-column="2" selection-end-column="2" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="layout.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="layout.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/views/layout.html">
           <provider selected="true" editor-type-id="text-editor">
             <state>
-              <caret column="6" selection-start-column="6" selection-end-column="6" />
+              <caret column="6" lean-forward="true" selection-start-column="6" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -80,11 +94,11 @@
       <list>
         <option value="$PROJECT_DIR$/static/js/default_index.js" />
         <option value="$PROJECT_DIR$/static/css/stupid.css" />
-        <option value="$PROJECT_DIR$/static/css/mat3d.css" />
-        <option value="$PROJECT_DIR$/views/layout.html" />
         <option value="$PROJECT_DIR$/controllers/api.py" />
         <option value="$PROJECT_DIR$/views/default/index.html" />
         <option value="$PROJECT_DIR$/static/js/default_index2.js" />
+        <option value="$PROJECT_DIR$/static/css/mat3d.css" />
+        <option value="$PROJECT_DIR$/views/layout.html" />
       </list>
     </option>
   </component>
@@ -221,17 +235,17 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Python Console" order="7" />
-      <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24980484" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="right" id="SciView" order="3" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39965987" />
+      <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -267,6 +281,146 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/views/default/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="24" lean-forward="true" selection-start-column="24" selection-end-column="24" />
+          <folding>
+            <element signature="e#756#762#0#HTML" expanded="true" />
+            <element signature="e#762#768#0#HTML" expanded="true" />
+            <element signature="e#768#774#0#HTML" expanded="true" />
+            <element signature="e#3914#3920#0#HTML" expanded="true" />
+            <element signature="e#3920#3926#0#HTML" expanded="true" />
+            <element signature="e#3926#3932#0#HTML" expanded="true" />
+            <element signature="e#8478#8484#0#HTML" expanded="true" />
+            <element signature="e#8484#8490#0#HTML" expanded="true" />
+            <element signature="e#8490#8496#0#HTML" expanded="true" />
+            <element signature="e#8979#8986#0#HTML" expanded="true" />
+            <element signature="e#9008#9014#0#HTML" expanded="true" />
+            <element signature="e#9014#9020#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/api.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="15" selection-start-column="15" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/default_index2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="50" lean-forward="true" selection-start-column="50" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/mat3d.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="2" lean-forward="true" selection-start-column="2" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/layout.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="6" lean-forward="true" selection-start-column="6" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/default/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="24" lean-forward="true" selection-start-column="24" selection-end-column="24" />
+          <folding>
+            <element signature="e#756#762#0#HTML" expanded="true" />
+            <element signature="e#762#768#0#HTML" expanded="true" />
+            <element signature="e#768#774#0#HTML" expanded="true" />
+            <element signature="e#3914#3920#0#HTML" expanded="true" />
+            <element signature="e#3920#3926#0#HTML" expanded="true" />
+            <element signature="e#3926#3932#0#HTML" expanded="true" />
+            <element signature="e#8478#8484#0#HTML" expanded="true" />
+            <element signature="e#8484#8490#0#HTML" expanded="true" />
+            <element signature="e#8490#8496#0#HTML" expanded="true" />
+            <element signature="e#8979#8986#0#HTML" expanded="true" />
+            <element signature="e#9008#9014#0#HTML" expanded="true" />
+            <element signature="e#9014#9020#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/api.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="15" selection-start-column="15" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/default/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="24" lean-forward="true" selection-start-column="24" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/mat3d.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="2" selection-start-column="2" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/layout.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="6" selection-start-column="6" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/default_index2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="50" lean-forward="true" selection-start-column="50" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/api.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="15" lean-forward="true" selection-start-column="15" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/default/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="24" lean-forward="true" selection-start-column="24" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/mat3d.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="2" selection-start-column="2" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/layout.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="6" selection-start-column="6" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/js/default_index2.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="50" lean-forward="true" selection-start-column="50" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/controllers/api.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -443,13 +597,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/default_index.js" />
-    <entry file="file://$PROJECT_DIR$/static/css/stupid.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="13" lean-forward="true" selection-start-column="13" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../gluon/globals.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="108">
@@ -464,17 +611,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/css/mat3d.css">
+    <entry file="file://$PROJECT_DIR$/static/css/stupid.css">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret column="2" selection-start-column="2" selection-end-column="2" />
+          <caret column="13" lean-forward="true" selection-start-column="13" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/layout.html">
+    <entry file="file://$PROJECT_DIR$/static/js/math.js">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret column="6" selection-start-column="6" selection-end-column="6" />
+          <caret column="3" lean-forward="true" selection-start-column="3" selection-end-column="3" />
         </state>
       </provider>
     </entry>
@@ -489,6 +636,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="24" lean-forward="true" selection-start-column="24" selection-end-column="24" />
+          <folding>
+            <element signature="e#756#762#0#HTML" expanded="true" />
+            <element signature="e#762#768#0#HTML" expanded="true" />
+            <element signature="e#768#774#0#HTML" expanded="true" />
+            <element signature="e#3914#3920#0#HTML" expanded="true" />
+            <element signature="e#3920#3926#0#HTML" expanded="true" />
+            <element signature="e#3926#3932#0#HTML" expanded="true" />
+            <element signature="e#8478#8484#0#HTML" expanded="true" />
+            <element signature="e#8484#8490#0#HTML" expanded="true" />
+            <element signature="e#8490#8496#0#HTML" expanded="true" />
+            <element signature="e#8979#8986#0#HTML" expanded="true" />
+            <element signature="e#9008#9014#0#HTML" expanded="true" />
+            <element signature="e#9014#9020#0#HTML" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -496,6 +657,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="50" lean-forward="true" selection-start-column="50" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/css/mat3d.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="2" lean-forward="true" selection-start-column="2" selection-end-column="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/layout.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="6" lean-forward="true" selection-start-column="6" selection-end-column="6" />
         </state>
       </provider>
     </entry>

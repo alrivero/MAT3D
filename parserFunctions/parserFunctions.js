@@ -11,6 +11,10 @@ function exampleFunction(){
 	console.log("exampole function is working");
 }
 
+//FUNCTION readStack(stack)
+//called from parser 
+//takes stack in rpn and calls functions from stack
+
 function readStack(stack){
 
 	var stackLength = stack.length;
@@ -269,6 +273,7 @@ function findDeterminant(a){
 	return c;
 }
 
+<<<<<<< HEAD
 //TRIG FUNCTION PARSER
 function findTrig(a, angle, bit){
 	var val;
@@ -303,6 +308,54 @@ function findTrig(a, angle, bit){
 	}
 
 	return val;
+=======
+//TRIG FUNCTIONS
+function findSin(a){
+	var operator = a.pop();
+	return math.sin(toRadians(operator));
+}
+
+function findCos(a){
+	var operator = a.pop();
+	return math.cos(toRadians(operator));
+}
+
+function findTan(a){
+	var operator = a.pop();
+	return math.tan(toRadians(operator));
+}
+
+//INVERSE TRIG FUNCTIONS
+function findArcSin(a){
+	var operator = a.pop();
+	return math.asin(toRadians(operator));
+}
+
+function findArcCos(a){
+	var operator = a.pop();
+	return math.acos(toRadians(operator));
+}
+
+function findArcTan(a){
+	var operator = a.pop();
+	return math.atan(toRadians(operator));
+}
+
+// 1/VAL TRIG FUNCTIONS
+function findCosecant(a){
+	var operator = a.pop();
+	return math.csc(toRadians(operator));
+}
+
+function findSecant(a){
+	var operator = a.pop();
+	return math.sec(toRadians(operator));
+}
+
+function findCotangent(a){
+	var operator = a.pop();
+	return math.cot(toRadians(operator));
+>>>>>>> a36ccdf4df3f7e0b90aa25d1ddbb7334baed5c17
 }
 
 //log base 10
