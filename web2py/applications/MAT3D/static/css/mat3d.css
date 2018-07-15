@@ -10,6 +10,14 @@ https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_button_group_verti
     color: #16b859;
 }
 
+.mat3d_btns {
+    margin:0 0.5em 0.5em 0;
+}
+
+#toggle-btn {
+    float: right;
+}
+
 .matrices {
     padding: 10px;
     border: black 5px;
@@ -31,7 +39,7 @@ https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_button_group_verti
 }
 
 .matrix_function_buttons button {
-    margin-left: 15px;
+    float: right;
     background-color: #4CAF50; /* Green background */
     border: 1px solid green; /* Green border */
     color: white; /* White text */
@@ -51,7 +59,7 @@ https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_button_group_verti
 }
 
 .other_function_buttons button {
-    margin-left: 15px;
+    float: right;
     background-color: #af4e4c; /* Red background */
     border: 1px solid red; /* Red border */
     color: white; /* White text */
@@ -72,6 +80,7 @@ https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_button_group_verti
 
 .trig_function_buttons button {
     margin-right: 15px;
+    float: right;
     background-color: #af7f4c; /* Brown background */
     border: 1px solid brown; /* Brown border */
     color: white; /* White text */
@@ -92,6 +101,7 @@ https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_button_group_verti
 
 .inverse_trig_function_buttons button {
     margin-right: 15px;
+    float: right;
     background-color: #4e4caf; /* Purple background */
     border: 1px solid blue; /* Blue border */
     color: white; /* White text */
@@ -110,6 +120,15 @@ https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_button_group_verti
     background-color: #3f3e8e;
 }
 
+#sqrt-btn-1 {
+    white-space: nowrap;
+    font-size:larger;
+}
+
+#sqrt-btn-2 {
+    text-decoration:overline;
+}
+
 .current_matrix {
     font-family: arial, sans-serif;
     border-collapse: separate;
@@ -125,5 +144,5 @@ td {
 /* ============ Used in layout.html ============ */
 #copyright {
     text-align: center;
-    color: black;
+    color: white;
 }

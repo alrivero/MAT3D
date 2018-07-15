@@ -47,15 +47,12 @@ var app = function() {
             });
     };
 
-    self.parse_string = function(data) {
+    self.parse_string = function() {
         // The compute button has been pressed and will parse the input string.
-        $.post(parse_string_url,
-            {
-                parser_text: self.vue.form_parsertext
-            },
-            function (data) {
-                self.vue.return_message = data.returnmessage;
-            });
+        self.vue.x = self.get_matrix_by_name(self.vue.form_parsertext);
+        alert(self.vue.x);
+
+        //self.vue.return_message;
     };
 
     self.delete_matrix = function(matrix_idx) {
@@ -74,6 +71,20 @@ var app = function() {
         self.vue.one_matrix = self.vue.matrices_data[matrix_idx];
         // To ensure the html codes goes to logic that only displays the matrix data
         self.vue.is_populating_matrix = false;
+    };
+
+    self.get_matrix_by_name = function (matrix_name) {
+        var arrayLength = self.vue.matrices.length;
+        for (var i = 0; i < arrayLength; i++) {
+            if (self.vue.matrices[i].name == matrix_name) {
+                var matrixIdx = i;
+                break;
+            }
+        }
+
+        // Retrieve the clicked matrix's data
+        self.vue.return_matrix_data = self.vue.matrices_data[matrixIdx];
+        return self.vue.return_matrix_data;
     };
 
     self.add_data_matrix = function () {
@@ -203,19 +214,22 @@ var app = function() {
             form_row: null,
             form_col: null,
             return_message: null,
-            returnmessage: null,
             self_page: false,
             populate_matrix_name: null,
             populate_cols: null,
             populate_rows: null,
             is_populating_matrix: false,
-            is_3D: false
+            is_3D: false,
+            matrix_name: null,
+            return_matrix_data: null,
+            x: []
         },
         methods: {
             add_matrix_button: self.add_matrix_button,
             add_matrix: self.add_matrix,
             parse_string: self.parse_string,
             get_this_matrix: self.get_this_matrix,
+            get_matrix_by_name: self.get_matrix_by_name,
             delete_matrix: self.delete_matrix,
             add_data_matrix: self.add_data_matrix,
             is_3D_button: self.is_3D_button,
@@ -224,7 +238,7 @@ var app = function() {
             transpose: self.transpose,
             lu_decomposition: self.lu_decomposition,
             rank: self.rank,
-            cholesky_decomposition: self. cholesky_decomposition,
+            cholesky_decomposition: self.cholesky_decomposition,
             absolute_value: self.absolute_value,
             log_base_10: self.log_base_10,
             natural_log: self.natural_log,
