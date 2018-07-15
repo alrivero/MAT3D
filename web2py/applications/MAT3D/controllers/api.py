@@ -13,13 +13,6 @@ def add_matrix():
     )
     return response.json(dict(matrix=t))
 
-def parse_string():
-    # just testing if it went into api
-    t = request.vars.parser_text
-    # parsing logic goes here
-
-    return response.json(dict(returnmessage='Input Received: '+ t))
-
 def get_matrix():
     matrices = []
     request.vars.self_page = True
