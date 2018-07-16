@@ -52,13 +52,59 @@ var app = function() {
         // The compute button has been pressed and will parse the input string. (This would come out as "A B +")
         // If parser needs to get the matrix by name, use self.get_matrix_by_name(name) and it
         // will return the data of the matrix based on the name (name would be A or B in this case).
-        self.vue.x = self.get_matrix_by_name(self.vue.form_parsertext);
-        alert(self.vue.x);
+        var parser = new Parser();
+        self.vue.return_message = parser.parseTopBar(self.vue.form_parsertext);
 
-        //self.vue.return_message;
+
+        //self.vue.x = self.get_matrix_by_name(self.vue.form_parsertext);
+        //var y = parser.parseTopBar(self.vue.form_parsertext);
+        //alert(y);
     };
 
     self.delete_matrix = function(matrix_idx) {
+        /*
+        // If the last matrix from sidebar has been deleted, then clear the screen
+        // where matrices are being displayed
+        if (self.vue.populate_matrix_name == self.vue.matrices[matrix_idx].name) {
+            self.vue.last_deleted_matrix_name = self.vue.populate_matrix_name;
+
+            var entered_table = document.getElementsByName(self.vue.last_deleted_matrix_name);
+            var individual_row = [];
+            var individual_matrix = [];
+
+            // Loop through all rows and columns of the table
+            // and retrieve content of each cell.
+            for ( var i = 0; row = entered_table.rows[i]; i++ ) {
+                row = entered_table.rows[i];
+                for ( var j = 0; col = row.cells[j]; j++ ) {
+                    // create individual array rows from HTML
+                    individual_row.push(col.firstChild.nodeValue);
+                }
+                // Add the individual array row to the individual matrix
+                individual_matrix.push(individual_row);
+                individual_row = [];
+        }
+        */
+
+        /*
+        var entered_table = document.getElementById("data_matrix");
+        var individual_row = [];
+        var individual_matrix = [];
+
+        // Loop through all rows and columns of the table
+        // and retrieve content of each cell.
+        for ( var i = 0; row = entered_table.rows[i]; i++ ) {
+            row = entered_table.rows[i];
+            for ( var j = 0; col = row.cells[j]; j++ ) {
+                // create individual array rows from HTML
+                individual_row.push(col.firstChild.nodeValue);
+            }
+            // Add the individual array row to the individual matrix
+            individual_matrix.push(individual_row);
+            individual_row = [];
+        }
+         */
+
         // Delete Main Matrix
         self.vue.matrices.splice(matrix_idx, 1);
         enumerate(self.vue.matrices);
@@ -76,6 +122,7 @@ var app = function() {
         self.vue.is_populating_matrix = false;
     };
 
+    // Used to get all values from matrix based on the name
     self.get_matrix_by_name = function (matrix_name) {
         var arrayLength = self.vue.matrices.length;
         for (var i = 0; i < arrayLength; i++) {
@@ -90,9 +137,21 @@ var app = function() {
         return self.vue.return_matrix_data;
     };
 
-    self.add_data_matrix = function () {
+    // Used to check if matrix is in matrices array
+    self.det_matrices_membership = function (matrix_name) {
+        var return_membership = false;
+        var arrayLength = self.vue.matrices.length;
+        for (var i = 0; i < arrayLength; i++) {
+            if (self.vue.matrices[i].name == matrix_name) {
+                return_membership = true;
+                break;
+            }
+        }
+        return return_membership;
+    };
 
-        var entered_table = document.getElementById("data_matrix")
+    self.add_data_matrix = function () {
+        var entered_table = document.getElementById("data_matrix");
         var individual_row = [];
         var individual_matrix = [];
 
@@ -118,7 +177,6 @@ var app = function() {
 
         // Popup Alert message
         alert("Matrix Data Saved");
-
     };
 
     self.is_3D_button = function () {
@@ -237,7 +295,8 @@ var app = function() {
             is_3D: false,
             matrix_name: null,
             return_matrix_data: null,
-            x: []
+            x: [],
+            last_deleted_matrix_name: null
         },
         methods: {
             add_matrix_button: self.add_matrix_button,
@@ -245,6 +304,7 @@ var app = function() {
             parse_string: self.parse_string,
             get_this_matrix: self.get_this_matrix,
             get_matrix_by_name: self.get_matrix_by_name,
+            det_matrices_membership: self.det_matrices_membership,
             delete_matrix: self.delete_matrix,
             add_data_matrix: self.add_data_matrix,
             is_3D_button: self.is_3D_button,
