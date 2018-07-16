@@ -124,16 +124,19 @@ var app = function() {
 
     // Used to get all values from matrix based on the name
     self.get_matrix_by_name = function (matrix_name) {
-        var arrayLength = self.vue.matrices.length;
-        for (var i = 0; i < arrayLength; i++) {
-            if (self.vue.matrices[i].name == matrix_name) {
-                var matrixIdx = i;
-                break;
-            }
-        }
 
-        // Retrieve the clicked matrix's data
-        self.vue.return_matrix_data = self.vue.matrices_data[matrixIdx];
+        var arrayLength = self.vue.matrices.length;
+        self.vue.return_matrix_data = null;
+        if (arrayLength > 0) {
+            for (var i = 0; i < arrayLength; i++) {
+                if (self.vue.matrices[i].name == matrix_name) {
+                    var matrixIdx = i;
+                    break;
+                }
+            }
+            // Retrieve the clicked matrix's data
+            self.vue.return_matrix_data = self.vue.matrices_data[matrixIdx];
+        }
         return self.vue.return_matrix_data;
     };
 
@@ -141,12 +144,14 @@ var app = function() {
     self.det_matrices_membership = function (matrix_name) {
         var return_membership = false;
         var arrayLength = self.vue.matrices.length;
-        for (var i = 0; i < arrayLength; i++) {
-            if (self.vue.matrices[i].name == matrix_name) {
-                return_membership = true;
-                break;
+        if (arrayLength > 0) {
+            for (var i = 0; i < arrayLength; i++) {
+                if (self.vue.matrices[i].name == matrix_name) {
+                    return_membership = true;
+                    break;
+                }
             }
-        }
+         }
         return return_membership;
     };
 
