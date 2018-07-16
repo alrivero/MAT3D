@@ -310,7 +310,13 @@ Parser.prototype.wordBreak = function(lettStr) {
 * @returns {Array} Array containg the best best combination
 */
 Parser.prototype.determMem = function(subStr) {
+  /*(
   if (subStr in matrices) {
+    return this.MATRIX;
+  }
+  */
+
+  if (APP.det_matrices_membership(subStr)) {
     return this.MATRIX;
   }
   // If subStr is a defined scalar
@@ -324,6 +330,8 @@ Parser.prototype.determMem = function(subStr) {
   else {
     return this.NAM;
   }
+
+
 }
 
 /**

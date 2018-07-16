@@ -4,6 +4,8 @@
 
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
 <script src="{{=URL('static', 'js/math.js')}}"></script>
+<script src="{{=URL('static', 'js/parser.js')}}"></script>
+<script src="{{=URL('static', 'js/parserFunctions.js')}}"></script>
 <script>
     // Define your URLs here.
     var add_matrix_url = "{{=URL('api', 'add_matrix')}}";
@@ -118,7 +120,10 @@
                                     </button>
                                 </div>
 
+                                <br/>
+
                                 <!-- need to add return_message here -->
+                                ${return_message}
                             </div>
                         </form>
                     </div>
