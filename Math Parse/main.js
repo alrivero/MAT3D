@@ -12,7 +12,7 @@ var functions = { "neg": negative, "inv" : findInverse, "transpose": findTranspo
 
 function main() {
   var parser = new Parser();
-  console.log(parser.parseTopBar("-6 * 4 + 3"));
+  console.log(parser.parseTopBar("-6sqrt(-piepi) + 2epiepi"));
 }
 
 function negative(stack) {

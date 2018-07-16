@@ -3,7 +3,7 @@
  * within the MAT3D calculator
  *
  * @constructor
- * @author Alfredo Rivero
+ * @author Alfredo, Jacob Schwartz
  * @version 2.0
  * @this {Parser}
  */
@@ -11,6 +11,14 @@ function Parser() {
   // Operator presedence dictionary used for Shunting-Yard
 
   /** @private */ this.ops = { "|": 0, "+": 1, "-": 1, "*": 2, "/": 2, "^": 3 };
+  /** @private */ this.functions = { "+" : findAdd, "-": findSub, "/": findDiv,
+  "*" : matrixMultiplication, "inv": findInverse, "transpose": findTranspose,
+  "diag": findDiagonal, "det": findDeterminant, "sin": findSin, "cos": findCos,
+  "tan": findTan, "arcsin": findArcSin, "arccos": findArcCos,
+  "arctan": findArcTan, "log10": findLog10, "ln": findNaturalLog,
+  "^": findExp, "sqrt": findSqrt, "abs": findAbs, "ludec": findLu,
+  "rank": findRank, "chodec": findCholesky, "neg": negative, "sec": findSecant,
+  "cosec": findCosecant, "cotan": findCotangent };
 
   // The following are membership values within wordBreak and its helper functions
   /** @private */ this.NAM = -1;  // Not a Member
@@ -124,7 +132,7 @@ Parser.prototype.parseExpression = function(mathExp, opStack) {
       prevHadOp = false;
     }
     else if (this.isNegSign(splitExp[i], prevHadOp)) {
-      this.pushToOpStack(functions["neg"], opStack, answerRPN);
+      this.pushToOpStack(this.functions["neg"], opStack, answerRPN);
       prevHadOp = true; //
     }
     else if (this.isOperator(splitExp[i])) {
@@ -171,10 +179,10 @@ Parser.prototype.parseExpression = function(mathExp, opStack) {
       answerRPN.push(opStack.pop());
     }
     else {
-      answerRPN.push(functions[opStack.pop()]);
+      answerRPN.push(this.functions[opStack.pop()]);
     }
   }
-  return readStack(answerRPN);
+  return this.readRPN(answerRPN);
 }
 
 /**
@@ -190,7 +198,7 @@ Parser.prototype.parseExpression = function(mathExp, opStack) {
 Parser.prototype.pushToOpStack = function(pushedItem, opStack, answerRPN) {
   if (typeof(pushedItem) == "function") {
     while (opStack.length != 0 && typeof(opStack[opStack.length - 1]) == "function") {
-      answerRPN.push(functions[opStack.pop()]);
+      answerRPN.push(this.functions[opStack.pop()]);
     }
   }
   else {
@@ -199,7 +207,7 @@ Parser.prototype.pushToOpStack = function(pushedItem, opStack, answerRPN) {
         answerRPN.push(opStack.pop());
       }
       else {
-        answerRPN.push(functions[opStack.pop()]);
+        answerRPN.push(this.functions[opStack.pop()]);
       }
     }
   }
@@ -236,11 +244,11 @@ Parser.prototype.compLettStr = function(lettStr) {
 
   if (splitLettStr.length > 1) {
     // Convert splitLettStr into RPN
-    splitLettStr.splice(2, 0, functions["*"]);
+    splitLettStr.splice(2, 0, this.functions["*"]);
     for (var i = 3; i < splitLettStr.length; i+=2) {
-      splitLettStr.splice(i+1, 0, functions["*"]);
+      splitLettStr.splice(i+1, 0, this.functions["*"]);
     }
-    return readStack(splitLettStr);
+    return this.readRPN(splitLettStr);
   }
   else {
     return splitLettStr[0];
@@ -310,7 +318,7 @@ Parser.prototype.determMem = function(subStr) {
     return this.SCALAR;
   }
   // If subStr is a valid function
-  else if (subStr in functions) {
+  else if (subStr in this.functions) {
     return this.FUNCTION;
   }
   else {
@@ -356,7 +364,7 @@ Parser.prototype.bestComb = function(strPos) {
         possOuts[0][k] = scalars[possOuts[0][k][0]];
         break;
       case this.FUNCTION:
-        possOuts[0][k] = functions[possOuts[0][k][0]];
+        possOuts[0][k] = this.functions[possOuts[0][k][0]];
     }
    }
 
@@ -377,10 +385,10 @@ Parser.prototype.bestComb = function(strPos) {
 */
 Parser.prototype.bestCombCiteria = function(comb1, comb2) {
   // If a function is at the end of a possiblity, weight it higher
-  if ((comb1[comb1.length - 2][0] in functions) && !(comb2[comb2.length - 2][0] in functions)) {
+  if ((comb1[comb1.length - 2][0] in this.functions) && !(comb2[comb2.length - 2][0] in this.functions)) {
     return -1
   }
-  else if (!(comb1[comb1.length - 2][0] in functions) && (comb2[comb2.length - 2][0] in functions)) {
+  else if (!(comb1[comb1.length - 2][0] in this.functions) && (comb2[comb2.length - 2][0] in this.functions)) {
     return 1
   }
   // Followed by the least number of functions
@@ -506,4 +514,32 @@ Parser.prototype.splitExpToArray = function(mathExp) {
   out = out.filter(Boolean);  // Remove any null items within out
 
   return out;
+}
+
+/**
+* Reads an array containing a mathematical expression in RPN
+* (reverse polish notation) and computes it.
+*
+* @private
+* @author Jacob Schwartz
+* @param {String} rpnStack RPN Mathematical Expression
+* @returns {Array, SparseMatrix, DenseMatrix, number} Evaluated expression's output
+*/
+Parser.prototype.readRPN = function(rpnStack) {
+  var stackLength = rpnStack.length;
+	var outArray = [];
+
+	for(var i = 0; i < stackLength; i++){
+		var element = rpnStack[i];
+		if(typeof(element) == "function"){
+			var value = element(outArray)
+			outArray.push(value);
+		}
+		else{
+			outArray.push(element);
+		}
+	}
+	var result = outArray.pop();
+
+	return result;
 }
