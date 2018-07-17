@@ -134,40 +134,50 @@
 
                 <div class="matrix_array twothirds">
 
-                    <div v-if="!is_populating_matrix">
-
-                        <table id="retrieved_data_matrix">
-                            <h5>${populate_matrix_name}</h5>
-                            <br/>
-                            <tr v-for="matrix_row in one_matrix">
-                                <td v-for="matrix_col in matrix_row">
-                                    ${matrix_col}
-                                </td>
-                            </tr>
-                        </table>
-
+                    <!-- html for 3D mode (canvas goes here) -->
+                    <div v-if="is_3D">
+                        <h5>3D Mode</h5>
+                        <canvas id="myCanvas" width="200" height="100" style="border:1px solid #000000;">
+                        </canvas>
                     </div>
 
-                    <div v-if="is_populating_matrix">
+                    <!-- html for calculator mode (displays a matrix on screen) -->
+                    <div v-if="!is_3D">
+                        <div v-if="!is_populating_matrix">
 
-                        <form action="#" v-on:submit.prevent class="form-horizontal" enctype="multipart/form-data" method="post">
-                            <table id="data_matrix">
+                            <table id="retrieved_data_matrix">
                                 <h5>${populate_matrix_name}</h5>
                                 <br/>
-                                <tr v-for="rows in populate_rows">
-                                    <td v-for="cols in populate_cols" contenteditable='true'>
-
+                                <tr v-for="matrix_row in one_matrix">
+                                    <td v-for="matrix_col in matrix_row">
+                                        ${matrix_col}
                                     </td>
                                 </tr>
                             </table>
 
-                            <br/>
+                        </div>
 
-                            <button class="btn green rounded" v-on:click="add_data_matrix">
-                                <i class="fa fa-check fa-lg"></i> Submit
-                            </button>
-                        </form>
+                        <div v-if="is_populating_matrix">
 
+                            <form action="#" v-on:submit.prevent class="form-horizontal" enctype="multipart/form-data" method="post">
+                                <table id="data_matrix">
+                                    <h5>${populate_matrix_name}</h5>
+                                    <br/>
+                                    <tr v-for="rows in populate_rows">
+                                        <td v-for="cols in populate_cols" contenteditable='true'>
+
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <br/>
+
+                                <button class="btn green rounded" v-on:click="add_data_matrix">
+                                    <i class="fa fa-check fa-lg"></i> Submit
+                                </button>
+                            </form>
+
+                        </div>
                     </div>
 
                 </div>

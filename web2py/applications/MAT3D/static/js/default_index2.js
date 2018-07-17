@@ -62,48 +62,25 @@ var app = function() {
     };
 
     self.delete_matrix = function(matrix_idx) {
-        /*
         // If the last matrix from sidebar has been deleted, then clear the screen
         // where matrices are being displayed
         if (self.vue.populate_matrix_name == self.vue.matrices[matrix_idx].name) {
-            self.vue.last_deleted_matrix_name = self.vue.populate_matrix_name;
+            self.vue.populate_matrix_name = null;
 
-            var entered_table = document.getElementsByName(self.vue.last_deleted_matrix_name);
-            var individual_row = [];
-            var individual_matrix = [];
+            var entered_table = document.getElementById("retrieved_data_matrix");
 
             // Loop through all rows and columns of the table
-            // and retrieve content of each cell.
+            // and delete content of each cell.
             for ( var i = 0; row = entered_table.rows[i]; i++ ) {
                 row = entered_table.rows[i];
-                for ( var j = 0; col = row.cells[j]; j++ ) {
-                    // create individual array rows from HTML
-                    individual_row.push(col.firstChild.nodeValue);
-                }
-                // Add the individual array row to the individual matrix
-                individual_matrix.push(individual_row);
-                individual_row = [];
-        }
-        */
-
-        /*
-        var entered_table = document.getElementById("data_matrix");
-        var individual_row = [];
-        var individual_matrix = [];
-
-        // Loop through all rows and columns of the table
-        // and retrieve content of each cell.
-        for ( var i = 0; row = entered_table.rows[i]; i++ ) {
-            row = entered_table.rows[i];
-            for ( var j = 0; col = row.cells[j]; j++ ) {
-                // create individual array rows from HTML
-                individual_row.push(col.firstChild.nodeValue);
+                entered_table.deleteRow(row);
+                /*for (var j = 0; col = row.cells[j]; j++) {
+                    // set value of each cell to null
+                    col.firstChild.nodeValue = null;
+                }*/
             }
-            // Add the individual array row to the individual matrix
-            individual_matrix.push(individual_row);
-            individual_row = [];
+
         }
-         */
 
         // Delete Main Matrix
         self.vue.matrices.splice(matrix_idx, 1);
@@ -224,7 +201,7 @@ var app = function() {
     };
 
     self.log_base_10 = function () {
-        document.getElementById("no_table_parsertext").value = "log10(";
+        document.getElementById("no_table_parsertext").value = "log(";
     };
 
     self.natural_log = function () {
@@ -300,8 +277,7 @@ var app = function() {
             is_3D: false,
             matrix_name: null,
             return_matrix_data: null,
-            x: [],
-            last_deleted_matrix_name: null
+            x: []
         },
         methods: {
             add_matrix_button: self.add_matrix_button,
