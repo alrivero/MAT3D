@@ -3,7 +3,7 @@
  * within the MAT3D calculator
  *
  * @constructor
- * @author Alfredo, Jacob Schwartz
+ * @author Alfredo Rivero, Jacob Schwartz
  * @version 2.0
  * @this {Parser}
  */
@@ -15,7 +15,7 @@ function Parser() {
   "*" : matrixMultiplication, "inv": findInverse, "transpose": findTranspose,
   "diag": findDiagonal, "det": findDeterminant, "sin": findSin, "cos": findCos,
   "tan": findTan, "arcsin": findArcSin, "arccos": findArcCos,
-  "arctan": findArcTan, "log10": findLog10, "ln": findNaturalLog,
+  "arctan": findArcTan, "log": findLog10, "ln": findNaturalLog,
   "^": findExp, "sqrt": findSqrt, "abs": findAbs, "ludec": findLu,
   "rank": findRank, "chodec": findCholesky, "neg": negative, "sec": findSecant,
   "cosec": findCosecant, "cotan": findCotangent };
@@ -30,6 +30,7 @@ function Parser() {
 /**
  * Parses input provided by the top bar of the MAT3D calculator.
  *
+ * @author Alfredo Rivero
  * @param {String} rawIn Raw input string provided by top bar
  * @returns {Number, Array, SparseMatrix, DenseMatrix} Computed output
  * @throws Message if the input was invalid
@@ -53,6 +54,7 @@ Parser.prototype.parseTopBar = function(rawIn) {
 /**
  * Parses input provided by the side bar. Will only return matrices.
  *
+ * @author Alfredo Rivero
  * @param {String} rawIn Raw input string provided by top bar
  * @returns {Array, SparseMatrix, DenseMatrix} Computed output
  * @throws Message if the input was invalid or the computed input was a scalar
@@ -79,6 +81,7 @@ Parser.prototype.parseSideBar = function(rawIn) {
 /**
  * Parses input provided by the side bar. Will only return matrices.
  *
+ * @author Alfredo Rivero
  * @param {String} rawIn Raw input string provided by top bar
  * @returns {Number} Computed output
  * @throws Message if the input was invalid or the computed input was a matrix
@@ -108,6 +111,7 @@ Parser.prototype.parseMatCell = function(rawIn) {
  * recursive.
  *
  * @private
+ * @author Alfredo Rivero
  * @param {String} strIn string input provided by parseExpression
  * @param {Boolean} opStack Operator stack used for modified Shunting-Yard
  * @returns {Number, Array, SparseMatrix, DenseMatrix, String} Computed value or
@@ -190,6 +194,7 @@ Parser.prototype.parseExpression = function(mathExp, opStack) {
  * operator stack (opStack). Uses ops to follow that criteria.
  *
  * @private
+ * @author Alfredo Rivero
  * @param {String, function} pushedItem Operator or funciton being pushed
  * @param {Array} opStack Operator stack that will have pushedItem pushed onto it
  * @param {Array} answerRPN The answer array which operators popped off opStack
@@ -221,6 +226,7 @@ Parser.prototype.pushToOpStack = function(pushedItem, opStack, answerRPN) {
  * pushToOpStack().
  *
  * @private
+ * @author Alfredo Rivero
  * @param {String, function} topOfStack Operator or funciton from top of opStack
  * @param {String, function} pushedItem Operator or funciton being pushed
  */
@@ -233,6 +239,7 @@ Parser.prototype.isOfHigherPresedence = function(topOfStack, pushedItem) {
 * them into a scalar, matrix, or function.
 *
 * @private
+* @author Alfredo Rivero
 * @param {String} lettStr String composed of only letters
 * @returns {Boolean} True if strIn was a negative sign
 */
@@ -306,6 +313,7 @@ Parser.prototype.wordBreak = function(lettStr) {
 * to. Returns NAM if not a member of any dictionary.
 *
 * @private
+* @author Alfredo Rivero
 * @param {Array} strPos Array containing containg the valid combinations
 * @returns {Array} Array containg the best best combination
 */
@@ -331,6 +339,7 @@ Parser.prototype.determMem = function(subStr) {
 * function of wordBreak.
 *
 * @private
+* @author Alfredo Rivero
 * @param {Array} strPos Array containing containg the valid combinations
 * @returns {Array} Array containg the best best combination
 */
@@ -379,23 +388,26 @@ Parser.prototype.bestComb = function(strPos) {
 * A sorting function used weight combinations within bestComb.
 *
 * @private
+* @author Alfredo Rivero
 * @param {Array} comb1 Array containing containg the the first combination
 * @param {Array} comb2 Array containing containg the the second combination
 * @returns {number} -1 if comb1 is better, 1 if comb2 is better, and 0 if equal
 */
 Parser.prototype.bestCombCiteria = function(comb1, comb2) {
   // If a function is at the end of a possiblity, weight it higher
-  if ((comb1[comb1.length - 2][0] in this.functions) && !(comb2[comb2.length - 2][0] in this.functions)) {
+  var lastElm = comb1.length - 2;
+  var numOfFunctions = comb1.length - 1;
+  if ((comb1[lastElm][0] in this.functions) && !(comb2[lastElm][0] in this.functions)) {
     return -1
   }
-  else if (!(comb1[comb1.length - 2][0] in this.functions) && (comb2[comb2.length - 2][0] in this.functions)) {
+  else if (!(comb1[lastElm][0] in this.functions) && (comb2[lastElm][0] in this.functions)) {
     return 1
   }
   // Followed by the least number of functions
-  if (comb1[comb1.length - 1] > comb2[comb2.length - 1]) {
+  if (comb1[numOfFunctions] > comb2[numOfFunctions]) {
     return 1
   }
-  else if (comb1[comb1.length - 1] < comb2[comb2.length - 1]) {
+  else if (comb1[numOfFunctions] < comb2[numOfFunctions]) {
     return -1
   }
   // Followed by the least amount of elements in that deconstruction
@@ -440,6 +452,7 @@ Parser.prototype.dfs = function(strPos, possOuts, current, i) {
 * parseExpression().
 *
 * @private
+* @author Alfredo Rivero
 * @param {String} strIn string input provided by parseExpression
 * @param {Boolean} prevHadOp Boolean determining if an operator was encountered beforehand
 * @returns {Boolean} True if strIn was a negative sign
@@ -453,6 +466,7 @@ Parser.prototype.isNegSign = function(strIn, prevHadOp) {
 * A helper function for parseExpression().
 *
 * @private
+* @author Alfredo Rivero
 * @param {String} strIn string input provided by parseExpression
 * @returns {Boolean} True if strIn was a parenthesis block.
 */
@@ -465,6 +479,7 @@ Parser.prototype.isParenBlock = function(strIn) {
 * for parseExpression().
 *
 * @private
+* @author Alfredo Rivero
 * @param {String} strIn string input provided by parseExpression
 * @returns {Boolean} True if strIn was an operator
 */
@@ -477,6 +492,7 @@ Parser.prototype.isOperator = function(strIn) {
 * parseExpression().
 *
 * @private
+* @author Alfredo Rivero
 * @param {String} strIn string input provided by parseExpression
 * @returns {Boolean} True if strIn was a number
 */
@@ -489,6 +505,7 @@ Parser.prototype.isLetterStr = function(strIn) {
 * alphabetic characters. A helper function to parseExpression().
 *
 * @private
+* @author Alfredo Rivero
 * @param {String} strIn string input provided by parseExpression
 * @returns {Boolean} True if strIn was composed entirely of alphabetic characters
 */
@@ -502,6 +519,7 @@ Parser.prototype.isNumber = function(strIn) {
 * parseExpression().
 *
 * @private
+* @author Alfredo Rivero
 * @param {String} rawIn Raw input mathematical expression
 * @returns {Array} Split raw input
 */
