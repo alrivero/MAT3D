@@ -1,6 +1,5 @@
 function main() {
   var tranQueue = new TranQueue();
-
   var invI = math.matrix([[0, 0, 0, 0], [1, 2, 3, 4], [5, 6, 7, 9]]);
   var invI2 = math.matrix([[0, 0, 0], [1, 2, 3], [5, 6, 7], [42, 0, 6]]);
   var invI3 = math.identity([12, 12]);
@@ -34,7 +33,8 @@ function main() {
   tranQueue.moveMatrix(I3x3, 2);
   tranQueue.moveMatrix(I3x3, 0);
   tranQueue.moveMatrix(I3x3, 2000);
-  tranQueue.moveMatrix(test3, -2);
+  tranQueue.moveMatrix(test3, 2);
 
   console.log(tranQueue.threeToFour(I3x3));
+  console.log(tranQueue.threeMatrix)
 }
