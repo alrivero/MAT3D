@@ -33,16 +33,11 @@ function Parser() {
  * @author Alfredo Rivero
  * @param {String} rawIn Raw input string provided by top bar
  * @returns {Number, Array, SparseMatrix, DenseMatrix} Computed output
- * @throws Message if the input was invalid
  *
  */
 Parser.prototype.parseTopBar = function(rawIn) {
   try {
     var parsedOut = this.parseExpression(rawIn, []);
-    if (parsedOut instanceof String) {
-      throw parsedOut;
-    }
-
     return parsedOut;
   }
   catch(err) {
@@ -63,10 +58,7 @@ Parser.prototype.parseTopBar = function(rawIn) {
 Parser.prototype.parseSideBar = function(rawIn) {
   try {
     var parsedOut = this.parseExpression(rawIn, []);
-    if (parsedOut instanceof String) {
-      throw parsedOut;
-    }
-    if (typeof(parsedOut) == "number") {
+    if (!isNaN(parsedOut)) {
       throw "Tried to assign a scalar to a matrix variable!";
     }
 
@@ -90,10 +82,7 @@ Parser.prototype.parseSideBar = function(rawIn) {
 Parser.prototype.parseMatCell = function(rawIn) {
   try {
     var parsedOut = this.parseExpression(rawIn, []);
-    if (parsedOut instanceof String) {
-      throw parsedOut;
-    }
-    if (typeof(parsedOut) != "number") {
+    if (isNaN(parsedOut)) {
       throw "Tried to assign a matrix to a scalar variable!";
     }
 
@@ -114,8 +103,8 @@ Parser.prototype.parseMatCell = function(rawIn) {
  * @author Alfredo Rivero
  * @param {String} strIn string input provided by parseExpression
  * @param {Boolean} opStack Operator stack used for modified Shunting-Yard
- * @returns {Number, Array, SparseMatrix, DenseMatrix, String} Computed value or
- * exception message.
+ * @returns {Number, Array, SparseMatrix, DenseMatrix, String} Computed value
+ * @throws Message if the input string conatins invalid characters/formatting
  */
 Parser.prototype.parseExpression = function(mathExp, opStack) {
   var splitExp = this.splitExpToArray(mathExp);
@@ -128,9 +117,6 @@ Parser.prototype.parseExpression = function(mathExp, opStack) {
       var computedBlock = this.parseExpression(splitExp[i], opStack);
       opStack.pop();  // Remove "|" from opStack
 
-      if (computedBlock instanceof String) {  // Exception detected
-        return computedBlock;
-      }
       answerRPN.push(computedBlock);
 
       prevHadOp = false;
@@ -166,14 +152,11 @@ Parser.prototype.parseExpression = function(mathExp, opStack) {
       else if (!(parsedStr instanceof String)){
         answerRPN.push(parsedStr);
       }
-      else {  // Exception detected
-        return parsedStr;
-      }
 
       prevHadOp = false;
     }
     else {
-      return "Invalid characters, operator missuse, or invalid formatting detected!";
+      throw "Invalid characters, operator missuse, or invalid formatting detected!";
     }
   }
 
@@ -274,6 +257,7 @@ Parser.prototype.compLettStr = function(lettStr) {
 * @param {String} lettStr String being deconsructed into valid combinations
 * @returns {Array ,String} Array containg the best valid deconstruction of
 * lettStr or string if an Exception was found.
+* @throws Message if no valid combination can be found
 */
 Parser.prototype.wordBreak = function(lettStr) {
   var strPos = new Array(lettStr.length + 1);
@@ -302,7 +286,7 @@ Parser.prototype.wordBreak = function(lettStr) {
   }
 
   if (strPos[lettStr.length] == null) {
-    return "Tried to use a varaible which is not defined!"
+    throw "Tried to use a varaible which is not defined!"
   }
 
   return this.bestComb(strPos);
