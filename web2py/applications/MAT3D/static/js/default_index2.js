@@ -74,10 +74,10 @@ var app = function() {
             for ( var i = 0; row = entered_table.rows[i]; i++ ) {
                 row = entered_table.rows[i];
                 entered_table.deleteRow(row);
-                /*for (var j = 0; col = row.cells[j]; j++) {
+                for (var j = 0; col = row.cells[j]; j++) {
                     // set value of each cell to null
                     col.firstChild.nodeValue = null;
-                }*/
+                }
             }
 
         }
