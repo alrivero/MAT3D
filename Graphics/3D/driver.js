@@ -1,283 +1,110 @@
-/*
- *  AUTHOR: Abraham Cardenas (acarde12@ucsc.edu)
- *  VERSION: 1.0
- *
+/**
+ * @author Abraham Cardenas / (acarde12@ucsc.edu)
+ * @version 1.0
  */
 
 // global program variables
-var renderer;
-var controls;
-var scene;
-var camera;
-var objMesh;
-var object;
-
-
-/*
-// global transformations variables (somehow set by the matrix calculator)
-var xTrans;
-var yTrans;
-var zTrans;
-var aScale;
-var bScale;
-var cScale;
-var dScale;
-var eScale;
-var fScale;
-var thetaRot;
-*/
+var renderer, scene, camera, controls, objMesh, object;
+var ambientLight, ptLightArr = [];
+var GridXY1, GridXY2;
+var GridXZ1, GridXZ2;
+var GridYZ1, GridYZ2;
+var GridSizes, GridXYCol, GridXZCol, GridYZCol;
+var transformArr = [];
+var xTransVal = 0, yTransVal = 0, zTransVal = 0;
+var xScaleVal = 0, yScaleVal = 0, zScaleVal = 0;
+var xShearVal = 0, yShearVal = 0, zShearVal = 0;
+var xRotVal = 0, yRotVal = 0, zRotVal = 0;
 
 function init(){
-  // setting up the canvas, scene, and camera
-  var canvas = document.getElementById('canvas');
-  renderer = new THREE.WebGLRenderer({canvas: canvas});
-  renderer.setSize(500, 500);
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x696969);
+  // RENDERER
+  var canvas = document.getElementById('canvas1');
+  renderer = new THREE.WebGLRenderer({canvas: canvas}, {antialias: true});
+  renderer.setClearColor(0xA0A0A0);
+  renderer.setSize(window.innerHeight-10, window.innerHeight-10);
+  //document.body.appendChild(renderer.domElement);
+  //document.body.appendChild(document.getElementById('content'));
+
+  // CAMERA & SCENE
   camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+  scene = new THREE.Scene();
+  //scene.background = new THREE.Color(0xA0A0A0);
 
-  document.body.appendChild(renderer.domElement);
-
-  // camera controls
+  // CAMERA CONTROLS
   controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.dampingFactor = 0.25;
   controls.enableZoom = true;
 
-  // lighting
-  var keyLight = new THREE.DirectionalLight(new THREE.Color('hsl(30, 100%, 75%)'), 1.0);
-  keyLight.position.set(-100, 0, 100);
-  var fillLight = new THREE.DirectionalLight(new THREE.Color('hsl(240, 100%, 75%)'), 0.75);
-  fillLight.position.set(100, 0, 100);
-  var backLight = new THREE.DirectionalLight(0xffffff, 1.0);
-  backLight.position.set(100, 0, -100).normalize();
-  var ambient = new THREE.AmbientLight(0xDCDCDC);
+  // LIGHTING
+  ptLightArr.push(new THREE.PointLight(0xffffff, 1, 0));
+  ptLightArr.push(new THREE.PointLight(0xffffff, 1, 0));
+  ptLightArr.push(new THREE.PointLight(0xffffff, 1, 0));
 
-  // scene
-  scene.add(ambient);
-  scene.add(keyLight);
-  scene.add(fillLight);
-  scene.add(backLight);
+  ptLightArr[0].position.set(0, 200, 0);
+  ptLightArr[1].position.set(100, 200, 100);
+  ptLightArr[2].position.set(-100, -200, -100);
 
-  // manually load obj file and mtl file
-  var mtlLoader = new THREE.MTLLoader();
-  mtlLoader.setTexturePath('objects/R2D2/');
-  mtlLoader.setPath('objects/R2D2/');
-  mtlLoader.load('r2-d2.mtl', function(materials){
+  scene.add(ptLightArr[0]);
+  scene.add(ptLightArr[1]);
+  scene.add(ptLightArr[2]);
 
-    materials.preload();
+  ambientLight = new THREE.AmbientLight(0xffffff);
+  scene.add(ambientLight);
 
-    var objLoader = new THREE.OBJLoader();
-    objLoader.setMaterials(materials);
-    objLoader.setPath('objects/R2D2/');
-    objLoader.load('r2-d2.obj', function(obj){
-      objMesh = new THREE.Mesh(obj, materials);
-      object = obj;
-      object.name = 'r2d2';
-      scene.add(obj);
-      //object.position.y -= 60;
+  // INITIAL CUBE OBJECT
+  object = new THREE.BoxGeometry(2, 2, 2);
+  object.name = 'cube1';
+  var material = new THREE.MeshStandardMaterial();
+  objMesh = new THREE.Mesh(object, material);
+  objMesh.material.color.setHex(0x2194ce);
+  objMesh.name = 'cube1';
+  scene.add(objMesh);
 
-      centerCameraOnObject(object);
-
-      var gridXZ = new THREE.GridHelper(1000, 250, new THREE.Color(0xffffff), new THREE.Color(0x00AA00));
-      //gridXZ.position.set( 0,0,100 );
-      scene.add(gridXZ);
-
-      var gridXY = new THREE.GridHelper(1000, 250, new THREE.Color(0xffffff), new THREE.Color(0x0000AA));
-    //  gridXY.position.set( 0,0,0 );
-      gridXY.rotation.x = Math.PI/2;
-      scene.add(gridXY);
-
-      var gridYZ = new THREE.GridHelper(1000, 250, new THREE.Color(0xffffff), new THREE.Color(0xAA0000));
-      //gridYZ.position.set( 0,0,100 );
-      gridYZ.rotation.z = Math.PI/2;
-      scene.add(gridYZ);
-    });
-
-  });
-
-  // read obj file and zip file
-  var fileInput = document.getElementById('fileInput');
-  fileInput.type = 'file';
-
-  fileInput.addEventListener('change', function(ev){
-    var filename = (fileInput.files[0]).name;
-    var reader = new FileReader();
-
-    reader.addEventListener('progress', function(event){
-      var size = '(' + Math.floor(event.total / 1000) + ' KB)';
-      //var progress = Math.floor( ( event.loaded / event.total ) * 100 ) + '%';
-      console.log('Loading', filename, size);
-    } );
-    reader.addEventListener('load', function(event){
-      var prevObj = object;
-      removeEntity(object);
-
-      var extension = filename.split('.').pop().toLowerCase();
-
-      switch(extension){
-        case 'obj':
-          var contents = event.target.result;
-          object = new THREE.OBJLoader().parse(contents);
-          object.name = filename;
-          scene.add(object);
-
-          centerCameraOnObject(object);
-
-          break;
-
-        case 'zip':
-          var dateBefore = new Date();
-
-          JSZip.loadAsync(ev.target.files[0])
-          .then(function(zip){
-            var dateAfter = new Date();
-            var objFile = '', mtlFile = '';
-
-            console.log("Loaded in " + (dateAfter - dateBefore) + "ms");
-            zip.forEach(function(relativePath, zipEntry){
-              var currExt = zipEntry.name.split('.').pop().toLowerCase();
-              if(zipEntry.name.indexOf("__MACOSX") == -1){
-                if(currExt == 'obj'){
-                  objFile = zipEntry.name;
-                }
-                else if(currExt == 'mtl'){
-                  mtlFile = zipEntry.name;
-                }
-              }
-            });
-            if(objFile != '' && mtlFile != ''){
-              let mtl = zip.file(mtlFile).async("text");
-              let obj = zip.file(objFile).async("text");
-
-              return Promise.resolve([mtl, obj, objFile]);
-            }
-            else{
-              // throw an error and break from promises
-              console.log("ERROR");
-            }
-          }, function(e){
-              console.log("Error reading " + ev.target.files[0].name + ": " + e.message);
-          }).then(async function([mtl, obj, objFile]){
-            var resMtl = await mtl;
-            var resObj = await obj;
-
-            var mtlLoader = new THREE.MTLLoader();
-            var materials = mtlLoader.parse(resMtl);
-            var objLoader = new THREE.OBJLoader();
-            object = objLoader.setMaterials(materials).parse(resObj);
-            objMesh = new THREE.Mesh(object, materials);
-            object.name = objFile;
-            scene.add(object);
-
-            centerCameraOnObject(object);
-          });
-          break;
-
-        default:
-          console.log('Error, select an obj or zip file.');
-          object = prevObj;
-          scene.add(object);
-          break;
-      }
-    });
-    reader.readAsText(fileInput.files[0]);
-  }, false );
-  document.body.appendChild(fileInput);
-
-  // temporary transformation controls
-  var transControls = new function(){
-    this.rotationSpeed = 0.01;
-    this.scale = 1;
-    this.x = 0.8;
-    this.y = 0.8;
-    this.z = 0.8;
-    this.a = 0.1;
-    this.b = 0.1;
-    this.c = 0.1;
-    this.d = 0.1;
-    this.e = 0.1;
-    this.f = 0.1;
-    this.theta = 0.1;
-
-    this.doTranslation = function(){
-      // new THREE.Matrix4().makeTranslation(3,3,3);
-      var translationMatrix = new THREE.Matrix4();
-      translationMatrix.set(
-              1, 0, 0, transControls.x,
-              0, 1, 0, transControls.y,
-              0, 0, 1, transControls.z,
-              0, 0, 0, 1
-      );
-      objMesh.geometry.applyMatrix(translationMatrix);
-      objMesh.geometry.verticesNeedUpdate = true;
-    }
-
-    this.doScale = function(){
-      var scaleMatrix = new THREE.Matrix4();
-      scaleMatrix.set(
-              transControls.x, 0, 0, 0,
-              0, transControls.y, 0, 0,
-              0, 0, transControls.z, 0,
-              0, 0, 0, 1
-      );
-      objMesh.geometry.applyMatrix(scaleMatrix);
-      objMesh.geometry.verticesNeedUpdate = true;
-    }
-
-    this.doShearing = function(){
-      var scaleMatrix = new THREE.Matrix4();
-      scaleMatrix.set(
-              1, this.a, this.b, 0,
-              this.c, 1, this.d, 0,
-              this.e, this.f, 1, 0,
-              0, 0, 0, 1
-      );
-      objMesh.geometry.applyMatrix(scaleMatrix);
-      objMesh.geometry.verticesNeedUpdate = true;
-    }
-
-    this.doRotationY = function(){
-      var c = Math.cos(this.theta), s = Math.sin(this.theta);
-      var rotationMatrix = new THREE.Matrix4();
-      rotationMatrix.set(
-              c, 0, s, 0,
-              0, 1, 0, 0,
-              -s, 0, c, 0,
-              0, 0, 0, 1
-      );
-      objMesh.geometry.applyMatrix(rotationMatrix);
-      objMesh.geometry.verticesNeedUpdate = true;
-    }
-
-  };
-  addControls(transControls);
-  animate();
-}
-
-function centerCameraOnObject(object){
-  var objBox = new THREE.Box3();
-  objBox.setFromObject(object);
-  var objHeight = objBox.max.y - objBox.min.y;
-  var objWidth = objBox.max.x - objBox.min.x;
+  // ADJUST THE SCENE
   controls.reset();
-  camera.position.x = 0;
-  camera.position.y = 0;
-  camera.position.z = 0;
-  camera.position.z = objWidth + objWidth;
-}
+  objMesh.position.x = 1;
+  objMesh.position.y = 1;
+  objMesh.position.z = 1;
+  camera.position.x = 25;
+  camera.position.y = 25;
+  camera.position.z = 25;
 
-function addControls(controlObject){
-  var gui = new dat.GUI();
-  gui.add(controlObject, 'doTranslation');
-  gui.add(controlObject, 'doScale');
-  gui.add(controlObject, 'doShearing');
-  gui.add(controlObject, 'doRotationY');
-}
+  // INITIAL COORDINATE SYSTEM
+  GridSizes = 40;
+  GridXYCol = new THREE.Color(0x008800);
+  GridXZCol = new THREE.Color(0x000088);
+  GridYZCol = new THREE.Color(0x880000);
 
-function removeEntity(object){
-  var selectedObject = scene.getObjectByName(object.name);
-  scene.remove(selectedObject);
+  GridXZ1 = new LabeledGrid(GridSizes, GridSizes, 10, [0, 1, 0], 0x000088, 0.4, true, "#000000", "left");
+  GridXZ1.name = "GridXZ1";
+  scene.add(GridXZ1);
+  GridXZ2 = new LabeledGrid(GridSizes, GridSizes, 10, [0, -1, 0], 0x000088, 0.4, true, "#000000", "left");
+  GridXZ2.name = "GridXZ2";
+  scene.add(GridXZ2);
+
+  GridXY1 = new LabeledGrid(GridSizes, GridSizes, 10, [0, 0, 1], 0x008800, 0.4, true, "#000000", "left");
+  GridXY1.name = "GridXY1";
+  scene.add(GridXY1);
+  GridXY2 = new LabeledGrid(GridSizes, GridSizes, 10, [0, 0, -1], 0x008800, 0.4, true, "#000000", "left");
+  GridXY2.name = "GridXY2";
+  scene.add(GridXY2);
+
+  GridYZ1 = new LabeledGrid(GridSizes, GridSizes, 10, [1, 0, 0], 0x880000, 0.4, true, "#000000", "left");
+  GridYZ1.name = "GridYZ1";
+  scene.add(GridYZ1);
+  GridYZ2 = new LabeledGrid(GridSizes, GridSizes, 10, [-1, 0, 0], 0x880000, 0.4, true, "#000000", "left");
+  GridYZ2.name = "GridYZ2";
+  scene.add(GridYZ2);
+
+  // GUI
+  setupGui();
+
+  // EVENTS
+  window.addEventListener('resize', function(){
+    renderer.setSize(window.innerHeight-10, window.innerHeight-10);
+  }, false);
+
   animate();
 }
 
