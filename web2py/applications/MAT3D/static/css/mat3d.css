@@ -141,6 +141,15 @@ td {
     padding: 15px;
 }
 
+#3D_container {
+    margin: 0;
+    position: relative;
+}
+
+#3D_container.canvas, #content {
+    position: absolute;
+}
+
 /* ============ Used in layout.html ============ */
 #copyright {
     text-align: center;
