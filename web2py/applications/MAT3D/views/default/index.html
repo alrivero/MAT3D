@@ -6,26 +6,6 @@
 <script src="{{=URL('static', 'js/math.js')}}"></script>
 <script src="{{=URL('static', 'js/parser.js')}}"></script>
 <script src="{{=URL('static', 'js/parserFunctions.js')}}"></script>
-
-<script src="{{=URL('static', 'js/3D/lib/three.min.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/lib/dat.gui.min.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/lib/OrbitControls.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/lib/jszip.min.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/lib/inflate.min.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/lib/stats.min.js')}}"></script>
-<script src="{{=URL('http://code.jquery.com/jquery-1.11.0.min.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/loaders/OBJLoader.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/loaders/MTLLoader.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/loaders/STLLoader.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/loaders/GLTFLoader.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/loaders/LegacyGLTFLoader.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/loaders/FBXLoader.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/exporters/OBJExporter.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/grids/LabeledGrid.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/geometries/TeapotBufferGeometry.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/driver.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/driverHelperFuncs.js')}}"></script>
-
 <script>
     // Define your URLs here.
     var add_matrix_url = "{{=URL('api', 'add_matrix')}}";
@@ -156,28 +136,32 @@
 
                     <!-- html for 3D mode (canvas goes here) -->
                     <div v-if="is_3D">
-                        <div class="container" id="3D_container">
-                            <div id ="content"></div>
-                            <canvas class="canvas" id="canvas1"></canvas>
-                            <input type="file" id="fileInput" style="visibility:hidden"/>
-                        </div>
 
-                        <div id="load_screen">
-                            <h1>Mat3D</h1>
-                            <div class="cube-wrapper">
-                                <div class="cube-folding">
-                                    <span class="leaf1"></span>
-                                    <span class="leaf2"></span>
-                                    <span class="leaf3"></span>
-                                    <span class="leaf4"></span>
-                                </div>
-                                <span class="loading" data-name="Loading">Loading</span>
-                            </div>
-                        </div>
+                        <script src="{{=URL('static', 'js/three.js')}}"></script>
+                        <script src="{{=URL('static', 'js/dat.gui.min.js')}}"></script>
+                        <script src="{{=URL('static', 'js/OrbitControls.js')}}"></script>
+                        <script src="{{=URL('static', 'js/jszip.min.js')}}"></script>
+                        <script src="{{=URL('static', 'js/inflate.min.js')}}"></script>
+                        <script src="{{=URL('static', 'js/stats.min.js')}}"></script>
+                        <script src="{{=URL('static', 'js/OBJLoader.js')}}"></script>
+                        <script src="{{=URL('static', 'js/MTLLoader.js')}}"></script>
+                        <script src="{{=URL('static', 'js/STLLoader.js')}}"></script>
+                        <script src="{{=URL('static', 'js/GLTFLoader.js')}}"></script>
+                        <script src="{{=URL('static', 'js/LegacyGLTFLoader.js')}}"></script>
+                        <script src="{{=URL('static', 'js/FBXLoader.js')}}"></script>
+                        <script src="{{=URL('static', 'js/OBJExporter.js')}}"></script>
+                        <script src="{{=URL('static', 'js/LabeledGrid.js')}}"></script>
+                        <script src="{{=URL('static', 'js/TeapotBufferGeometry.js')}}"></script>
+                        <script src="{{=URL('static', 'js/driver.js')}}"></script>
+                        <script src="{{=URL('static', 'js/driverHelperFuncs.js')}}"></script>
+
+                        <input type="file" id="fileInput" />
+
                     </div>
 
                     <!-- html for calculator mode (displays a matrix on screen) -->
                     <div v-if="!is_3D">
+
                         <div v-if="!is_populating_matrix">
 
                             <table id="retrieved_data_matrix">
