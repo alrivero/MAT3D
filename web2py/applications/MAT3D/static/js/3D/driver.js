@@ -18,9 +18,10 @@ var xRotVal = 0, yRotVal = 0, zRotVal = 0;
 
 function init(){
   // RENDERER
-  renderer = new THREE.WebGLRenderer({antialias: true});
+  var canvas = document.getElementById('canvas1');
+  renderer = new THREE.WebGLRenderer({canvas: canvas}, {antialias: true});
   renderer.setClearColor(0xA0A0A0);
-  renderer.setSize(300, 300);
+  renderer.setSize(window.innerHeight-90, window.innerHeight-90);
   //document.body.appendChild(renderer.domElement);
   //document.body.appendChild(document.getElementById('content'));
 

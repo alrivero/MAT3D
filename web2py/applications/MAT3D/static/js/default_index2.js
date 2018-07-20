@@ -163,7 +163,11 @@ var app = function() {
 
     self.is_3D_button = function () {
         // button to toggle between 3D mode and 2D mode
-        self.vue.is_3D = !self.vue.is_3D;
+         self.vue.is_3D = !self.vue.is_3D;
+        if (self.vue.is_3D) {
+            window.location = "C:/web2py4/web2py/applications/MAT3D_2D/views/default/threeDDriver.html"
+        }
+
     };
 
 
