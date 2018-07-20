@@ -30,12 +30,21 @@
                     &nbsp;&nbsp;&nbsp;
 
                     <!-- Toggle button between 2D and 3D mode -->
+                    <a class="btn blue pull-right" style="..." href="{{=URL('threeDDriver')}}">3D Mode</a>
+
+                    <!--
                     <button v-if="!is_3D" class="rounded" id="toggle-btn" v-on:click="is_3D_button()">
                         2D Mode
                     </button>
+
+                    <a v-if="is_3D" href="=URL('default', 'threeDDriver')}}">
+
+
                     <button v-if="is_3D" class="blue rounded" id="toggle-btn" v-on:click="is_3D_button()">
                         3D Mode
                     </button>
+
+                    -->
                 </div>
 
                 <br/><br/>
@@ -136,32 +145,13 @@
 
                     <!-- html for 3D mode (canvas goes here) -->
                     <div v-if="is_3D">
-
-                        <script src="{{=URL('static', 'js/three.js')}}"></script>
-                        <script src="{{=URL('static', 'js/dat.gui.min.js')}}"></script>
-                        <script src="{{=URL('static', 'js/OrbitControls.js')}}"></script>
-                        <script src="{{=URL('static', 'js/jszip.min.js')}}"></script>
-                        <script src="{{=URL('static', 'js/inflate.min.js')}}"></script>
-                        <script src="{{=URL('static', 'js/stats.min.js')}}"></script>
-                        <script src="{{=URL('static', 'js/OBJLoader.js')}}"></script>
-                        <script src="{{=URL('static', 'js/MTLLoader.js')}}"></script>
-                        <script src="{{=URL('static', 'js/STLLoader.js')}}"></script>
-                        <script src="{{=URL('static', 'js/GLTFLoader.js')}}"></script>
-                        <script src="{{=URL('static', 'js/LegacyGLTFLoader.js')}}"></script>
-                        <script src="{{=URL('static', 'js/FBXLoader.js')}}"></script>
-                        <script src="{{=URL('static', 'js/OBJExporter.js')}}"></script>
-                        <script src="{{=URL('static', 'js/LabeledGrid.js')}}"></script>
-                        <script src="{{=URL('static', 'js/TeapotBufferGeometry.js')}}"></script>
-                        <script src="{{=URL('static', 'js/driver.js')}}"></script>
-                        <script src="{{=URL('static', 'js/driverHelperFuncs.js')}}"></script>
-
-                        <input type="file" id="fileInput" />
-
+                        <h5>3D Mode</h5>
+                        <canvas id="canvas1" width="200" height="100" style="border:1px solid #000000;">
+                        </canvas>
                     </div>
 
                     <!-- html for calculator mode (displays a matrix on screen) -->
                     <div v-if="!is_3D">
-
                         <div v-if="!is_populating_matrix">
 
                             <table id="retrieved_data_matrix">

@@ -75,8 +75,8 @@ CREATE TABLE "web2py_session_MAT3D_2D"(
     "session_data" BLOB
 );
 success!
-timestamp: 2018-07-18T15:37:03.362000
-CREATE TABLE "web2py_session_MAT3D_1"(
+timestamp: 2018-07-19T21:20:30.685000
+CREATE TABLE "web2py_session_MAT3D_2"(
     "id" INTEGER PRIMARY KEY AUTOINCREMENT,
     "locked" CHAR(1),
     "client_ip" CHAR(64),

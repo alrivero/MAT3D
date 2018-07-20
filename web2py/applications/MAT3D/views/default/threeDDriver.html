@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+
+		<meta charset=utf-8>
+		<title>Mat3D</title>
+
+		<style>
+			body {
+                margin: 20px;
+            }
+
+			#container{
+			  position: relative;
+			}
+
+			#container canvas, #content{
+			  position: absolute;
+			}
+
+            .mat3d {
+                font-size: 36px;
+                color: #16b859;
+            }
+
+            #mat3d_btn {
+                margin:0 0.5em 0.5em 0;
+            }
+
+            .btn, button, [type=button], [type=submit] {
+                padding:0.3em .3em;
+                border-radius: 8px;
+                display:inline-block;
+                background-color:#26a69a;
+                font-size: 20px;
+                color: white;
+            }
+		</style>
+
+	</head>
+
+	<body>
+
+        <div class="mat3d container">
+
+            <div class="mat3d_title half">
+                <b>[MAT3D]</b>
+
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;
+
+                <a class="btn blue" id="mat3d_btn" href="{{=URL('index')}}">2D Mode</a>
+
+                <br/>
+            </div>
+
+            <!-- Toggle button between 2D and 3D mode
+            <div class="mat3d_btn">
+
+            </div>-->
+
+        </div>
+
+		<div class="container">
+			<div id ="content"></div>
+			<canvas class="canvas" id="canvas1"></canvas>
+		</div>
+
+        <script src="{{=URL('static', 'js/3D/lib/three.min.js')}}"></script>
+        <script src="{{=URL('static', 'js/3D/lib/dat.gui.min.js')}}"></script>
+        <script src="{{=URL('static', 'js/3D/lib/OrbitControls.js')}}"></script>
+        <script src="{{=URL('static', 'js/3D/lib/jszip.min.js')}}"></script>
+        <script src="{{=URL('static', 'js/3D/lib/inflate.min.js')}}"></script>
+        <script src="{{=URL('static', 'js/3D/lib/stats.min.js')}}"></script>
+        <script src="{{=URL('static', 'js/3D/loaders/OBJLoader.js')}}"></script>
+        <script src="{{=URL('static', 'js/3D/loaders/MTLLoader.js')}}"></script>
+        <script src="{{=URL('static', 'js/3D/loaders/STLLoader.js')}}"></script>
+        <script src="{{=URL('static', 'js/3D/loaders/GLTFLoader.js')}}"></script>
+        <script src="{{=URL('static', 'js/3D/loaders/LegacyGLTFLoader.js')}}"></script>
+        <script src="{{=URL('static', 'js/3D/loaders/FBXLoader.js')}}"></script>
+        <script src="{{=URL('static', 'js/3D/exporters/OBJExporter.js')}}"></script>
+        <script src="{{=URL('static', 'js/3D/grids/LabeledGrid.js')}}"></script>
+        <script src="{{=URL('static', 'js/3D/geometries/TeapotBufferGeometry.js')}}"></script>
+        <script src="{{=URL('static', 'js/3D/driver.js')}}"></script>
+        <script src="{{=URL('static', 'js/3D/driverHelperFuncs.js')}}"></script>
+
+		<input type="file" id="fileInput" style="visibility: hidden"/>
+
+	</body>
+
+</html>
