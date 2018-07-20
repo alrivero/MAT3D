@@ -1,3 +1,8 @@
+/**
+ * @author Zoe Tacderas / (stacdera@ucsc.edu)
+ * @version 1.0
+ */
+
 // This is the js for the default/index.html view.
 
 
@@ -32,7 +37,6 @@ var app = function() {
             },
             function (data) {
                 $.web2py.enableElement($("#add_matrix_submit"));
-                //self.vue.matrices.unshift(data.matrix);
                 self.vue.matrices.push(data.matrix);
                 enumerate(self.vue.matrices);
                 self.vue.populate_matrix_name = self.vue.form_name;
@@ -41,7 +45,6 @@ var app = function() {
                 self.vue.form_name = "";
                 self.vue.form_row = "";
                 self.vue.form_col = "";
-                //self.vue.form_matrix_id = self.vue.form_matrix_id + 1;
                 self.vue.is_adding_matrix = !self.vue.is_adding_matrix;
                 self.vue.is_populating_matrix = true;
             });
@@ -54,11 +57,6 @@ var app = function() {
         // will return the data of the matrix based on the name (name would be A or B in this case).
         var parser = new Parser();
         self.vue.return_message = parser.parseTopBar(self.vue.form_parsertext);
-
-
-        //self.vue.x = self.get_matrix_by_name(self.vue.form_parsertext);
-        //var y = parser.parseTopBar(self.vue.form_parsertext);
-        //alert(y);
     };
 
     self.delete_matrix = function(matrix_idx) {
@@ -101,9 +99,9 @@ var app = function() {
 
     // Used to get all values from matrix based on the name
     self.get_matrix_by_name = function (matrix_name) {
-
         var arrayLength = self.vue.matrices.length;
         self.vue.return_matrix_data = null;
+
         if (arrayLength > 0) {
             for (var i = 0; i < arrayLength; i++) {
                 if (self.vue.matrices[i].name == matrix_name) {
@@ -167,7 +165,6 @@ var app = function() {
         if (self.vue.is_3D) {
             window.location = "C:/web2py4/web2py/applications/MAT3D_2D/views/default/threeDDriver.html"
         }
-
     };
 
 

@@ -1,3 +1,9 @@
+<!--
+Name: Zoe Tacderas
+UCSC email: stacdera@ucsc.edu
+File name: index.html
+-->
+
 {{extend 'layout.html'}}
 
 {{block head}}
@@ -10,7 +16,6 @@
     // Define your URLs here.
     var add_matrix_url = "{{=URL('api', 'add_matrix')}}";
 </script>
-
 
 {{end}}
 
@@ -30,20 +35,20 @@
                     &nbsp;&nbsp;&nbsp;
 
                     <!-- Toggle button between 2D and 3D mode -->
-                    <a class="btn blue pull-right" style="..." href="{{=URL('threeDDriver')}}">3D Mode</a>
+                    <a class="btn blue pull-right" style="..." href="{{=URL('three_d_driver')}}">
+                        3D Mode
+                    </a>
 
                     <!--
                     <button v-if="!is_3D" class="rounded" id="toggle-btn" v-on:click="is_3D_button()">
                         2D Mode
                     </button>
 
-                    <a v-if="is_3D" href="=URL('default', 'threeDDriver')}}">
-
+                    <a v-if="is_3D" href="=URL('default', 'threeDDriver')">
 
                     <button v-if="is_3D" class="blue rounded" id="toggle-btn" v-on:click="is_3D_button()">
                         3D Mode
                     </button>
-
                     -->
                 </div>
 
@@ -96,8 +101,7 @@
                         <tr class="center">
                             <th v-on:click="get_this_matrix(matrix._idx)">
                                 ${matrix.name} ${matrix._idx} (${matrix.row} x ${matrix.col})&nbsp;&nbsp;&nbsp;
-                                <button class="btn rounded black"
-                                        v-on:click="delete_matrix(matrix._idx)">
+                                <button class="btn rounded black" v-on:click="delete_matrix(matrix._idx)">
                                     <i class="fa fa-trash fa-lg"></i>
                                 </button>
                             </th>
