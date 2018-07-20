@@ -62,7 +62,7 @@ var LabeledGrid = function (_THREE$Object3D) {
       var gridGeometry, gridMaterial, mainGridZ, planeFragmentShader, planeGeometry, planeMaterial, subGridGeometry, subGridMaterial, subGridZ;
 
       //offset to avoid z fighting
-      mainGridZ = -0.05;
+      mainGridZ = 0;
       gridGeometry = new THREE.Geometry();
       gridMaterial = new THREE.LineBasicMaterial({
         color: new THREE.Color().setHex(this.color),
@@ -71,7 +71,7 @@ var LabeledGrid = function (_THREE$Object3D) {
         transparent: true
       });
 
-      subGridZ = -0.05;
+      subGridZ = 0;
       subGridGeometry = new THREE.Geometry();
       subGridMaterial = new THREE.LineBasicMaterial({
         color: new THREE.Color().setHex(this.color),
@@ -288,13 +288,13 @@ var LabeledGrid = function (_THREE$Object3D) {
       if (numbering == "centerBased") {
         for (var i = 0; i <= width / 2; i += step) {
           var sizeLabel = this.drawTextOnPlane("" + i, 32);
-          var sizeLabel2 = sizeLabel.clone();
+          var sizeLabel2 = sizeLabel.clone();//this.drawTextOnPlane("" - i, 32);
 
-          sizeLabel.position.set(length / 2, -i, 0.1);
+          sizeLabel.position.set(length / 2, -i, 0);
           sizeLabel.rotation.z = -Math.PI / 2;
           labelsFront.add(sizeLabel);
 
-          sizeLabel2.position.set(length / 2, i, 0.1);
+          sizeLabel2.position.set(length / 2, i, 0);
           sizeLabel2.rotation.z = -Math.PI / 2;
           labelsFront.add(sizeLabel2);
         }
@@ -303,11 +303,11 @@ var LabeledGrid = function (_THREE$Object3D) {
           var sizeLabel = this.drawTextOnPlane("" + i, 32);
           var sizeLabel2 = sizeLabel.clone();
 
-          sizeLabel.position.set(-i, width / 2, 0.1);
+          sizeLabel.position.set(-i, width / 2, 0);
           //sizeLabel.rotation.z = -Math.PI / 2;
           labelsSideRight.add(sizeLabel);
 
-          sizeLabel2.position.set(i, width / 2, 0.1);
+          sizeLabel2.position.set(i, width / 2, 0);
           //sizeLabel2.rotation.z = -Math.PI / 2;
           labelsSideRight.add(sizeLabel2);
         }

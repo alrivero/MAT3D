@@ -1,20 +1,25 @@
 /**
- * @author Abraham Cardenas / (acarde12@ucsc.edu)
+ * @author Abraham Cardenas / https://github.com/Abe-Crdns (acarde12@ucsc.edu)
  * @version 1.0
  */
 
 // global program variables
 var renderer, scene, camera, controls, objMesh, object;
 var ambientLight, ptLightArr = [];
+var xLight1, yLight1, zLight1;
+var xLight2, yLight2, zLight2;
+var xLight3, yLight3, zLight3;
 var GridXY1, GridXY2;
 var GridXZ1, GridXZ2;
 var GridYZ1, GridYZ2;
 var GridSizes, GridXYCol, GridXZCol, GridYZCol;
 var transformArr = [];
-var xTransVal = 0, yTransVal = 0, zTransVal = 0;
+var xShearVal = '0', yShearVal = '0', zShearVal = '0';
+/*
+var xTransVal = '0', yTransVal = '0', zTransVal = '0';
 var xScaleVal = 0, yScaleVal = 0, zScaleVal = 0;
-var xShearVal = 0, yShearVal = 0, zShearVal = 0;
-var xRotVal = 0, yRotVal = 0, zRotVal = 0;
+var xRotVal = 0,  yRotVal = 0, zRotVal = 0;
+*/
 
 function init(){
   // RENDERER
@@ -22,13 +27,10 @@ function init(){
   renderer = new THREE.WebGLRenderer({canvas: canvas}, {antialias: true});
   renderer.setClearColor(0xA0A0A0);
   renderer.setSize(window.innerHeight-10, window.innerHeight-10);
-  //document.body.appendChild(renderer.domElement);
-  //document.body.appendChild(document.getElementById('content'));
 
   // CAMERA & SCENE
   camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
   scene = new THREE.Scene();
-  //scene.background = new THREE.Color(0xA0A0A0);
 
   // CAMERA CONTROLS
   controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -41,9 +43,12 @@ function init(){
   ptLightArr.push(new THREE.PointLight(0xffffff, 1, 0));
   ptLightArr.push(new THREE.PointLight(0xffffff, 1, 0));
 
-  ptLightArr[0].position.set(0, 200, 0);
-  ptLightArr[1].position.set(100, 200, 100);
-  ptLightArr[2].position.set(-100, -200, -100);
+  xLight1 = 0; yLight1 = 200; zLight1 = 0;
+  ptLightArr[0].position.set(xLight1, yLight1, zLight1);
+  xLight2 = 100; yLight2 = 200; zLight2 = 100;
+  ptLightArr[1].position.set(xLight2, yLight2, zLight2);
+  xLight3 = -100; yLight3 = -200; zLight3 = -100;
+  ptLightArr[2].position.set(xLight3, yLight3, zLight3);
 
   scene.add(ptLightArr[0]);
   scene.add(ptLightArr[1]);
@@ -66,15 +71,19 @@ function init(){
   objMesh.position.x = 1;
   objMesh.position.y = 1;
   objMesh.position.z = 1;
-  camera.position.x = 25;
-  camera.position.y = 25;
-  camera.position.z = 25;
+  camera.position.x = 20;
+  camera.position.y = 20;
+  camera.position.z = 20;
 
   // INITIAL COORDINATE SYSTEM
   GridSizes = 40;
   GridXYCol = new THREE.Color(0x008800);
   GridXZCol = new THREE.Color(0x000088);
   GridYZCol = new THREE.Color(0x880000);
+
+  var testGrid = new CircularLabeledGrid(100, 10, 0x000088, 0.4, true, "#000000", "center", [0, 1, 0]);
+  testGrid.name = "Lit";
+  scene.add(testGrid);
 
   GridXZ1 = new LabeledGrid(GridSizes, GridSizes, 10, [0, 1, 0], 0x000088, 0.4, true, "#000000", "left");
   GridXZ1.name = "GridXZ1";
