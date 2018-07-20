@@ -1,20 +1,28 @@
-//MAT3D
-//JAVASCRIPT FILE CONTAINING
-//MATHMATICAL FUNCTIONS FROM PARSER
-//lib-used: math.js from external javascript library
+/** 
+* MAT3D
+* JAVASCRIPT FILE CONTAINING 
+* MATHMATICAL FUNCTIONS FROM PARSER
+* lib-used: math.js from external javascript library
+* @author Jacob Schwartz
+* @version 1.0
+*/
 
 //NEED A VARIABLE math either declared in html or another javascript file
 
 //-------------------------------------------------
-
+/**
+ * test function
+ */
 function exampleFunction(){
 	console.log("exampole function is working");
 }
 
-//FUNCTION readStack(stack)
-//called from parser 
-//takes stack in rpn and calls functions from stack
-
+/**
+ * Function takes in a stack array in 
+ * reversed polished notation(rpn) and returns computed answer
+ * @param {object} stack array containing rpn
+ * @return {object} output of computation
+ */
 function readStack(stack){
 
 	var stackLength = stack.length;
@@ -34,339 +42,234 @@ function readStack(stack){
 	return re;
 }
 
-//FUNCTION readStack(stack)
-//reads a rpn stack and calls functions in order
-function readStack2(stack){
-	var stackLength = stack.length;
-	//console.log("stack length " + stackLength);
-	var arr = [];
-	try {
-	    for (var i = 0; i < stackLength; i++) {
-	        var element = stack[i];
-	       // console.log(element);
-	        if (isOperator(element)) {
-
-	            if (element == "*") {
-	                var operator1 = arr.pop();
-	                var operator2 = arr.pop();
-	                var val = matrixMultiplication(operator1, operator2);
-	                arr.push(val);
-	            } else if (element == "/") {
-	                var operator1 = arr.pop();
-	                var operator2 = arr.pop();
-	                var val = math.divide(operator1, operator2);
-	                arr.push(val);
-	            } else if (element == "+") {
-	                var operator1 = arr.pop();
-					var operator2 = arr.pop();
-					checkInput(operator1, 0);
-					checkInput(operator2, 0);
-	                var val = math.add(operator1, operator2);
-	                arr.push(val);
-	            } else if (element == "-") {
-	                var operator1 = arr.pop();
-                    var operator2 = arr.pop();
-                    checkInput(operator1, 0);
-	                checkInput(operator2, 0);
-	                var val = math.subtract(operator1, operator2);
-	                arr.push(val);
-				}
-				else if(element == "det"){ //DETERMINANT OF A MATRIX
-					var operator1 = arr.pop();
-					checkInput(operator1, 0);
-					var val = findDeterminant(operator1);
-					arr.push(val);
-				}
-				else if(element == "inv"){//INVERSE OPERATION
-					var operator1 = arr.pop();
-					checkInput(operator1, 0);
-					var val = findInverse(operator1);
-					arr.push(val);
-				}
-				else if(element == "transpose"){
-					var operator1 = arr.pop();
-					checkInput(operator1 ,0);
-					arr.push(findTranspose(operator1));
-				}
-				else if(element == "abs"){
-					var operator1 = arr.pop();
-					checkInput(operator1, 0);
-					arr.push(findAbs(operator1));
-				}
-				else if(element == "log10"){
-					var operator1 = arr.pop();
-					checkInput(operator1, 0);
-					arr.push(findLog10(operator1));
-				}
-				else if(element == "ln"){
-					var operator1 = arr.pop();
-					checkInput(operator1, 0);
-					arr.push(findNaturalLog(operator1));
-				}
-				else if(element == "sqrt"){
-					var operator1 = arr.pop();
-					checkInput(operator1, 0);
-					arr.push(findSqrt(operator1));
-				}
-				else if(element == "lu"){//LU DECOMP
-					//INPUT MUST BE A MATRIX/ARRAY
-					var operator1 = arr.pop();
-					checkInput(operator1, 0);
-					arr.push(findLu(operator1));
-				}
-
-				else if(element == "rank"){// FIND RANK OF A MATRIX
-					var operator1 = arr.pop();
-					checkInput(operator1, 0);
-					var size = math.size(operator1);
-					arr.push(rankOfMatrix(operator1, size[0], size[1]));
-				}
-				else if(element == "choleksy"){//FIND CHOLESKY DECOMP
-					var operator1 = arr.pop();
-					checkInput(operator1, 0);
-					var size = math.size(operator1);
-					arr.push(choleskyDecomp2(operator1, size[0]));
-				}
-			}
-			else arr.push(element);
-		} //end for
-		// /*
-	} catch (error) {
-        console.log("Input is not correctly placed!");
-        return "Invalid Input!";
-	}//*/
-	return arr.pop();
-	}
-
-//isOperator //checks if given input is an operator
-function isOperator(string){
-	if(string == "*")
-		return true;
-	else if(string == "/")
-		return true;
-	else if(string == "+")
-		return true;
-	else if(string == "-")
-		return true;
-	else if(string == "det")
-		return true;
-	else if(string == "inv")
-		return true;
-	else if(string == "transpose")
-		return true;
-	else if(string == "abs")
-		return true;
-	else if(string == "log10")
-		return true;
-	else if(string == "ln")
-		return true;
-	else if(string == "sqrt")
-		return true;
-	else if(string == "lu")
-		return true;
-	else if(string == "rank")
-		return true;
-	else if(string == "cholesky")
-		return true;
-
-
-	else return false;
-}
-
-function checkInput(a, typeError) {
-	if (typeError == 0) {//TYPE ERROR 0: OPERATOR IS UNDEFINED
-		if (a == undefined) {
-			throw "error";
-		}
-	}
-	return;
-}
-
-
+/**
+ * Function prints object to console
+ * used for testing purposes
+ * @param {object} value any math.java input 
+ * 
+ */
 function print (value) {
   const precision = 14
   console.log(math.format(value, precision))
 }
 
+/**
+ * Function computes addition using math.js library
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function findAdd(a){
 	var operator1 = a.pop();
 	var operator2 = a.pop();
 	return math.add(operator1, operator2);
 }
 
+/**
+ * Function computes subtraction using math.js library
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function findSub(a){
 	var operator1 = a.pop();
 	var operator2 = a.pop();
 	return math.subtract(operator2, operator1);
 }
 
+/**
+ * Function computes division using math.js library
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function findDiv(a){
 	var operator1 = a.pop();
 	var operator2 = a.pop();
 	return math.divide(operator2, operator1);
 }
 
-//matrixMultiplication-multiplies two matrices together
-//NOTE WORKS FOR ALL INPUT MATRICES AND SCALARS
-//RETURNS A MATRIX
+/**
+ * Function computes multiplication using math.js library
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function matrixMultiplication(stack){
 	var a = stack.pop();
 	var b = stack.pop();
 	console.log(a);
 	console.log(b);
-
-	if (typeof(a) == "function" || typeof(b) == "function") {
-		return composeFunction(a,b);
-	}
-
 	var c = math.multiply(a, b);
 	//print(c);
 	//stack.push(c);
 	return c;
 }
 
-function composeFunction (a, b) {
-	if (typeof(a) != "function") {
-		return function(stack) {
-			return math.multiply(a, b(stack));
-		}
-	}
-	else if(typeof(b) != "function") {
-		return function(stack) {
-			return math.multiply(b, a(stack));
-		}
-	}
-	else {
-		return function(stack) {
-			return a(b(stack));
-		}
-	}
-}
-
-//findInverse() return the inverse of the input matrixMultiplication
+/**
+ * Function takes the inverse of input
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function findInverse(a){
 	var operator = a.pop();
 	var c = math.inv(operator);
-	return c;
+	return c;	
 }
 
-//findTranspose()
-//RETURNS TRANSPOSE OF GIVEN MATRIX
+/**
+ * Function computes transpose of given matrix
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function findTranspose(a){
 	var operator = a.pop();
 	var c = math.transpose(operator);
 	return c;
 }
 
-//findDiagonal
-//RETURNS DIAGONAL OF MATRIX
-function findDiagonal(a){
+/**
+ * Function computes the diagonal of a matrix
+ * uses math.js library
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
+function findDiagonal(a){ 
 	var operator = a.pop();
 	var c = math.diag(operator);
 	return c;
 }
 
-//findDeterminant
+/**
+ * Function computes the determinant of a matrix
+ * uses math.js library
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function findDeterminant(a){
 	var operator = a.pop();
 	var c = math.det(operator);
 	return c;
 }
 
-<<<<<<< HEAD
-//TRIG FUNCTION PARSER
-function findTrig(a, angle, bit){
-	var val;
-	//sin
-	if(bit == 0){
-		console.log("sin");
-		val = math.multiply(Math.sin(toRadians(angle)), a);
-	}
-	//cos
-	else if(bit == 1){
-		if(angle == 90 || angle == 270){
-			return math.multiply(0, a);
-		}
-		val = math.multiply(Math.cos(toRadians(angle)), a);
-	}
-	//tan
-	else if(bit == 2){
-		val = math.multiply(Math.tan(toRadians(angle)), a);
-	}
-
-	//arcsin
-	else if(bit == 3){
-		val = math.multiply(Math.asin(toRadians(angle)), a);
-	}
-	//arccos
-	else if(bit == 4){
-		val = math.multiply(Math.acos(toRadians(angle)), a);
-	}
-
-	else if(bit == 5){
-		val = math.multiply(Math.atan(toRadians(angle)), a);
-	}
-
-	return val;
-=======
-//TRIG FUNCTIONS
+/**
+ * Function computes trig function on input
+ * uses the math.js library
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function findSin(a){
 	var operator = a.pop();
 	return math.sin(toRadians(operator));
 }
 
+/**
+ * Function computes trig function on input
+ * uses the math.js library
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function findCos(a){
 	var operator = a.pop();
 	return math.cos(toRadians(operator));
 }
 
+/**
+ * Function computes trig function on input
+ * uses the math.js library
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function findTan(a){
 	var operator = a.pop();
 	return math.tan(toRadians(operator));
 }
 
 //INVERSE TRIG FUNCTIONS
+/**
+ * Function computes trig function on input
+ * uses the math.js library
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function findArcSin(a){
 	var operator = a.pop();
 	return math.asin(toRadians(operator));
 }
 
+/**
+ * Function computes trig function on input
+ * uses the math.js library
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function findArcCos(a){
 	var operator = a.pop();
 	return math.acos(toRadians(operator));
 }
 
+/**
+ * Function computes trig function on input
+ * uses the math.js library
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function findArcTan(a){
 	var operator = a.pop();
 	return math.atan(toRadians(operator));
 }
 
 // 1/VAL TRIG FUNCTIONS
+/**
+ * Function computes trig function on input
+ * uses the math.js library
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function findCosecant(a){
 	var operator = a.pop();
 	return math.csc(toRadians(operator));
 }
 
+/**
+ * Function computes trig function on input
+ * uses the math.js library
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function findSecant(a){
 	var operator = a.pop();
 	return math.sec(toRadians(operator));
 }
 
+/**
+ * Function computes trig function on input
+ * uses the math.js library
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function findCotangent(a){
 	var operator = a.pop();
 	return math.cot(toRadians(operator));
->>>>>>> a36ccdf4df3f7e0b90aa25d1ddbb7334baed5c17
 }
 
 //log base 10
+/**
+ * Function computes log10 on input
+ * uses the math.js library
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function findLog10(a){
 	var operator = a.pop();
 	var c = math.log10(operator);
-
+	
 	return c;
 }
 
 //natural log
+/**
+ * Function computes natural log on input
+ * uses the math.js library
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function findNaturalLog(a){
 	var operator = a.pop();
 	var c = math.log(operator);
@@ -374,6 +277,12 @@ function findNaturalLog(a){
 }
 
 //find exponent
+/**
+ * Function computes exponent on input
+ * uses the math.js library
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function findExp(a){
 	var operator1 = a.pop();
 	var operator2 = a.pop();
@@ -381,6 +290,12 @@ function findExp(a){
 }
 
 //find sqrt
+/**
+ * Function computes square root on input
+ * uses the math.js library
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function findSqrt(a){
 	var operator = a.pop();
 	var c = math.sqrt(operator);
@@ -388,27 +303,52 @@ function findSqrt(a){
 }
 
 //find absolute value
+/**
+ * Function computes absolute value on input
+ * uses the math.js library
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function findAbs(a){
 	var operator = a.pop();
 	var c = math.abs(operator);
 	return c;
 }
 
-//find factorial
-//note will accept matrix with only integer values
-//see math.js documentation
+/**
+ * Function computes factorial on input
+ * uses the math.js library
+ * note will accept matrix with only integer values
+ * see math.js documentation
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ * 
+ */
 function findFactorial(a){
 	var operator = a.pop();
 	var c = math.factorial(operator);
 	return c;
 }
 
+/**
+ * Function computes lu decomposition on input
+ * uses the math.js library
+ * input can only be a matrix/array
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function findLu(a){
 	var operator = a.pop();
 	var c = math.lup(operator);
 	return c;
 }
 
+/**
+ * Function computes rank on input
+ * calls rankOfMatrix
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function findRank(a){
 	var operator = a.pop();
 	var size = math.size(operator);
@@ -419,15 +359,24 @@ function findRank(a){
 //function to find rank of a matrix
 //algorithm taken and translated from geeksforgeeks
 // https://www.geeksforgeeks.org/program-for-rank-of-matrix/
+/**
+ * Function computes trig function on input
+ * algorithm taken and translated from geeksforgeeks
+ * https://www.geeksforgeeks.org/program-for-rank-of-matrix/
+ * @param {object} mat matrix in array format
+ * @param {object} r number of rows in matrix
+ * @param {object} c number of columns in matrix
+ * @return {object} returns computed value
+ */
 function rankOfMatrix(mat, r, c){
 	var rank = c;
-
+	
 	for(var row = 0; row < rank; row++){
-		// Before we visit current row
-            // 'row', we make sure that
+		// Before we visit current row 
+            // 'row', we make sure that 
             // mat[row][0],....mat[row][row-1]
             // are 0.
-
+     
             // Diagonal element is not zero
 			if(mat[row][row] != 0){
 				for(var col = 0; col < r; col++){
@@ -441,20 +390,20 @@ function rankOfMatrix(mat, r, c){
 					}
 				}
 			}//end if
-			// Diagonal element is already zero.
+			// Diagonal element is already zero. 
             // Two cases arise:
-            // 1) If there is a row below it
-            // with non-zero entry, then swap
-            // this row with that row and process
+            // 1) If there is a row below it 
+            // with non-zero entry, then swap 
+            // this row with that row and process 
             // that row
-            // 2) If all elements in current
-            // column below mat[r][row] are 0,
-            // then remvoe this column by
+            // 2) If all elements in current 
+            // column below mat[r][row] are 0, 
+            // then remvoe this column by 
             // swapping it with last column and
             // reducing number of columns by 1.
 			else {
 				var reduce = true;
-
+				
 				//find the non-zero element
 				//in current column
 				for(var i = row + 1; i < r; i++){
@@ -466,30 +415,36 @@ function rankOfMatrix(mat, r, c){
 						break;
 					}
 				}
-				// If we did not find any row with
-                // non-zero element in current
-                // columnm, then all values in
+				// If we did not find any row with 
+                // non-zero element in current 
+                // columnm, then all values in 
                 // this column are 0.
 				if(reduce){
 					//reduce number of columns
 					rank--;
-
+					
 					//copy the last column here
 					for(var i =0; i < r; i++){
 						mat[i][row] = mat[i][rank];
 					}
 				}
-
+				
 				//Process this row again
 				row--;
 			}//end else
-
-
+			
+			
 	}
-	//return
+	//return 
 	return rank;
 }
 
+/**
+ * Function computes cholesky decomposition of a matrix
+ * calls choleskyDecomp2
+ * @param {object} a stack with mathmatical objects
+ * @return {object} returns computed value
+ */
 function findCholesky(a){
 	var operator = a.pop();
 	return choleskyDecomp2(operator);
@@ -498,14 +453,22 @@ function findCholesky(a){
 //function for cholesky decomposition
 //algorithm taken and translated from geeksforgeeks
 //https://www.geeksforgeeks.org/cholesky-decomposition-matrix-decomposition/
+/**
+ * Function computes cholesky on input
+ * algorithm taken and translated from geeksforgeeks
+ * //https://www.geeksforgeeks.org/cholesky-decomposition-matrix-decomposition/
+ * @param {object} matrix matrix object input
+ * @param {object} n size of matrix
+ * @return {object} returns computed value
+ */
 function choleskyDecomp2(matrix, n){
 	var lower=jagArray(n);
 	//memset from c -- should not be necessary in js
-
+	
 	for(var i = 0; i < n; i++){
 		for(var j = 0; j <= i; j++){
 			var sum = 0;
-
+				
 			if(j == i){//summation for diagonals
 				for(var k = 0; k < j; k++){
 					sum += Math.pow(lower[j][k], 2);
@@ -517,7 +480,7 @@ function choleskyDecomp2(matrix, n){
 				for(var k = 0; k < j; k++){
 					sum += (lower[i][k] * lower[j][k]);
 				}
-				lower[i][j] = (matrix[i][j] - sum) / lower[j][j];
+				lower[i][j] = (matrix[i][j] - sum) / lower[j][j]; 
 			}
 		}
 	}//end for
@@ -525,60 +488,57 @@ function choleskyDecomp2(matrix, n){
 	return lower;
 }
 
-//FUNCTION choleskyDecomp
-//algorithm taken from rosetta code.org
-//https://rosettacode.org/wiki/Cholesky_decomposition#Java
-function choleskyDecomp(a){
-	var size = math.size(a);
-	var n = size[0];
-	var l = jagArray(n);
-	for(var i = 0; i < n; i++){
-		for(var k = 0; k < (i+1); k++){
-			var sum = 0;
-			for(var j = 0; j < k; j++){
-				sum += l[i][j] * l[k][j];
-			}
-			//l[i][k] = (i == k) ? math.sqrt(a[i][i] - sum) :
-			//(1.0 / l[k][k] * (a[i][k] - sum));
-
-			if(i == k){
-				l[i][k] = math.sqrt(a[i][i] - sum);
-				//l[i][k] = 0;
-			}
-			else{
-				l[i][k] = (1.0 / l[k][k] * (a[i][k] - sum));
-				//l[i][k] = 0;
-			}
-		}
-	}
-	return l;
-}
 //--------------------------------------------------------------------
 //ADDITIONAL HELPER FUNCTIONS
+
+/**
+ * Function changes input from radians to degrees
+ * 
+ * @param {object} angle integer
+ * @return {object} returns computed value
+ */
 function toDegrees(angle){
 	var val = angle * (180 / Math.PI);
 	return val;
 }
 
+/**
+ * Function changes input from degrees to radians
+ * 
+ * @param {object} angle integer
+ * @return {object} returns computed value
+ */
 function toRadians(angle){
 	var val = angle * (Math.PI / 180);
 	console.log("torad " + val);
 	return val;
 }
 
-//function swap
-//function for rankOfMatrix
+/**
+ * Function swap helper function for rankOfMatrix
+ * 
+ * @param {object} mat matrix
+ * @param {object} row1 matrix row
+ * @param {object} row2 matrix row
+ * @param {object} col matrix column
+ * 
+ */
 function swap(mat, row1, row2, col){
 	for(var i = 0; i < col; i++){
 		var temp = mat[row1][i];
 		mat[row1][i] = mat[row2][i];
 		mat[row2][i] = temp;
 	}
-
+	
 }
 
-//function jagArray
-//function for choleskyDecomp
+/**
+ * Function jagArray creates a 2D array in Javascript
+ * used for choleskyDecomp
+ * 
+ * @param {object} n empty array
+ * @return {object} returns 2D array
+ */
 function jagArray(n){
 	var arr = [];
 	for(var x = 0; x < n; x++){
@@ -590,3 +550,5 @@ function jagArray(n){
 	}
 	return arr;
 }
+
+	
