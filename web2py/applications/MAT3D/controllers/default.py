@@ -1,3 +1,10 @@
+"""
+Name: Zoe Tacderas
+UCSC email: stacdera@ucsc.edu
+File name: default.py
+"""
+
+
 # -*- coding: utf-8 -*-
 # this file is released under public domain and you can use without limitations
 
@@ -12,6 +19,7 @@
 def index():
     """This is the home page."""
     return dict()
+
 
 def user():
     """
@@ -51,6 +59,7 @@ def call():
     return service()
 
 
-def threeDDriver():
+def three_d_driver():
     """ for 3D Driver HTML."""
     return dict()
+
