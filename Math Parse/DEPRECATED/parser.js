@@ -3,22 +3,14 @@
  * within the MAT3D calculator
  *
  * @constructor
- * @author Alfredo Rivero, Jacob Schwartz
+ * @author Alfredo Rivero
  * @version 2.0
  * @this {Parser}
  */
 function Parser() {
   // Operator presedence dictionary used for Shunting-Yard
-  /** @private */ this.ops = { "|": 0, "+": 1, "-": 1, "*": 2, "/": 2, "^": 3 };
 
-  /** @private */ this.functions = { "+" : findAdd, "-": findSub, "/": findDiv,
-  "*" : matrixMultiplication, "inv": findInverse, "transpose": findTranspose,
-  "diag": findDiagonal, "det": findDeterminant, "sin": findSin, "cos": findCos,
-  "tan": findTan, "arcsin": findArcSin, "arccos": findArcCos,
-  "arctan": findArcTan, "log": findLog10, "ln": findNaturalLog,
-  "^": findExp, "sqrt": findSqrt, "abs": findAbs, "ludec": findLu,
-  "rank": findRank, "chodec": findCholesky, "neg": negative, "sec": findSecant,
-  "cosec": findCosecant, "cotan": findCotangent };
+  /** @private */ this.ops = { "|": 0, "+": 1, "-": 1, "*": 2, "/": 2, "^": 3 };
 
   // The following are membership values within wordBreak and its helper functions
   /** @private */ this.NAM = -1;  // Not a Member
@@ -30,17 +22,14 @@ function Parser() {
 /**
  * Parses input provided by the top bar of the MAT3D calculator.
  *
- * @author Alfredo Rivero
  * @param {String} rawIn Raw input string provided by top bar
  * @returns {Number, Array, SparseMatrix, DenseMatrix} Computed output
+ * @throws Message if the input was invalid
  *
  */
 Parser.prototype.parseTopBar = function(rawIn) {
   try {
     var parsedOut = this.parseExpression(rawIn, []);
-    if (isNaN(parsedOut) && typeof(parsedOut) != "object") {
-      throw "Unkown error while parsing";
-    }
     return parsedOut;
   }
   catch(err) {
@@ -52,7 +41,6 @@ Parser.prototype.parseTopBar = function(rawIn) {
 /**
  * Parses input provided by the side bar. Will only return matrices.
  *
- * @author Alfredo Rivero
  * @param {String} rawIn Raw input string provided by top bar
  * @returns {Array, SparseMatrix, DenseMatrix} Computed output
  * @throws Message if the input was invalid or the computed input was a scalar
@@ -62,10 +50,7 @@ Parser.prototype.parseSideBar = function(rawIn) {
   try {
     var parsedOut = this.parseExpression(rawIn, []);
     if (!isNaN(parsedOut)) {
-      throw "Tried to assign a invalid value to a matrix variable!";
-    }
-    if (typeof(parsedOut) != "object") {
-      throw "Unkown error while parsing";
+      throw "Tried to assign a scalar to a matrix variable!";
     }
 
     return parsedOut;
@@ -79,7 +64,6 @@ Parser.prototype.parseSideBar = function(rawIn) {
 /**
  * Parses input provided by the side bar. Will only return matrices.
  *
- * @author Alfredo Rivero
  * @param {String} rawIn Raw input string provided by top bar
  * @returns {Number} Computed output
  * @throws Message if the input was invalid or the computed input was a matrix
@@ -89,7 +73,7 @@ Parser.prototype.parseMatCell = function(rawIn) {
   try {
     var parsedOut = this.parseExpression(rawIn, []);
     if (isNaN(parsedOut)) {
-      throw "Tried to assign a invalid value to a scalar variable!";
+      throw "Tried to assign a matrix to a scalar variable!";
     }
 
     return parsedOut;
@@ -106,11 +90,10 @@ Parser.prototype.parseMatCell = function(rawIn) {
  * recursive.
  *
  * @private
- * @author Alfredo Rivero
  * @param {String} strIn string input provided by parseExpression
  * @param {Boolean} opStack Operator stack used for modified Shunting-Yard
- * @returns {Number, Array, SparseMatrix, DenseMatrix, String} Computed value
- * @throws Message if the input string conatins invalid characters/formatting
+ * @returns {Number, Array, SparseMatrix, DenseMatrix, String} Computed value or
+ * exception message.
  */
 Parser.prototype.parseExpression = function(mathExp, opStack) {
   var splitExp = this.splitExpToArray(mathExp);
@@ -128,7 +111,7 @@ Parser.prototype.parseExpression = function(mathExp, opStack) {
       prevHadOp = false;
     }
     else if (this.isNegSign(splitExp[i], prevHadOp)) {
-      this.pushToOpStack(this.functions["neg"], opStack, answerRPN);
+      this.pushToOpStack(functions["neg"], opStack, answerRPN);
       prevHadOp = true; //
     }
     else if (this.isOperator(splitExp[i])) {
@@ -155,7 +138,7 @@ Parser.prototype.parseExpression = function(mathExp, opStack) {
       if (typeof(parsedStr) == "function") {
         this.pushToOpStack(parsedStr, opStack, answerRPN);
       }
-      else if (!(parsedStr instanceof String)){
+      else {
         answerRPN.push(parsedStr);
       }
 
@@ -172,10 +155,10 @@ Parser.prototype.parseExpression = function(mathExp, opStack) {
       answerRPN.push(opStack.pop());
     }
     else {
-      answerRPN.push(this.functions[opStack.pop()]);
+      answerRPN.push(functions[opStack.pop()]);
     }
   }
-  return this.readRPN(answerRPN);
+  return readStack(answerRPN);
 }
 
 /**
@@ -183,7 +166,6 @@ Parser.prototype.parseExpression = function(mathExp, opStack) {
  * operator stack (opStack). Uses ops to follow that criteria.
  *
  * @private
- * @author Alfredo Rivero
  * @param {String, function} pushedItem Operator or funciton being pushed
  * @param {Array} opStack Operator stack that will have pushedItem pushed onto it
  * @param {Array} answerRPN The answer array which operators popped off opStack
@@ -192,7 +174,7 @@ Parser.prototype.parseExpression = function(mathExp, opStack) {
 Parser.prototype.pushToOpStack = function(pushedItem, opStack, answerRPN) {
   if (typeof(pushedItem) == "function") {
     while (opStack.length != 0 && typeof(opStack[opStack.length - 1]) == "function") {
-      answerRPN.push(this.functions[opStack.pop()]);
+      answerRPN.push(functions[opStack.pop()]);
     }
   }
   else {
@@ -201,7 +183,7 @@ Parser.prototype.pushToOpStack = function(pushedItem, opStack, answerRPN) {
         answerRPN.push(opStack.pop());
       }
       else {
-        answerRPN.push(this.functions[opStack.pop()]);
+        answerRPN.push(functions[opStack.pop()]);
       }
     }
   }
@@ -215,7 +197,6 @@ Parser.prototype.pushToOpStack = function(pushedItem, opStack, answerRPN) {
  * pushToOpStack().
  *
  * @private
- * @author Alfredo Rivero
  * @param {String, function} topOfStack Operator or funciton from top of opStack
  * @param {String, function} pushedItem Operator or funciton being pushed
  */
@@ -228,7 +209,6 @@ Parser.prototype.isOfHigherPresedence = function(topOfStack, pushedItem) {
 * them into a scalar, matrix, or function.
 *
 * @private
-* @author Alfredo Rivero
 * @param {String} lettStr String composed of only letters
 * @returns {Boolean} True if strIn was a negative sign
 */
@@ -240,11 +220,11 @@ Parser.prototype.compLettStr = function(lettStr) {
 
   if (splitLettStr.length > 1) {
     // Convert splitLettStr into RPN
-    splitLettStr.splice(2, 0, this.functions["*"]);
+    splitLettStr.splice(2, 0, functions["*"]);
     for (var i = 3; i < splitLettStr.length; i+=2) {
-      splitLettStr.splice(i+1, 0, this.functions["*"]);
+      splitLettStr.splice(i+1, 0, functions["*"]);
     }
-    return this.readRPN(splitLettStr);
+    return readStack(splitLettStr);
   }
   else {
     return splitLettStr[0];
@@ -263,7 +243,6 @@ Parser.prototype.compLettStr = function(lettStr) {
 * @param {String} lettStr String being deconsructed into valid combinations
 * @returns {Array ,String} Array containg the best valid deconstruction of
 * lettStr or string if an Exception was found.
-* @throws Message if no valid combination can be found
 */
 Parser.prototype.wordBreak = function(lettStr) {
   var strPos = new Array(lettStr.length + 1);
@@ -303,16 +282,19 @@ Parser.prototype.wordBreak = function(lettStr) {
 * to. Returns NAM if not a member of any dictionary.
 *
 * @private
-* @author Alfredo Rivero
 * @param {Array} strPos Array containing containg the valid combinations
 * @returns {Array} Array containg the best best combination
 */
 Parser.prototype.determMem = function(subStr) {
-  if (APP.det_matrices_membership(subStr)) {
+  if (subStr in matrices) {
     return this.MATRIX;
   }
+  // If subStr is a defined scalar
+  else if (subStr in scalars) {
+    return this.SCALAR;
+  }
   // If subStr is a valid function
-  else if (subStr in this.functions) {
+  else if (subStr in functions) {
     return this.FUNCTION;
   }
   else {
@@ -325,7 +307,6 @@ Parser.prototype.determMem = function(subStr) {
 * function of wordBreak.
 *
 * @private
-* @author Alfredo Rivero
 * @param {Array} strPos Array containing containg the valid combinations
 * @returns {Array} Array containg the best best combination
 */
@@ -353,10 +334,13 @@ Parser.prototype.bestComb = function(strPos) {
   for (var k = 0; k < possOuts[0].length; k++) {
     switch (possOuts[0][k][1]) {
       case this.MATRIX:
-        possOuts[0][k] = APP.get_matrix_by_name(possOuts[0][k][0]);
+        possOuts[0][k] = matrices[possOuts[0][k][0]];
+        break;
+      case this.SCALAR:
+        possOuts[0][k] = scalars[possOuts[0][k][0]];
         break;
       case this.FUNCTION:
-        possOuts[0][k] = this.functions[possOuts[0][k][0]];
+        possOuts[0][k] = functions[possOuts[0][k][0]];
     }
    }
 
@@ -371,26 +355,23 @@ Parser.prototype.bestComb = function(strPos) {
 * A sorting function used weight combinations within bestComb.
 *
 * @private
-* @author Alfredo Rivero
 * @param {Array} comb1 Array containing containg the the first combination
 * @param {Array} comb2 Array containing containg the the second combination
 * @returns {number} -1 if comb1 is better, 1 if comb2 is better, and 0 if equal
 */
 Parser.prototype.bestCombCiteria = function(comb1, comb2) {
   // If a function is at the end of a possiblity, weight it higher
-  var lastElm = comb1.length - 2;
-  var numOfFunctions = comb1.length - 1;
-  if ((comb1[lastElm][0] in this.functions) && !(comb2[lastElm][0] in this.functions)) {
+  if ((comb1[comb1.length - 2][0] in functions) && !(comb2[comb2.length - 2][0] in functions)) {
     return -1
   }
-  else if (!(comb1[lastElm][0] in this.functions) && (comb2[lastElm][0] in this.functions)) {
+  else if (!(comb1[comb1.length - 2][0] in functions) && (comb2[comb2.length - 2][0] in functions)) {
     return 1
   }
   // Followed by the least number of functions
-  if (comb1[numOfFunctions] > comb2[numOfFunctions]) {
+  if (comb1[comb1.length - 1] > comb2[comb2.length - 1]) {
     return 1
   }
-  else if (comb1[numOfFunctions] < comb2[numOfFunctions]) {
+  else if (comb1[comb1.length - 1] < comb2[comb2.length - 1]) {
     return -1
   }
   // Followed by the least amount of elements in that deconstruction
@@ -435,7 +416,6 @@ Parser.prototype.dfs = function(strPos, possOuts, current, i) {
 * parseExpression().
 *
 * @private
-* @author Alfredo Rivero
 * @param {String} strIn string input provided by parseExpression
 * @param {Boolean} prevHadOp Boolean determining if an operator was encountered beforehand
 * @returns {Boolean} True if strIn was a negative sign
@@ -449,7 +429,6 @@ Parser.prototype.isNegSign = function(strIn, prevHadOp) {
 * A helper function for parseExpression().
 *
 * @private
-* @author Alfredo Rivero
 * @param {String} strIn string input provided by parseExpression
 * @returns {Boolean} True if strIn was a parenthesis block.
 */
@@ -462,7 +441,6 @@ Parser.prototype.isParenBlock = function(strIn) {
 * for parseExpression().
 *
 * @private
-* @author Alfredo Rivero
 * @param {String} strIn string input provided by parseExpression
 * @returns {Boolean} True if strIn was an operator
 */
@@ -475,7 +453,6 @@ Parser.prototype.isOperator = function(strIn) {
 * parseExpression().
 *
 * @private
-* @author Alfredo Rivero
 * @param {String} strIn string input provided by parseExpression
 * @returns {Boolean} True if strIn was a number
 */
@@ -488,7 +465,6 @@ Parser.prototype.isLetterStr = function(strIn) {
 * alphabetic characters. A helper function to parseExpression().
 *
 * @private
-* @author Alfredo Rivero
 * @param {String} strIn string input provided by parseExpression
 * @returns {Boolean} True if strIn was composed entirely of alphabetic characters
 */
@@ -502,7 +478,6 @@ Parser.prototype.isNumber = function(strIn) {
 * parseExpression().
 *
 * @private
-* @author Alfredo Rivero
 * @param {String} rawIn Raw input mathematical expression
 * @returns {Array} Split raw input
 */
@@ -515,32 +490,4 @@ Parser.prototype.splitExpToArray = function(mathExp) {
   out = out.filter(Boolean);  // Remove any null items within out
 
   return out;
-}
-
-/**
-* Reads an array containing a mathematical expression in RPN
-* (reverse polish notation) and computes it.
-*
-* @private
-* @author Jacob Schwartz
-* @param {String} rpnStack RPN Mathematical Expression
-* @returns {Array, SparseMatrix, DenseMatrix, number} Evaluated expression's output
-*/
-Parser.prototype.readRPN = function(rpnStack) {
-  var stackLength = rpnStack.length;
-	var outArray = [];
-
-	for(var i = 0; i < stackLength; i++){
-		var element = rpnStack[i];
-		if(typeof(element) == "function"){
-			var value = element(outArray)
-			outArray.push(value);
-		}
-		else{
-			outArray.push(element);
-		}
-	}
-	var result = outArray.pop();
-
-	return result;
 }

@@ -9,8 +9,8 @@
  */
 function Parser() {
   // Operator presedence dictionary used for Shunting-Yard
-
   /** @private */ this.ops = { "|": 0, "+": 1, "-": 1, "*": 2, "/": 2, "^": 3 };
+
   /** @private */ this.functions = { "+" : findAdd, "-": findSub, "/": findDiv,
   "*" : matrixMultiplication, "inv": findInverse, "transpose": findTranspose,
   "diag": findDiagonal, "det": findDeterminant, "sin": findSin, "cos": findCos,
@@ -38,6 +38,9 @@ function Parser() {
 Parser.prototype.parseTopBar = function(rawIn) {
   try {
     var parsedOut = this.parseExpression(rawIn, []);
+    if (isNaN(parsedOut) && typeof(parsedOut) != "object") {
+      throw "Unkown error while parsing";
+    }
     return parsedOut;
   }
   catch(err) {
@@ -59,7 +62,10 @@ Parser.prototype.parseSideBar = function(rawIn) {
   try {
     var parsedOut = this.parseExpression(rawIn, []);
     if (!isNaN(parsedOut)) {
-      throw "Tried to assign a scalar to a matrix variable!";
+      throw "Tried to assign a invalid value to a matrix variable!";
+    }
+    if (typeof(parsedOut) != "object") {
+      throw "Unkown error while parsing";
     }
 
     return parsedOut;
@@ -83,7 +89,7 @@ Parser.prototype.parseMatCell = function(rawIn) {
   try {
     var parsedOut = this.parseExpression(rawIn, []);
     if (isNaN(parsedOut)) {
-      throw "Tried to assign a matrix to a scalar variable!";
+      throw "Tried to assign a invalid value to a scalar variable!";
     }
 
     return parsedOut;
@@ -302,19 +308,9 @@ Parser.prototype.wordBreak = function(lettStr) {
 * @returns {Array} Array containg the best best combination
 */
 Parser.prototype.determMem = function(subStr) {
-  /*(
-  if (subStr in matrices) {
-  */
-
   if (APP.det_matrices_membership(subStr)) {
     return this.MATRIX;
   }
-  // If subStr is a defined scalar
-  /*
-  else if (subStr in scalars) {
-    return this.SCALAR;
-  }
-  */
   // If subStr is a valid function
   else if (subStr in this.functions) {
     return this.FUNCTION;
@@ -322,8 +318,6 @@ Parser.prototype.determMem = function(subStr) {
   else {
     return this.NAM;
   }
-
-
 }
 
 /**
@@ -359,15 +353,8 @@ Parser.prototype.bestComb = function(strPos) {
   for (var k = 0; k < possOuts[0].length; k++) {
     switch (possOuts[0][k][1]) {
       case this.MATRIX:
-        //possOuts[0][k] = matrices[possOuts[0][k][0]];
-        //Get actual matrix value from matrices_data array
-        possOuts[0][k]= APP.get_matrix_by_name(possOuts[0][k][0]);
-
+        possOuts[0][k] = APP.get_matrix_by_name(possOuts[0][k][0]);
         break;
-
-      //case this.SCALAR:
-        //possOuts[0][k] = scalars[possOuts[0][k][0]];
-        // break;
       case this.FUNCTION:
         possOuts[0][k] = this.functions[possOuts[0][k][0]];
     }
