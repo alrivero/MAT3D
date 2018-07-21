@@ -39,6 +39,17 @@ https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_button_group_verti
 
 .matrix_array {
     margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 30px;
+    border: black 5px;
+    border-style: solid;
+}
+
+.canvas_display {
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     padding: 30px;
     border: black 5px;
     border-style: solid;
