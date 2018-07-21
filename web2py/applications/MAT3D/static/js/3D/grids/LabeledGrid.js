@@ -44,7 +44,7 @@ var LabeledGrid = function (_THREE$Object3D) {
     _this.name = "grid";
 
     //TODO: clean this up
-    _this.marginSize = 10;
+    _this.marginSize = 5;
     _this.stepSubDivisions = 10;
 
     _this._drawGrid();
