@@ -62,7 +62,7 @@ var LabeledGrid = function (_THREE$Object3D) {
       var gridGeometry, gridMaterial, mainGridZ, planeFragmentShader, planeGeometry, planeMaterial, subGridGeometry, subGridMaterial, subGridZ;
 
       //offset to avoid z fighting
-      mainGridZ = -0.05;
+      mainGridZ = 0;
       gridGeometry = new THREE.Geometry();
       gridMaterial = new THREE.LineBasicMaterial({
         color: new THREE.Color().setHex(this.color),
@@ -71,7 +71,7 @@ var LabeledGrid = function (_THREE$Object3D) {
         transparent: true
       });
 
-      subGridZ = -0.05;
+      subGridZ = 0;
       subGridGeometry = new THREE.Geometry();
       subGridMaterial = new THREE.LineBasicMaterial({
         color: new THREE.Color().setHex(this.color),
@@ -283,41 +283,72 @@ var LabeledGrid = function (_THREE$Object3D) {
       var numbering = this.numbering = "centerBased";
 
       var labelsFront = new THREE.Object3D();
+      var labelsBack = new THREE.Object3D();
       var labelsSideRight = new THREE.Object3D();
+      var labelsSideLeft = new THREE.Object3D();
 
       if (numbering == "centerBased") {
+
+        // 0, 10, 20
         for (var i = 0; i <= width / 2; i += step) {
           var sizeLabel = this.drawTextOnPlane("" + i, 32);
-          var sizeLabel2 = sizeLabel.clone();
+          var sizeLabel2 = this.drawTextOnPlane("" - i, 32);
+          var sizeLabel3 = sizeLabel2.clone();
+          var sizeLabel4 = sizeLabel.clone();
 
-          sizeLabel.position.set(length / 2, -i, 0.1);
+          sizeLabel.position.set(length / 2, -i, 0);
           sizeLabel.rotation.z = -Math.PI / 2;
           labelsFront.add(sizeLabel);
 
-          sizeLabel2.position.set(length / 2, i, 0.1);
+          sizeLabel2.position.set(length / 2, i, 0);
           sizeLabel2.rotation.z = -Math.PI / 2;
           labelsFront.add(sizeLabel2);
+
+          sizeLabel3.position.set(length / 2, -i, 0);
+          sizeLabel3.rotation.z = -Math.PI/2;
+          labelsBack.add(sizeLabel3);
+          labelsBack.rotation.z = -Math.PI;
+
+          sizeLabel4.position.set(length / 2, i, 0);
+          sizeLabel4.rotation.z = -Math.PI/2;
+          labelsBack.add(sizeLabel4);
+          labelsBack.rotation.z = -Math.PI;
+
         }
 
         for (var i = 0; i <= length / 2; i += step) {
           var sizeLabel = this.drawTextOnPlane("" + i, 32);
-          var sizeLabel2 = sizeLabel.clone();
+          var sizeLabel2 = this.drawTextOnPlane("" - i, 32);
+          var sizeLabel3 = sizeLabel.clone();
+          var sizeLabel4 = sizeLabel2.clone();
 
-          sizeLabel.position.set(-i, width / 2, 0.1);
-          //sizeLabel.rotation.z = -Math.PI / 2;
+          sizeLabel.position.set(i, width / 2, 0);
+          //sizeLabel2.rotation.z = -Math.PI / 2;
           labelsSideRight.add(sizeLabel);
 
-          sizeLabel2.position.set(i, width / 2, 0.1);
-          //sizeLabel2.rotation.z = -Math.PI / 2;
+          sizeLabel2.position.set(-i, width / 2, 0);
+          //sizeLabel.rotation.z = -Math.PI / 2;
           labelsSideRight.add(sizeLabel2);
+
+          sizeLabel3.position.set(-i, width / 2, 0);
+          //sizeLabel3.rotation.z = -Math.PI/2;
+          //sizeLabel2.rotation.z = -Math.PI / 2;
+          labelsSideLeft.add(sizeLabel3);
+          labelsSideLeft.rotation.z = -Math.PI;
+
+          sizeLabel4.position.set(i, width / 2, 0);
+          //sizeLabel4.rotation.z = -Math.PI/2;
+          //sizeLabel2.rotation.z = -Math.PI / 2;
+          labelsSideLeft.add(sizeLabel4);
+          labelsSideLeft.rotation.z = -Math.PI;
         }
 
-        var labelsSideLeft = labelsSideRight.clone();
-        labelsSideLeft.rotation.z = -Math.PI;
+        //var labelsSideLeft = labelsSideRight.clone();
+        //labelsSideLeft.rotation.z = -Math.PI;
         //labelsSideLeft = labelsSideRight.clone().translateY(- width );
 
-        var labelsBack = labelsFront.clone();
-        labelsBack.rotation.z = -Math.PI;
+        //var labelsBack = labelsFront.clone();
+        //labelsBack.rotation.z = -Math.PI;
       }
 
       /*if (this.textLocation === "center") {
@@ -344,6 +375,22 @@ var LabeledGrid = function (_THREE$Object3D) {
       });
 
       this.mainGrid.add(this.labels);
+    }
+  },  {
+    key: "_rotateText",
+    value: function _rotateText(axis, rads){
+      if(axis == 'x'){
+        this.labels.rotateX(rads);
+      }
+      else if(axis == 'y'){
+        this.labels.rotateY(rads);
+      }
+      else if(axis == 'z'){
+        this.labels.rotateZ(rads);
+      }
+      else{
+        console.log("Invalid input.");
+      }
     }
   }, {
     key: "drawTextOnPlane",
