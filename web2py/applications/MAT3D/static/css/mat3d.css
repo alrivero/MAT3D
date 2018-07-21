@@ -158,6 +158,20 @@ td {
     padding: 15px;
 }
 
+#3D-container {
+    position: relative;
+}
+
+#3D-container #canvas1, #content {
+    position: absolute;
+}
+
+#a_gui {
+    position: absolute;
+    left: 970px;
+    top: 400px;
+}
+
 /* ============ Used in layout.html ============ */
 #copyright {
     text-align: center;

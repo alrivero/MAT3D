@@ -14,7 +14,7 @@ File name: index.html
 <script src="{{=URL('static', 'js/parser.js')}}"></script>
 <script src="{{=URL('static', 'js/parserFunctions.js')}}"></script>
 
-<!--
+
 <script src="{{=URL('static', 'js/3D/lib/three.min.js')}}"></script>
 <script src="{{=URL('static', 'js/3D/lib/dat.gui.min.js')}}"></script>
 <script src="{{=URL('static', 'js/3D/lib/OrbitControls.js')}}"></script>
@@ -32,8 +32,9 @@ File name: index.html
 <script src="{{=URL('static', 'js/3D/geometries/TeapotBufferGeometry.js')}}"></script>
 <script src="{{=URL('static', 'js/3D/driver.js')}}"></script>
 <script src="{{=URL('static', 'js/3D/driverHelperFuncs.js')}}"></script>
--->
 
+
+<!--
 <script src="{{=URL('static', 'js/3D-old/lib/three.min.js')}}"></script>
 <script src="{{=URL('static', 'js/3D-old/lib/dat.gui.min.js')}}"></script>
 <script src="{{=URL('static', 'js/3D-old/lib/OrbitControls.js')}}"></script>
@@ -51,6 +52,7 @@ File name: index.html
 <script src="{{=URL('static', 'js/3D-old/geometries/TeapotBufferGeometry.js')}}"></script>
 <script src="{{=URL('static', 'js/3D-old/driver.js')}}"></script>
 <script src="{{=URL('static', 'js/3D-old/driverHelperFuncs.js')}}"></script>
+-->
 
 <script>
     // Define your URLs here.
@@ -236,10 +238,11 @@ File name: index.html
                 <div class="canvas_display">
                     <!-- Canvas goes here -->
                     <!--<div v-if="is_3D">-->
-                    <div class="container">
-                        <div id ="content"></div>
+                    <div class="container" id="3D-container">
+                        <div id="content"></div>
                         <canvas class="canvas" id="canvas1"></canvas>
                     </div>
+                    <div id="a_gui"></div>
                     <input type="file" id="fileInput" style="visibility: hidden"/>
                 </div>
 
