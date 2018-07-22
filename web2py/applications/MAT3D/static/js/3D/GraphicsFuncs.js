@@ -220,8 +220,7 @@ function removeObjByType(){
     removeEntity(objMesh, scene);
   }
   transformArr = [];
-  //console.clear();
-  document.getElementById("log").innerHTML = "";
+  console.clear();
   object = null; objMesh = null;
 }
 
@@ -485,8 +484,7 @@ function resetTransfms(){
   camera.position.z = 15;
 
   transformArr = [];
-  //console.clear();
-  document.getElementById("log").innerHTML = "";
+  console.clear();
 }
 
 /**
@@ -1093,4 +1091,20 @@ function exprToNum(input){
   else{
     console.log("Error, "+ input + " is not a number.");
   }
+}
+
+/**
+ *
+ *
+ * @param {string}
+ */
+function applyDefMatrix(rawIn){
+  tranQueue.clear();
+
+  var parsedMat = parser.parseTransformMatrix(rawIn);
+  tranQueue.addMatrix(parsedMat, 0);
+  var currTransformMat = tranQueue.getThreeMatrix();
+  transformArr.push(currTransformMat);
+  objMesh.geometry.applyMatrix(currTransformMat);
+  objMesh.geometry.verticesNeedUpdate = true;
 }
