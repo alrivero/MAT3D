@@ -10,6 +10,7 @@
 function Parser() {
   // Operator presedence dictionary used for Shunting-Yard
   /** @private */ this.ops = { "|": 0, "+": 1, "-": 1, "*": 2, "/": 2, "^": 3 };
+  /** @private */ this.scalars = {"pi": math.pi; "e": math.e, "i" : math.complex(0, 1)}
 
   /** @private */ this.functions = { "+" : findAdd, "-": findSub, "/": findDiv,
   "*" : matrixMultiplication, "inv": findInverse, "transpose": findTranspose,
@@ -39,7 +40,7 @@ Parser.prototype.parseTopBar = function(rawIn) {
   try {
     var parsedOut = this.parseExpression(rawIn, []);
     if (isNaN(parsedOut) && typeof(parsedOut) != "object") {
-      throw "Unkown error while parsing";
+      throw "Unkown error while reading input!";
     }
     return parsedOut;
   }
@@ -65,14 +66,13 @@ Parser.prototype.parseSideBar = function(rawIn) {
       throw "Tried to assign a invalid value to a matrix variable!";
     }
     if (typeof(parsedOut) != "object") {
-      throw "Unkown error while parsing";
+      throw "Unkown error while reading input!";
     }
 
     return parsedOut;
   }
   catch(err) {
-    // ERROR HANDELING GOES HERE
-    console.log(err);
+    alert(err);
   }
 }
 
@@ -95,8 +95,33 @@ Parser.prototype.parseMatCell = function(rawIn) {
     return parsedOut;
   }
   catch(err) {
-    // ERROR HANDELING GOES HERE
-    console.log(err);
+    alert(err);
+  }
+}
+
+/**
+ * Parses what transformation should be applied to the 3D model.
+ *
+ * @author Alfredo Rivero
+ * @param {String} rawIn Raw input string provided by top bar
+ * @returns {Number} Computed output
+ * @throws Message if the input was invalid or the computed input was a scalar
+ *
+ */
+Parser.prototype.parseTransformMat = function(rawIn) {
+  try {
+    var parsedOut = this.parseExpression(rawIn, []);
+    if (!isNaN(parsedOut)) {
+      throw "Tried to assign a invalid value to what should be a matrix!";
+    }
+    if (typeof(parsedOut) != "object") {
+      throw "Unknown error while reading input!"
+    }
+
+    return parsedOut;
+  }
+  catch(err) {
+    alert(err);
   }
 }
 
@@ -315,6 +340,9 @@ Parser.prototype.determMem = function(subStr) {
   else if (subStr in this.functions) {
     return this.FUNCTION;
   }
+  else if (subStr in this.scalars) {
+    return this.SCALAR;
+  }
   else {
     return this.NAM;
   }
@@ -355,6 +383,8 @@ Parser.prototype.bestComb = function(strPos) {
       case this.MATRIX:
         possOuts[0][k] = APP.get_matrix_by_name(possOuts[0][k][0]);
         break;
+      case this.SCALAR:
+        possOuts[0][k] = this.scalars[possOuts[0][k][0]];
       case this.FUNCTION:
         possOuts[0][k] = this.functions[possOuts[0][k][0]];
     }
