@@ -1,16 +1,63 @@
+<!--
+Name: Zoe Tacderas
+UCSC email: stacdera@ucsc.edu
+File name: index.html
+-->
+
 {{extend 'layout.html'}}
 
 {{block head}}
 
 <script src="{{=URL('static', 'js/vue.js')}}"></script>
+
 <script src="{{=URL('static', 'js/math.js')}}"></script>
 <script src="{{=URL('static', 'js/parser.js')}}"></script>
 <script src="{{=URL('static', 'js/parserFunctions.js')}}"></script>
+
+
+<script src="{{=URL('static', 'js/3D/lib/three.min.js')}}"></script>
+<script src="{{=URL('static', 'js/3D/lib/dat.gui.min.js')}}"></script>
+<script src="{{=URL('static', 'js/3D/lib/OrbitControls.js')}}"></script>
+<script src="{{=URL('static', 'js/3D/lib/jszip.min.js')}}"></script>
+<script src="{{=URL('static', 'js/3D/lib/inflate.min.js')}}"></script>
+<script src="{{=URL('static', 'js/3D/lib/stats.min.js')}}"></script>
+<script src="{{=URL('static', 'js/3D/loaders/OBJLoader.js')}}"></script>
+<script src="{{=URL('static', 'js/3D/loaders/MTLLoader.js')}}"></script>
+<script src="{{=URL('static', 'js/3D/loaders/STLLoader.js')}}"></script>
+<script src="{{=URL('static', 'js/3D/loaders/GLTFLoader.js')}}"></script>
+<script src="{{=URL('static', 'js/3D/loaders/LegacyGLTFLoader.js')}}"></script>
+<script src="{{=URL('static', 'js/3D/loaders/FBXLoader.js')}}"></script>
+<script src="{{=URL('static', 'js/3D/exporters/OBJExporter.js')}}"></script>
+<script src="{{=URL('static', 'js/3D/grids/LabeledGrid.js')}}"></script>
+<script src="{{=URL('static', 'js/3D/geometries/TeapotBufferGeometry.js')}}"></script>
+<script src="{{=URL('static', 'js/3D/driver.js')}}"></script>
+<script src="{{=URL('static', 'js/3D/driverHelperFuncs.js')}}"></script>
+
+
+<!--
+<script src="{{=URL('static', 'js/3D-old/lib/three.min.js')}}"></script>
+<script src="{{=URL('static', 'js/3D-old/lib/dat.gui.min.js')}}"></script>
+<script src="{{=URL('static', 'js/3D-old/lib/OrbitControls.js')}}"></script>
+<script src="{{=URL('static', 'js/3D-old/lib/jszip.min.js')}}"></script>
+<script src="{{=URL('static', 'js/3D-old/lib/inflate.min.js')}}"></script>
+<script src="{{=URL('static', 'js/3D-old/lib/stats.min.js')}}"></script>
+<script src="{{=URL('static', 'js/3D-old/loaders/OBJLoader.js')}}"></script>
+<script src="{{=URL('static', 'js/3D-old/loaders/MTLLoader.js')}}"></script>
+<script src="{{=URL('static', 'js/3D-old/loaders/STLLoader.js')}}"></script>
+<script src="{{=URL('static', 'js/3D-old/loaders/GLTFLoader.js')}}"></script>
+<script src="{{=URL('static', 'js/3D-old/loaders/LegacyGLTFLoader.js')}}"></script>
+<script src="{{=URL('static', 'js/3D-old/loaders/FBXLoader.js')}}"></script>
+<script src="{{=URL('static', 'js/3D-old/exporters/OBJExporter.js')}}"></script>
+<script src="{{=URL('static', 'js/3D-old/grids/LabeledGrid.js')}}"></script>
+<script src="{{=URL('static', 'js/3D-old/geometries/TeapotBufferGeometry.js')}}"></script>
+<script src="{{=URL('static', 'js/3D-old/driver.js')}}"></script>
+<script src="{{=URL('static', 'js/3D-old/driverHelperFuncs.js')}}"></script>
+-->
+
 <script>
     // Define your URLs here.
     var add_matrix_url = "{{=URL('api', 'add_matrix')}}";
 </script>
-
 
 {{end}}
 
@@ -29,21 +76,21 @@
 
                     &nbsp;&nbsp;&nbsp;
 
-                    <!-- Toggle button between 2D and 3D mode -->
-                    <a class="btn blue pull-right" style="..." href="{{=URL('threeDDriver')}}">3D Mode</a>
+                    <!-- Toggle button between 2D and 3D mode
+                    <a class="btn blue pull-right" style="..." href="=URL('three_d_driver')">
+                        3D Mode
+                    </a> -->
 
                     <!--
                     <button v-if="!is_3D" class="rounded" id="toggle-btn" v-on:click="is_3D_button()">
                         2D Mode
                     </button>
 
-                    <a v-if="is_3D" href="=URL('default', 'threeDDriver')}}">
-
+                    <a v-if="is_3D" href="=URL('default', 'threeDDriver')">
 
                     <button v-if="is_3D" class="blue rounded" id="toggle-btn" v-on:click="is_3D_button()">
                         3D Mode
                     </button>
-
                     -->
                 </div>
 
@@ -96,8 +143,7 @@
                         <tr class="center">
                             <th v-on:click="get_this_matrix(matrix._idx)">
                                 ${matrix.name} ${matrix._idx} (${matrix.row} x ${matrix.col})&nbsp;&nbsp;&nbsp;
-                                <button class="btn rounded black"
-                                        v-on:click="delete_matrix(matrix._idx)">
+                                <button class="btn rounded black" v-on:click="delete_matrix(matrix._idx)">
                                     <i class="fa fa-trash fa-lg"></i>
                                 </button>
                             </th>
@@ -107,10 +153,10 @@
 
             </div>
 
-            <div class="matrix_space threequarters container">
+            <div class="matrix_space half container">
                 <!-- Right part of the page -->
 
-                <div class=" matrix_parser">
+                <div class="matrix_parser">
 
                     <!-- Form to add matrix parser text -->
                     <div id="add_parsertext_div">
@@ -141,62 +187,69 @@
 
                 <br/>
 
-                <div class="matrix_array twothirds">
+                <div class="matrix_array">
 
-                    <!-- html for 3D mode (canvas goes here) -->
-                    <div v-if="is_3D">
-                        <h5>3D Mode</h5>
-                        <canvas id="canvas1" width="200" height="100" style="border:1px solid #000000;">
-                        </canvas>
+                    <!-- Matrix displays here -->
+                    <!--<div v-if="!is_3D">-->
+                    <div v-if="!is_populating_matrix">
+
+                        <table id="retrieved_data_matrix">
+                            <h5>${populate_matrix_name}</h5>
+                            <br/>
+                            <tr v-for="matrix_row in one_matrix">
+                                <td v-for="matrix_col in matrix_row">
+                                    ${matrix_col}
+                                </td>
+                            </tr>
+                        </table>
+
                     </div>
 
-                    <!-- html for calculator mode (displays a matrix on screen) -->
-                    <div v-if="!is_3D">
-                        <div v-if="!is_populating_matrix">
+                    <div v-if="is_populating_matrix">
 
-                            <table id="retrieved_data_matrix">
+                        <form action="#" v-on:submit.prevent class="form-horizontal" enctype="multipart/form-data" method="post">
+                            <table id="data_matrix">
                                 <h5>${populate_matrix_name}</h5>
                                 <br/>
-                                <tr v-for="matrix_row in one_matrix">
-                                    <td v-for="matrix_col in matrix_row">
-                                        ${matrix_col}
+                                <tr v-for="rows in populate_rows">
+                                    <td v-for="cols in populate_cols" contenteditable='true'>
+
                                     </td>
                                 </tr>
                             </table>
 
-                        </div>
+                            <br/>
 
-                        <div v-if="is_populating_matrix">
+                            <button class="btn green rounded" v-on:click="add_data_matrix">
+                                <i class="fa fa-check fa-lg"></i> Submit
+                            </button>
+                        </form>
 
-                            <form action="#" v-on:submit.prevent class="form-horizontal" enctype="multipart/form-data" method="post">
-                                <table id="data_matrix">
-                                    <h5>${populate_matrix_name}</h5>
-                                    <br/>
-                                    <tr v-for="rows in populate_rows">
-                                        <td v-for="cols in populate_cols" contenteditable='true'>
+                    </div>
 
-                                        </td>
-                                    </tr>
-                                </table>
-
-                                <br/>
-
-                                <button class="btn green rounded" v-on:click="add_data_matrix">
-                                    <i class="fa fa-check fa-lg"></i> Submit
-                                </button>
-                            </form>
-
-                        </div>
-
-                        <div v-if="populate_matrix_name==null">
-
-                        </div>
+                    <div v-if="populate_matrix_name==null">
 
                     </div>
 
                 </div>
 
-                <div class="matrix_buttons third container">
+                <br/>
+
+                <div class="canvas_display">
+                    <!-- Canvas goes here -->
+                    <!--<div v-if="is_3D">-->
+                    <div class="container" id="3D-container">
+                        <div id="content"></div>
+                        <canvas class="canvas" id="canvas1"></canvas>
+                    </div>
+                    <div id="a_gui"></div>
+                    <input type="file" id="fileInput" style="visibility: hidden"/>
+                </div>
+
+            </div>
+
+            <div class="quarter">
+                <div class="matrix_buttons container">
 
                     <div class="half">
                         <div class="matrix_function_buttons">
@@ -272,7 +325,6 @@
                     </div>
 
                 </div>
-
             </div>
 
         </div>

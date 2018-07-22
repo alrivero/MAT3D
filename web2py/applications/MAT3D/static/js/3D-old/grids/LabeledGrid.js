@@ -44,7 +44,7 @@ var LabeledGrid = function (_THREE$Object3D) {
     _this.name = "grid";
 
     //TODO: clean this up
-    _this.marginSize = 5;
+    _this.marginSize = 10;
     _this.stepSubDivisions = 10;
 
     _this._drawGrid();
@@ -62,7 +62,7 @@ var LabeledGrid = function (_THREE$Object3D) {
       var gridGeometry, gridMaterial, mainGridZ, planeFragmentShader, planeGeometry, planeMaterial, subGridGeometry, subGridMaterial, subGridZ;
 
       //offset to avoid z fighting
-      mainGridZ = 0;
+      mainGridZ = -0.05;
       gridGeometry = new THREE.Geometry();
       gridMaterial = new THREE.LineBasicMaterial({
         color: new THREE.Color().setHex(this.color),
@@ -71,7 +71,7 @@ var LabeledGrid = function (_THREE$Object3D) {
         transparent: true
       });
 
-      subGridZ = 0;
+      subGridZ = -0.05;
       subGridGeometry = new THREE.Geometry();
       subGridMaterial = new THREE.LineBasicMaterial({
         color: new THREE.Color().setHex(this.color),
@@ -261,6 +261,7 @@ var LabeledGrid = function (_THREE$Object3D) {
         this.remove(this.mainGrid);
         this.remove(this.subGrid);
         this.remove(this.margin);
+        //this.remove(this.plane);
         return this._drawGrid();
       }
     }
@@ -282,61 +283,54 @@ var LabeledGrid = function (_THREE$Object3D) {
       var numbering = this.numbering = "centerBased";
 
       var labelsFront = new THREE.Object3D();
-      var labelsBack = new THREE.Object3D();
       var labelsSideRight = new THREE.Object3D();
-      var labelsSideLeft = new THREE.Object3D();
 
       if (numbering == "centerBased") {
-
         for (var i = 0; i <= width / 2; i += step) {
           var sizeLabel = this.drawTextOnPlane("" + i, 32);
-          var sizeLabel2 = this.drawTextOnPlane("" - i, 32);
-          var sizeLabel3 = sizeLabel2.clone();
-          var sizeLabel4 = sizeLabel.clone();
+          var sizeLabel2 = sizeLabel.clone();
 
-          sizeLabel.position.set(length / 2, -i, 0);
+          sizeLabel.position.set(length / 2, -i, 0.1);
           sizeLabel.rotation.z = -Math.PI / 2;
           labelsFront.add(sizeLabel);
 
-          sizeLabel2.position.set(length / 2, i, 0);
+          sizeLabel2.position.set(length / 2, i, 0.1);
           sizeLabel2.rotation.z = -Math.PI / 2;
           labelsFront.add(sizeLabel2);
-
-          sizeLabel3.position.set(length / 2, -i, 0);
-          sizeLabel3.rotation.z = -Math.PI/2;
-          labelsBack.add(sizeLabel3);
-          labelsBack.rotation.z = -Math.PI;
-
-          sizeLabel4.position.set(length / 2, i, 0);
-          sizeLabel4.rotation.z = -Math.PI/2;
-          labelsBack.add(sizeLabel4);
-          labelsBack.rotation.z = -Math.PI;
-
         }
 
         for (var i = 0; i <= length / 2; i += step) {
           var sizeLabel = this.drawTextOnPlane("" + i, 32);
-          var sizeLabel2 = this.drawTextOnPlane("" - i, 32);
-          var sizeLabel3 = sizeLabel.clone();
-          var sizeLabel4 = sizeLabel2.clone();
+          var sizeLabel2 = sizeLabel.clone();
 
-          sizeLabel.position.set(i, width / 2, 0);
+          sizeLabel.position.set(-i, width / 2, 0.1);
+          //sizeLabel.rotation.z = -Math.PI / 2;
           labelsSideRight.add(sizeLabel);
 
-          sizeLabel2.position.set(-i, width / 2, 0);
+          sizeLabel2.position.set(i, width / 2, 0.1);
+          //sizeLabel2.rotation.z = -Math.PI / 2;
           labelsSideRight.add(sizeLabel2);
-
-          sizeLabel3.position.set(-i, width / 2, 0);
-          labelsSideLeft.add(sizeLabel3);
-          labelsSideLeft.rotation.z = -Math.PI;
-
-          sizeLabel4.position.set(i, width / 2, 0);
-          labelsSideLeft.add(sizeLabel4);
-          labelsSideLeft.rotation.z = -Math.PI;
         }
 
+        var labelsSideLeft = labelsSideRight.clone();
+        labelsSideLeft.rotation.z = -Math.PI;
+        //labelsSideLeft = labelsSideRight.clone().translateY(- width );
+
+        var labelsBack = labelsFront.clone();
+        labelsBack.rotation.z = -Math.PI;
       }
 
+      /*if (this.textLocation === "center") {
+        yLabelsRight.translateY(- length/ 2);
+        xLabelsFront.translateX(- width / 2);
+      } else {
+        yLabelsLeft = yLabelsRight.clone().translateY( -width );
+        xLabelsBack = xLabelsFront.clone().translateX( -length );
+
+        this.labels.add( yLabelsLeft );
+        this.labels.add( xLabelsBack) ;
+      }*/
+      //this.labels.add( yLabelsRight );
       this.labels.add(labelsFront);
       this.labels.add(labelsBack);
 
@@ -348,12 +342,8 @@ var LabeledGrid = function (_THREE$Object3D) {
       this.labels.traverse(function (child) {
         child.visible = textVisible;
       });
+
       this.mainGrid.add(this.labels);
-    }
-  },  {
-    key: "_textRotateZ",
-    value: function _textRotateZ(rads){
-      this.labels.rotateZ(rads);
     }
   }, {
     key: "drawTextOnPlane",

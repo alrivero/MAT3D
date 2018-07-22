@@ -1,3 +1,9 @@
+/**
+Name: Zoe Tacderas
+UCSC email: stacdera@ucsc.edu
+File name: mat3d.css
+*/
+
 /*
 Cloned from:
 https://www.w3schools.com/html/tryit.asp?filename=tryhtml_table_intro
@@ -33,7 +39,23 @@ https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_button_group_verti
 
 .matrix_array {
     margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     padding: 30px;
+    border: black 5px;
+    border-style: solid;
+}
+
+.canvas_display {
+    margin-left: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    /* Fix canvas display
+    padding: 30px;
+    */
+    padding-left: 30px;
+    padding-top: 30px;
+    padding-right: 30px;
     border: black 5px;
     border-style: solid;
 }
@@ -139,6 +161,20 @@ td {
     border: 1px solid #dddddd;
     text-align: center;
     padding: 15px;
+}
+
+#3D-container {
+    position: relative;
+}
+
+#3D-container #canvas1, #content {
+    position: absolute;
+}
+
+#a_gui {
+    position: absolute;
+    left: 970px;
+    top: 500px;
 }
 
 /* ============ Used in layout.html ============ */

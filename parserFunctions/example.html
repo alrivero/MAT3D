@@ -21,17 +21,146 @@
 			runFunction()
 		};
 
+		/**
+		 * Unit test for parser functions
+		 * all tests printed to the console
+		 * tests parserFunctions
+		 * @author Jacob Schwartz
+		 * @param 
+		 * @return
+		 */
 		function runFunction() {
 			//FUNCTION TEST FOR example.html
+			//BEGIN UNIT TEST 
 
-			console.log("input test");
-			var currentString = document.getElementById('textbox').value;
-			console.log(currentString);
-			var ex = parseExpression(currentString);
-			print(ex);
-			//console.log(ex);
+			//findAdd test
+			console.log("findAdd(a) output should be 5");
+			//output should be 5
+			var addVar = [2, 3];
+			print(findAdd(addVar));
 
-			//console.log("current test");
+			//findSub test
+			console.log("findSub(a) output should be -1");
+			var subVar = [2, 3];
+			print(findSub(subVar));
+
+			//findDiv Test
+			console.log("findDiv(a) output should be 2");
+			var divVar = [14, 7];
+			print(findDiv(divVar));
+
+			//matrixMultiplication Test
+			console.log("matrixMultiplication(a) output should be -42");
+			var mulVar = [6, -7];
+			print(matrixMultiplication(mulVar));
+
+			//findInverse Test
+			console.log("findInverse(a) output should be 0.5");
+			var inVar = [2];
+			print(findInverse(inVar));
+
+			//findTranspose(a) Test
+			console.log("findTranspose(a) output should be [1 3], [2 4]");
+			var tVar = [[[1, 2], [3, 4]]];
+			//print(tVar);
+			print(findTranspose(tVar));
+
+			//findDiagonal(a) Test
+			console.log("findDiagonal(a) output should be [1, 4]");
+			var dVar = [[[1, 2], [3, 4]]];
+			print(findDiagonal(dVar));
+
+			//findDeterminant(a) Test
+			console.log("findDeterminant(a) output should be -2");
+			var detVar = [[[1, 2], [3, 4]]];
+			print(findDeterminant(detVar));
+
+			//findSin
+			console.log("findSin(a) output: 0.5");
+			var sVar = [30];
+			print(findSin(sVar));
+
+			//findCos
+			console.log("findCos(a) output: 0.86")
+			var cVar = [30];
+			print(findCos(cVar));
+
+			//findTan
+			console.log("findTan(a) output: 0.57");
+			var tVar = [30];
+			print(findTan(tVar));
+
+			//findArcSin
+			console.log("findArcSin(a) output: 0.55");
+			var asVar = [30];
+			print(findArcSin(asVar));
+
+			//findArcCos
+			console.log("findArcCos(a) output: 1.019");
+			var acVar = [30];
+			print(findArcCos(acVar));
+
+			//findArcTan
+			console.log("findArcTan(a) output: 0.482");
+			var tcVar = [30];
+			print(findArcTan(tcVar));
+
+			//findCosecant(a)
+			console.log("findCosecant(a) output: 2");
+			var cosecantVar = [30];
+			print(findCosecant(cosecantVar));
+
+			//findSecant(a)
+			console.log("findSecant(a) output: 1.154");
+			var secantVar = [30];
+			print(findSecant(secantVar));
+
+			//findCotangent(a)
+			console.log("findCotangent(a) output: 1.732");
+			var cotVar = [30];
+			print(findCotangent(cotVar));
+
+			//findLog10(a)
+			console.log("findlog10 output: 1.477");
+			var val = [30];
+			print(findLog10(val));
+
+			//findNaturalLog(a)
+			console.log("findNaturalLog output: 3.40");
+			val.push(30);
+			print(findNaturalLog(val));
+
+			//findExponent
+			console.log("findExp(a) output: 8");
+			val.push(2);
+			val.push(3);
+			print(findExp(val));
+
+			//findSqrt(a)
+			console.log("findSqrt(a) output: 2");
+			val.push(4);
+			print(findSqrt(val));
+
+			//findAbs(a)
+			console.log("findAbs(a) output: 4");
+			val.push(-4);
+			print(findAbs(val));
+
+			//findFactorial(a)
+			console.log("findFactorial(a) input: 4; output: 24");
+			val.push(4);
+			print(findFactorial(val));
+
+			//findLu(a)
+			console.log("findLu(a) intput: [1, 2], [3, 4]; output: [1, 0], [0.33, 1], [3, 4], [0, 0.667], [1, 0]");
+			val.push([[1, 2], [3, 4]]);
+			print(findLu(val));
+
+			//findRank(a)
+			console.log("findRank(a) input: [1, 2], [3, 4]; output: 2");
+			val.push([[1, 2], [3, 4]]);
+			print(findRank(val));
+
 			var arr1 = [
 				[4, 12, -16],
 				[12, 37, -43],
@@ -43,8 +172,9 @@
 				[54, 86, 174, 134],
 				[42, 62, 134, 106]
 			];
-			var arr2 = choleskyDecomp(arr1);
-			//print(arr2);
+			var arr2 = choleskyDecomp2(arr1, 3);
+			console.log("choleskytest");
+			print(arr2);
 		}
 	</script>
 </body>
