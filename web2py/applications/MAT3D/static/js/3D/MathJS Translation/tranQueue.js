@@ -57,8 +57,7 @@ TranQueue.prototype.addMatrix = function(addedMatrix, index) {
     this.multQueue()
   }
   catch (err) {
-    // ERROR HANDELING GOES HERE
-    console.log(err);
+    alert(err);
   }
 }
 
@@ -81,8 +80,7 @@ TranQueue.prototype.removeMatrix = function(remMatrix) {
     this.multQueue()
   }
   catch (err) {
-    // ERROR HANDELING GOES HERE
-    console.log(err);
+    alert(err);
   }
 }
 
@@ -127,8 +125,7 @@ TranQueue.prototype.moveMatrix = function(matrix, matInc) {
     this.multQueue()
   }
   catch (err) {
-    // ERROR HANDELING GOES HERE
-    console.log(err);
+    alert(err);
   }
 }
 
@@ -275,4 +272,11 @@ TranQueue.prototype.elemInMatAreNotNum = function(addedMatrix, dim) {
   }
 
   return false;
+}
+
+/**
+* Empties out TranQueue.
+*/
+TranQueue.prototype.clear = function() {
+  this.queue = [];
 }
