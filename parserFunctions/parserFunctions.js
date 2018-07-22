@@ -23,6 +23,7 @@ function exampleFunction(){
  * @param {object} stack array containing rpn
  * @return {object} output of computation
  */
+/*
 function readStack(stack){
 
 	var stackLength = stack.length;
@@ -41,6 +42,7 @@ function readStack(stack){
 	//console.log("arr " + stack.pop());
 	return re;
 }
+*/
 
 /**
  * Function prints object to console
@@ -94,12 +96,40 @@ function findDiv(a){
 function matrixMultiplication(stack){
 	var a = stack.pop();
 	var b = stack.pop();
-	console.log(a);
-	console.log(b);
+
+	if (typeof(a) == "function" || typeof(b) == "function") {
+		return composeFunction(a,b);
+	}
+
 	var c = math.multiply(a, b);
 	//print(c);
 	//stack.push(c);
 	return c;
+}
+
+/**
+ * @author Alfredo
+ * @version 1.0
+ * Function used for matrixMultiplication
+ * @param {object} a 
+ * @param {object} b
+ * @return multiplied objects
+ * @throw throws error if invalid function 
+ */
+function composeFunction (a, b) {
+	if (typeof(a) != "function") {
+		return function(stack) {
+			return math.multiply(a, b(stack));
+		}
+	}
+	else if(typeof(b) != "function") {
+		return function(stack) {
+			return math.multiply(b, a(stack));
+		}
+	}
+	else {
+		throw "Invalid function usage";
+	}
 }
 
 /**
@@ -510,7 +540,7 @@ function toDegrees(angle){
  */
 function toRadians(angle){
 	var val = angle * (Math.PI / 180);
-	console.log("torad " + val);
+	//console.log("torad " + val);
 	return val;
 }
 
