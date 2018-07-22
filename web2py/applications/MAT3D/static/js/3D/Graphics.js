@@ -16,6 +16,9 @@ var GridSizes, GridXYCol, GridXZCol, GridYZCol;
 var textColXY, textColXZ, textColYZ;
 var transformArr = [];
 
+/**
+ * Initial function that calls all the helper functions in the GraphicsFuncs.js file.
+ */
 function init(){
   // RENDERER
   var canvas = document.getElementById('canvas1');
@@ -85,7 +88,7 @@ function init(){
   scene.add(GridXZ1);
   GridXZ2 = new LabeledGrid(GridSizes, GridSizes, 10, [0, -1, 0], 0x000088, 0.4, true, "#000000", "left");
   GridXZ2.name = "GridXZ2";
-  GridXZ2._rotateText('z', -Math.PI/2);
+  GridXZ2._textRotateZ(-Math.PI/2);
   scene.add(GridXZ2);
 
   GridXY1 = new LabeledGrid(GridSizes, GridSizes, 10, [0, 0, 1], 0x008800, 0.4, true, "#000000", "left");
@@ -93,7 +96,7 @@ function init(){
   scene.add(GridXY1);
   GridXY2 = new LabeledGrid(GridSizes, GridSizes, 10, [0, 0, -1], 0x008800, 0.4, true, "#000000", "left");
   GridXY2.name = "GridXY2";
-  GridXY2._rotateText('z', -Math.PI/2);
+  GridXY2._textRotateZ(-Math.PI/2);
   scene.add(GridXY2);
 
   GridYZ1 = new LabeledGrid(GridSizes, GridSizes, 10, [-1, 0, 0], 0x880000, 0.4, true, "#000000", "left");
@@ -101,7 +104,7 @@ function init(){
   scene.add(GridYZ1);
   GridYZ2 = new LabeledGrid(GridSizes, GridSizes, 10, [1, 0, 0], 0x880000, 0.4, true, "#000000", "left");
   GridYZ2.name = "GridYZ2";
-  GridYZ2._rotateText('z', -Math.PI/2);
+  GridYZ2._textRotateZ(-Math.PI/2);
   scene.add(GridYZ2);
 
   // SETUP GUI
@@ -121,7 +124,7 @@ function init(){
     Background: '#A0A0A0',
   };
   var color = new THREE.Color();
-  var colorConvert = handleColorChange(color);
+  var colorConvert = handleLightColor(color);
   gui.addColor(backgroundData, 'Background').onChange(function(value){
     colorConvert(value);
     renderer.setClearColor(color.getHex());
@@ -136,8 +139,9 @@ function init(){
   // COORDINATE SYSTEM COLORS, OPACITY & SIZE
   loadGuiCoordSys(gui);
 
+  // RESET TRANSFORMATIONS
   var resetData = {
-    reset: function(){ resetObj() }
+    reset: function(){ resetTransfms() }
   };
   gui.add(resetData, 'reset').name("Reset Object");
 
