@@ -24,7 +24,8 @@ function init(){
   var canvas = document.getElementById('canvas1');
   renderer = new THREE.WebGLRenderer({canvas: canvas}, {antialias: true});
   renderer.setClearColor(0xA0A0A0);
-  renderer.setSize(500, 500);
+  renderer.setSize(540, 500);
+
 
   // CAMERA & SCENE
   camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
