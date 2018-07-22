@@ -231,7 +231,7 @@ function displayLoadScreen(){
   document.getElementById("content").innerHTML =
   '<object id="loadScreen" type="text/html" data="loadingScreen/index.html"></object>';
   document.getElementById('loadScreen').setAttribute("height", 500);
-  document.getElementById('loadScreen').setAttribute("width", 500);
+  document.getElementById('loadScreen').setAttribute("width", 540);
 }
 
 /**
