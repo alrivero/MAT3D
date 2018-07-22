@@ -2,6 +2,9 @@
  * @author Abraham Cardenas / https://github.com/Abe-Crdns (acarde12@ucsc.edu)
  */
 
+ /**
+  * Reads the file within fileInput.files[0]. Files supported in this current version are obj, stl, and zip files.
+  */
 function readFileByType(){
   var filename = (fileInput.files[0]).name;
   var reader = new FileReader();
@@ -153,6 +156,12 @@ function readFileByType(){
   }
 }
 
+/**
+ * Adjusts the current object and its mesh and resets the controls and camera.
+ *
+ * @param {THREE.BufferGeometry}
+ * @param {THREE.Mesh}
+ */
 function adjustObjAndCam(object, objMesh){
   var objBox = new THREE.Box3();
   objBox.setFromObject(object);
@@ -185,12 +194,21 @@ function adjustObjAndCam(object, objMesh){
   camera.position.z = 15;
 }
 
+/**
+ * Removes an entity from the scene.
+ *
+ * @param {THREE.BufferGeometry}
+ * @param {THREE.Scene}
+ */
 function removeEntity(object, scene){
   var selectedObject = scene.getObjectByName(object.name);
   scene.remove(selectedObject);
   animate();
 }
 
+/**
+ * Checks the type of the current "object" being displayed and removes it from the scene.
+ */
 function removeObjByType(){
   // delete displayed object
   var objName = object.name;
@@ -202,10 +220,14 @@ function removeObjByType(){
     removeEntity(objMesh, scene);
   }
   transformArr = [];
-  console.clear();
+  //console.clear();
+  document.getElementById("log").innerHTML = "";
   object = null; objMesh = null;
 }
 
+/**
+ * Displays the loading screen.
+ */
 function displayLoadScreen(){
   document.getElementById("content").innerHTML =
   '<object id="loadScreen" type="text/html" data="loadingScreen/index.html"></object>';
@@ -213,11 +235,23 @@ function displayLoadScreen(){
   document.getElementById('loadScreen').setAttribute("width", 500);
 }
 
+/**
+ * Removes the loading screen.
+ */
 function removeLoadScreen(){
   var loadScreen = document.getElementById('loadScreen');
   loadScreen.parentNode.removeChild(loadScreen);
 }
 
+/**
+ * Loads the different lighting options in the gui.
+ *
+ * @param {dat.GUI}
+ * @param {boolean} - Is the ambient light on?
+ * @param {boolean} - Is point light #1 on?
+ * @param {boolean} - Is point light #2 on?
+ * @param {boolean} - Is point light #3 on?
+ */
 function loadGuiLights(gui, isAmbient, isLight1, isLight2, isLight3){
   // LIGHTS
   var lightsFldr = gui.addFolder('Lighting');
@@ -230,9 +264,9 @@ function loadGuiLights(gui, isAmbient, isLight1, isLight2, isLight3){
   };
   var ambient = ambientLightFldr.add(ambientData, 'Ambient on?').name('Ambient on?').listen();
   ambient.onChange(function(value){
-    handleLightChange(value, isAmbient, ambientCol, ambientLight);
+    handleLightOnOff(value, isAmbient, ambientLight, ambientCol);
   });
-  var ambientCol = ambientLightFldr.addColor(ambientData, 'Color').onChange(handleColorChange(ambientLight.color));
+  var ambientCol = ambientLightFldr.addColor(ambientData, 'Color').onChange(handleLightColor(ambientLight.color));
 
   // POINT LIGHT #1
   var light1Fldr = lightsFldr.addFolder('Point Light #1');
@@ -242,9 +276,9 @@ function loadGuiLights(gui, isAmbient, isLight1, isLight2, isLight3){
   };
   var light1 = light1Fldr.add(light1Data, 'Light #1 on?').name('Light #1 on?').listen();
   light1.onChange(function(value){
-    handleLightChange(value, isLight1, light1Col, ptLightArr[0], xlight1Pos, ylight1Pos, zlight1Pos);
+    handleLightOnOff(value, isLight1, ptLightArr[0], light1Col, xlight1Pos, ylight1Pos, zlight1Pos);
   });
-  var light1Col = light1Fldr.addColor(light1Data, 'Color').onChange(handleColorChange(ptLightArr[0].color));
+  var light1Col = light1Fldr.addColor(light1Data, 'Color').onChange(handleLightColor(ptLightArr[0].color));
   var light1PosFldr = light1Fldr.addFolder('Position');
   var light1PosData = {
     'x': xLight1,
@@ -252,11 +286,11 @@ function loadGuiLights(gui, isAmbient, isLight1, isLight2, isLight3){
     'z': zLight1
   };
   var xlight1Pos = light1PosFldr.add(light1PosData, 'x').min(-500).max(500).step(1).name('x').listen();
-  xlight1Pos.onChange(function(value){ handleLightPosChange(value, 'light1', 'x') });
+  xlight1Pos.onChange(function(value){ handleLightPos(value, 'light1', 'x') });
   var ylight1Pos = light1PosFldr.add(light1PosData, 'y').min(-500).max(500).step(1).name('y').listen();
-  ylight1Pos.onChange(function(value){ handleLightPosChange(value, 'light1', 'y') });
+  ylight1Pos.onChange(function(value){ handleLightPos(value, 'light1', 'y') });
   var zlight1Pos = light1PosFldr.add(light1PosData, 'z').min(-500).max(500).step(1).name('z').listen();
-  zlight1Pos.onChange(function(value){ handleLightPosChange(value, 'light1', 'z') });
+  zlight1Pos.onChange(function(value){ handleLightPos(value, 'light1', 'z') });
 
   // POINT LIGHT #2
   var light2Fldr = lightsFldr.addFolder('Point Light #2');
@@ -266,9 +300,9 @@ function loadGuiLights(gui, isAmbient, isLight1, isLight2, isLight3){
   };
   var light2 = light2Fldr.add(light2Data, 'Light #2 on?').name('Light #2 on?').listen();
   light2.onChange(function(value){
-    handleLightChange(value, isLight2, light2Col, ptLightArr[1], xlight2Pos, ylight2Pos, zlight2Pos);
+    handleLightOnOff(value, isLight2, ptLightArr[1], light2Col, xlight2Pos, ylight2Pos, zlight2Pos);
   });
-  var light2Col = light2Fldr.addColor(light2Data, 'Color').onChange(handleColorChange(ptLightArr[1].color));
+  var light2Col = light2Fldr.addColor(light2Data, 'Color').onChange(handleLightColor(ptLightArr[1].color));
   var light2PosFldr = light2Fldr.addFolder('Position');
   var light2PosData = {
     'x': xLight2,
@@ -276,11 +310,11 @@ function loadGuiLights(gui, isAmbient, isLight1, isLight2, isLight3){
     'z': zLight2
   };
   var xlight2Pos = light2PosFldr.add(light2PosData, 'x').min(-500).max(500).step(1).name('x').listen();
-  xlight2Pos.onChange(function(value){ handleLightPosChange(value, 'light2', 'x') });
+  xlight2Pos.onChange(function(value){ handleLightPos(value, 'light2', 'x') });
   var ylight2Pos = light2PosFldr.add(light2PosData, 'y').min(-500).max(500).step(1).name('y').listen();
-  ylight2Pos.onChange(function(value){ handleLightPosChange(value, 'light2', 'y') });
+  ylight2Pos.onChange(function(value){ handleLightPos(value, 'light2', 'y') });
   var zlight2Pos = light2PosFldr.add(light2PosData, 'z').min(-500).max(500).step(1).name('z').listen();
-  zlight2Pos.onChange(function(value){ handleLightPosChange(value, 'light2', 'z') });
+  zlight2Pos.onChange(function(value){ handleLightPos(value, 'light2', 'z') });
 
   // POINT LIGHT #3
   var light3Fldr = lightsFldr.addFolder('Point Light #3');
@@ -290,9 +324,9 @@ function loadGuiLights(gui, isAmbient, isLight1, isLight2, isLight3){
   };
   var light3 = light3Fldr.add(light3Data, 'Light #3 on?').name('Light #3 on?').listen();
   light3.onChange(function(value){
-    handleLightChange(value, isLight3, light3Col, ptLightArr[2], xlight3Pos, ylight3Pos, zlight3Pos);
+    handleLightOnOff(value, isLight3, ptLightArr[2], light3Col, xlight3Pos, ylight3Pos, zlight3Pos);
   });
-  var light3Col = light3Fldr.addColor(light3Data, 'Color').onChange(handleColorChange(ptLightArr[2].color));
+  var light3Col = light3Fldr.addColor(light3Data, 'Color').onChange(handleLightColor(ptLightArr[2].color));
   var light3PosFldr = light3Fldr.addFolder('Position');
   var light3PosData = {
     'x': xLight3,
@@ -300,13 +334,18 @@ function loadGuiLights(gui, isAmbient, isLight1, isLight2, isLight3){
     'z': zLight3
   };
   var xlight3Pos = light3PosFldr.add(light3PosData, 'x').min(-500).max(500).step(1).name('x').listen();
-  xlight3Pos.onChange(function(value){ handleLightPosChange(value, 'light3', 'x') });
+  xlight3Pos.onChange(function(value){ handleLightPos(value, 'light3', 'x') });
   var ylight3Pos = light3PosFldr.add(light3PosData, 'y').min(-500).max(500).step(1).name('y').listen();
-  ylight3Pos.onChange(function(value){ handleLightPosChange(value, 'light3', 'y') });
+  ylight3Pos.onChange(function(value){ handleLightPos(value, 'light3', 'y') });
   var zlight3Pos = light3PosFldr.add(light3PosData, 'z').min(-500).max(500).step(1).name('z').listen();
-  zlight3Pos.onChange(function(value){ handleLightPosChange(value, 'light3', 'z') });
+  zlight3Pos.onChange(function(value){ handleLightPos(value, 'light3', 'z') });
 }
 
+/**
+ * Loads the different transformation options.
+ *
+ * @param {dat.GUI}
+ */
 function loadGuiTransfms(gui){
   var transformFldr = gui.addFolder('Transformations');
 
@@ -319,11 +358,11 @@ function loadGuiTransfms(gui){
   };
   var transData = new translateData();
   var xTrans = translateFldr.add(transData, 'x');
-  xTrans.onFinishChange(function(value){ handleTransfmChange(value, 'translate', 'x'); });
+  xTrans.onFinishChange(function(value){ handleTransfm(value, 'translate', 'x'); });
   var yTrans = translateFldr.add(transData, 'y');
-  yTrans.onFinishChange(function(value){ handleTransfmChange(value, 'translate', 'y'); });
+  yTrans.onFinishChange(function(value){ handleTransfm(value, 'translate', 'y'); });
   var zTrans = translateFldr.add(transData, 'z');
-  zTrans.onFinishChange(function(value){ handleTransfmChange(value, 'translate', 'z'); });
+  zTrans.onFinishChange(function(value){ handleTransfm(value, 'translate', 'z'); });
 
   // SCALE
   var scaleFldr = transformFldr.addFolder('Scale');
@@ -334,11 +373,11 @@ function loadGuiTransfms(gui){
   };
   var scleData = new scaleData();
   var xScale = scaleFldr.add(scleData, 'x');
-  xScale.onFinishChange(function(value){ handleTransfmChange(value, 'scale', 'x'); });
+  xScale.onFinishChange(function(value){ handleTransfm(value, 'scale', 'x'); });
   var yScale = scaleFldr.add(scleData, 'y');
-  yScale.onFinishChange(function(value){ handleTransfmChange(value, 'scale', 'y'); });
+  yScale.onFinishChange(function(value){ handleTransfm(value, 'scale', 'y'); });
   var zScale = scaleFldr.add(scleData, 'z');
-  zScale.onFinishChange(function(value){ handleTransfmChange(value, 'scale', 'z'); });
+  zScale.onFinishChange(function(value){ handleTransfm(value, 'scale', 'z'); });
 
   // SHEAR
   var shearFldr = transformFldr.addFolder('Shear');
@@ -349,11 +388,11 @@ function loadGuiTransfms(gui){
   };
   var shrData = new shearData();
   var xShear = shearFldr.add(shrData, 'x');
-  xShear.onFinishChange(function(value){ handleTransfmChange(value, 'shear', 'x'); });
+  xShear.onFinishChange(function(value){ handleTransfm(value, 'shear', 'x'); });
   var yShear = shearFldr.add(shrData, 'y');
-  yShear.onFinishChange(function(value){ handleTransfmChange(value, 'shear', 'y'); });
+  yShear.onFinishChange(function(value){ handleTransfm(value, 'shear', 'y'); });
   var zShear = shearFldr.add(shrData, 'z');
-  zShear.onFinishChange(function(value){ handleTransfmChange(value, 'shear', 'z'); });
+  zShear.onFinishChange(function(value){ handleTransfm(value, 'shear', 'z'); });
 
   // ROTATION
   var rotatFldr = transformFldr.addFolder('Rotation');
@@ -364,13 +403,18 @@ function loadGuiTransfms(gui){
   };
   var rotData = new rotatData();
   var xRot = rotatFldr.add(rotData, 'x');
-  xRot.onFinishChange(function(value){ handleTransfmChange(value, 'rotation', 'x'); });
+  xRot.onFinishChange(function(value){ handleTransfm(value, 'rotation', 'x'); });
   var yRot = rotatFldr.add(rotData, 'y');
-  yRot.onFinishChange(function(value){ handleTransfmChange(value, 'rotation', 'y'); });
+  yRot.onFinishChange(function(value){ handleTransfm(value, 'rotation', 'y'); });
   var zRot = rotatFldr.add(rotData, 'z');
-  zRot.onFinishChange(function(value){ handleTransfmChange(value, 'rotation', 'z'); });
+  zRot.onFinishChange(function(value){ handleTransfm(value, 'rotation', 'z'); });
 }
 
+/**
+ * Loads the different coordinate system options.
+ *
+ * @param {dat.GUI}
+ */
 function loadGuiCoordSys(gui){
   var coordFldr = gui.addFolder('Coordinate Planes');
 
@@ -423,7 +467,10 @@ function loadGuiCoordSys(gui){
   yzSize.onChange(function(value){ handleGridSize(value, GridYZ1, GridYZ2) });
 }
 
-function resetObj(){
+/**
+ * Resets all the transformations that were applied to the current object being displayed.
+ */
+function resetTransfms(){
   var resMat = new THREE.Matrix4().identity();
   for(var i = 0; i < transformArr.length; i++){
     var temp = new THREE.Matrix4();
@@ -438,10 +485,18 @@ function resetObj(){
   camera.position.z = 15;
 
   transformArr = [];
-  console.clear();
+  //console.clear();
+  document.getElementById("log").innerHTML = "";
 }
 
-function handleLightPosChange(value, lightType, dir){
+/**
+ * Changes the position of a given light type.
+ *
+ * @param {number} - The number that sets the value of the light position.
+ * @param {string} - Specifies which light type needs a position change.
+ * @param {string} - Specifies which direction to apply the light position change.
+ */
+function handleLightPos(value, lightType, dir){
   switch(lightType){
     case 'light1':
       switch(dir){
@@ -514,34 +569,42 @@ function handleLightPosChange(value, lightType, dir){
   }
 }
 
-function handleTransfmChange(value, transformType, dir){
+/**
+ * Applies a transformation to the current object on screen.
+ *
+ * @param {number} - The number that sets the value of the transformation.
+ * @param {string} - Specifies the transformation type.
+ * @param {string} - Specifies which direction to apply the transformation.
+ */
+function handleTransfm(value, transformType, dir){
   var num = exprToNum(value);
   if(num != null){
     if(num == 0){
       return;
     }
     else if((transformType == 'translate' || transformType == 'scale' || transformType == 'shear') && num > 250){
-      console.log("Error, can not apply a " + transformType + " transformation larger than", 250, "units.");
+      console.log("Error, can not apply a " + transformType + " transformation larger than 250 units.");
       return;
     }
     else{
+      var strNum = num.toString();
       switch(transformType){
         case 'translate':
           var transMat;
           switch(dir){
             case 'x':
               transMat = new THREE.Matrix4().makeTranslation(num, 0, 0);
-              console.log("Translated in the x direction by", num, "units.");
+              console.log("Translated in the x direction by " + strNum + " units.");
               break;
 
             case 'y':
               transMat = new THREE.Matrix4().makeTranslation(0, num, 0);
-              console.log("Translated in the y direction by", num, "units.");
+              console.log("Translated in the y direction by " + strNum + " units.");
               break;
 
             case 'z':
               transMat = new THREE.Matrix4().makeTranslation(0, 0, num);
-              console.log("Translated in the z direction by", num, "units.");
+              console.log("Translated in the z direction by " + strNum + " units.");
               break;
 
             default:
@@ -558,17 +621,17 @@ function handleTransfmChange(value, transformType, dir){
           switch(dir){
             case 'x':
               scaleMat = new THREE.Matrix4().makeScale(num, 1, 1);
-              console.log("Scaled in the x direction by", num, "units.");
+              console.log("Scaled in the x direction by " + strNum + " units.");
               break;
 
             case 'y':
               scaleMat = new THREE.Matrix4().makeScale(1, num, 1);
-              console.log("Scaled in the y direction by", num, "units.");
+              console.log("Scaled in the y direction by " + strNum + " units.");
               break;
 
             case 'z':
               scaleMat = new THREE.Matrix4().makeScale(1, 1, num);
-              console.log("Scaled in the z direction by", num, "units.");
+              console.log("Scaled in the z direction by " + strNum + " units.");
               break;
 
             default:
@@ -589,17 +652,17 @@ function handleTransfmChange(value, transformType, dir){
             switch(dir){
               case 'x':
                 shearMat = new THREE.Matrix4().makeShear(num, 0, 0);
-                console.log("Sheared in the x direction by", num, "units.");
+                console.log("Sheared in the x direction by " + strNum + " units.");
                 break;
 
               case 'y':
                 shearMat = new THREE.Matrix4().makeShear(0, num, 0);
-                console.log("Sheared in the y direction by", num, "units.");
+                console.log("Sheared in the y direction by " + strNum + " units.");
                 break;
 
               case 'z':
                 shearMat = new THREE.Matrix4().makeShear(0, 0, num);
-                console.log("Sheared in the z direction by", num, "units.");
+                console.log("Sheared in the z direction by " + strNum + " units.");
                 break;
 
               default:
@@ -618,17 +681,17 @@ function handleTransfmChange(value, transformType, dir){
           switch(dir){
             case 'x':
               rotMat = new THREE.Matrix4().makeRotationX(rad);
-              console.log("Rotated in the x direction by", num, "degrees.");
+              console.log("Rotated in the x direction by " + strNum + " degrees.");
               break;
 
             case 'y':
               rotMat = new THREE.Matrix4().makeRotationY(rad);
-              console.log("Rotated in the y direction by", num, "degrees.");
+              console.log("Rotated in the y direction by " + strNum + " degrees.");
               break;
 
             case 'z':
               rotMat = new THREE.Matrix4().makeRotationZ(rad);
-              console.log("Rotated in the z direction by", num, "degrees.");
+              console.log("Rotated in the z direction by " + strNum + " degrees.");
               break;
 
             default:
@@ -649,8 +712,13 @@ function handleTransfmChange(value, transformType, dir){
 
 }
 
-function handleObjectType(value){
-  switch(value){
+/**
+ * Changes the type of object that is being displayed.
+ *
+ * @param {string} - The object type to display.
+ */
+function handleObjectType(objType){
+  switch(objType){
     case 'Cube':
       // delete displayed object
       removeObjByType();
@@ -745,8 +813,26 @@ function handleObjectType(value){
   camera.position.z = 15;
 }
 
-function handleLightChange(value, isOn, lightCol, lightObj, xLight, yLight, zLight){
+/**
+ * Turns off the given light and disables its gui options.
+ *
+ * @param {boolean} - The boolean to change if the light is on or off.
+ * @param {boolean} - Is the given light on?
+ * @param {THREE.Light}
+ * @param {Object} - The object within the gui that controls the color for the
+ *                   given light type.
+ * @param {Object} - The object within the gui that controls the options for the
+ *                   x position of a given light type (can't be ambient).
+ * @param {Object} - The object within the gui that controls the options for the
+ *                   y position of a given light type (can't be ambient).
+ * @param {Object} - The object within the gui that controls the options for the
+ *                   z position of a given light type (can't be ambient).
+ */
+function handleLightOnOff(value, isOn, lightObj, lightCol, xLight, yLight, zLight){
   isOn = value;
+  xLight = xLight || '';
+  yLight = yLight || '';
+  zLight = zLight || '';
   if(!isOn){
     lightObj.intensity = 0;
     lightCol.domElement.style.pointerEvents = "none";
@@ -775,12 +861,25 @@ function handleLightChange(value, isOn, lightCol, lightObj, xLight, yLight, zLig
   }
 }
 
+/**
+ * Changes the grid size of a given grid.
+ *
+ * @param {number} - The new value of the grid size of the given grid.
+ * @param {LabeledGrid}
+ * @param {LabeledGrid}
+ */
 function handleGridSize(value, grid1, grid2){
   grid1.resize(value, value);
   grid2.resize(value, value);
-  grid2._rotateText('z', -Math.PI/2);
 }
 
+/**
+ * Changes the opacity of a given grid.
+ *
+ * @param {number} - The new value of the opacity of the given grid.
+ * @param {LabeledGrid}
+ * @param {LabeledGrid}
+ */
 function handleGridOpacity(value, grid1, grid2){
   if(value == 0.0){
     grid1.toggle(false);
@@ -796,6 +895,14 @@ function handleGridOpacity(value, grid1, grid2){
   }
 }
 
+/**
+ * Changes the color of the labels of a given grid.
+ *
+ * @param {number} - The decimal value of the new color.
+ * @param {Object} - The object within the gui that controls the color for the grid labels.
+ * @param {LabeledGrid}
+ * @param {LabeledGrid}
+ */
 function handleTextColor(value, textCol, grid1, grid2){
   var decToHex = value.toString(16);
   var hexStr1 = ('#' + decToHex);
@@ -803,8 +910,17 @@ function handleTextColor(value, textCol, grid1, grid2){
   textCol.setHex(hexStr2);
   grid1.setTextColor(hexStr1);
   grid2.setTextColor(hexStr1);
+  grid2._textRotateZ(-Math.PI/2);
 }
 
+/**
+ * Changes the color of a given grid.
+ *
+ * @param {number} - The decimal value of the new color.
+ * @param {Object} - The object within the gui that controls the color for the grid.
+ * @param {LabeledGrid}
+ * @param {LabeledGrid}
+ */
 function handleGridColor(val, gridCol, grid1, grid2){
   var hexStr = ('0x' + val.toString(16));
   gridCol.setHex(hexStr);
@@ -812,7 +928,12 @@ function handleGridColor(val, gridCol, grid1, grid2){
   grid2.setColor(gridCol.getHex());
 }
 
-function handleColorChange(color){
+/**
+ * Changes the light color whenever the color is changed.
+ *
+ * @param {THREE.Color}
+ */
+function handleLightColor(color){
 	return function(value){
     if(typeof value === 'string'){
       value = value.replace('#', '0x');
@@ -821,21 +942,143 @@ function handleColorChange(color){
 	};
 }
 
+/**
+ * Determines if a given string input is a valid expression and returns the value of
+ * that expression if it is valid.
+ *
+ * @param {string} - The string to check for an expression.
+ * @returns {number} - The value of a valid expression.
+ */
 function exprToNum(input){
   // Check if the input is a valid expression
   var checkInput = input;
-  if((checkInput.indexOf("/") != -1 && checkInput.indexOf("/") != 0 && checkInput.indexOf("/") != checkInput.length)
-      || checkInput.indexOf(".") != -1){
+  var prnthesesInd1 = checkInput.indexOf("(");
+  var prnthesesInd2 = checkInput.indexOf(")");
+  var piInd = checkInput.indexOf("pi");
+  var eInd = checkInput.indexOf("e");
+  var addInd = checkInput.indexOf("+");
+  var subInd = checkInput.indexOf("-");
+  var multInd = checkInput.indexOf("*");
+  var divInd = checkInput.indexOf("/");
+  var deciInd = checkInput.indexOf(".");
+  var invalInput = false;
 
-    while(checkInput.indexOf("/") != -1){
-      var backspceIndex = checkInput.indexOf("/");
-      checkInput = checkInput.slice(0, backspceIndex) + checkInput.slice(backspceIndex+1, checkInput.length);
+  if((divInd != -1 && divInd != 0 && divInd != checkInput.length) || (multInd != -1 && multInd != 0 &&
+    multInd != checkInput.length) || (subInd != -1 && subInd != 0 && subInd != checkInput.length) ||
+    (addInd != -1 && addInd != 0 && addInd != checkInput.length) || (deciInd != -1) || (piInd != -1) ||
+    (eInd != -1) || ((prnthesesInd1 != -1) && (prnthesesInd2 != -1))){
+
+    while(prnthesesInd1 != -1 && prnthesesInd2 != -1){
+      prnthesesInd1 = checkInput.indexOf("(");
+      prnthesesInd2 = checkInput.indexOf(")");
+      checkInput = checkInput.replace("(", '');
+      checkInput = checkInput.replace(")", '');
     }
-    while(checkInput.indexOf(".") != -1){
-      var decimalIndex = checkInput.indexOf(".");
-      checkInput = checkInput.slice(0, decimalIndex) + checkInput.slice(decimalIndex+1, checkInput.length);
+
+    while(piInd != -1){
+      piInd = checkInput.indexOf("pi");
+      checkInput = checkInput.replace("pi", Math.PI.toString());
     }
-    if(/^\d+$/.test(checkInput)){
+
+    while(eInd != -1){
+      eInd = checkInput.indexOf("e");
+      checkInput = checkInput.replace("e", Math.E.toString());
+    }
+
+    var prevDeciInd;
+    deciInd = checkInput.indexOf(".");
+    while(deciInd != -1){
+      deciInd = checkInput.indexOf(".");
+      if(deciInd == prevDeciInd){
+        invalInput = true;
+        break;
+      }
+      checkInput = checkInput.replace(".", '');
+      prevDeciInd = deciInd;
+    }
+
+    var prevAddInd;
+    while(addInd != -1){
+      addInd = checkInput.indexOf("+");
+      if(addInd == prevAddInd){
+        invalInput = true;
+        break;
+      }
+      checkInput = checkInput.replace("+", '');
+      prevAddInd = addInd;
+    }
+
+    var prevSubInd;
+    while(subInd != -1){
+      subInd = checkInput.indexOf("-");
+      if(subInd == prevSubInd){
+        invalInput = true;
+        break;
+      }
+      checkInput = checkInput.replace("-", '');
+      prevSubInd = subInd;
+    }
+
+    var prevMultInd;
+    while(multInd != -1){
+      multInd = checkInput.indexOf("*");
+      if(multInd == prevMultInd){
+        invalInput = true;
+        break;
+      }
+      checkInput = checkInput.replace("*", '');
+      prevMultInd = multInd;
+    }
+
+    var prevDivInd;
+    while(divInd != -1){
+      divInd = checkInput.indexOf("/");
+      if(divInd == prevDivInd){
+        invalInput = true;
+        break;
+      }
+      checkInput = checkInput.replace("/", '');
+      prevDivInd = divInd;
+    }
+
+    if(/^\d+$/.test(checkInput) && !invalInput){
+
+      var piInd = input.indexOf("pi");
+      while(piInd != -1){
+        if(piInd != 0 && /^\d+$/.test(input[piInd-1]) && /^\d+$/.test(input[piInd+2])){
+          input = input.replace("pi", "*" + Math.PI.toString() + "*");
+        }
+        else if(piInd != 0 && /^\d+$/.test(input[piInd-1])){
+          input = input.replace("pi", "*" + Math.PI.toString());
+        }
+        else if(/^\d+$/.test(input[piInd+2])){
+          input = input.replace("pi", Math.PI.toString() + "*");
+        }
+        else{
+          input = input.replace("pi", Math.PI.toString());
+        }
+
+        piInd = input.indexOf("pi");
+      }
+
+      var eInd = input.indexOf("e");
+      while(eInd != -1){
+        if(eInd != 0 && /^\d+$/.test(input[eInd-1]) && /^\d+$/.test(input[eInd+2])){
+          input = input.replace("e", "*" + Math.E.toString() + "*");
+        }
+        else if(eInd != 0 && /^\d+$/.test(input[eInd-1])){
+          input = input.replace("e", "*" + Math.E.toString());
+        }
+        else if(/^\d+$/.test(input[eInd+2])){
+          input = input.replace("e", Math.E.toString() + "*");
+        }
+        else{
+          input = input.replace("e", Math.E.toString());
+        }
+
+        eInd = input.indexOf("e");
+      }
+
       if(isFinite(eval(input))){
         return eval(input);
       }
@@ -848,6 +1091,6 @@ function exprToNum(input){
     return +input;
   }
   else{
-    console.log("Error,", input, "is not a number.");
+    console.log("Error, "+ input + " is not a number.");
   }
 }

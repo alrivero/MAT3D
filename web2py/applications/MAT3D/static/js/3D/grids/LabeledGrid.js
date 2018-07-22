@@ -261,7 +261,6 @@ var LabeledGrid = function (_THREE$Object3D) {
         this.remove(this.mainGrid);
         this.remove(this.subGrid);
         this.remove(this.margin);
-        //this.remove(this.plane);
         return this._drawGrid();
       }
     }
@@ -289,7 +288,6 @@ var LabeledGrid = function (_THREE$Object3D) {
 
       if (numbering == "centerBased") {
 
-        // 0, 10, 20
         for (var i = 0; i <= width / 2; i += step) {
           var sizeLabel = this.drawTextOnPlane("" + i, 32);
           var sizeLabel2 = this.drawTextOnPlane("" - i, 32);
@@ -323,45 +321,22 @@ var LabeledGrid = function (_THREE$Object3D) {
           var sizeLabel4 = sizeLabel2.clone();
 
           sizeLabel.position.set(i, width / 2, 0);
-          //sizeLabel2.rotation.z = -Math.PI / 2;
           labelsSideRight.add(sizeLabel);
 
           sizeLabel2.position.set(-i, width / 2, 0);
-          //sizeLabel.rotation.z = -Math.PI / 2;
           labelsSideRight.add(sizeLabel2);
 
           sizeLabel3.position.set(-i, width / 2, 0);
-          //sizeLabel3.rotation.z = -Math.PI/2;
-          //sizeLabel2.rotation.z = -Math.PI / 2;
           labelsSideLeft.add(sizeLabel3);
           labelsSideLeft.rotation.z = -Math.PI;
 
           sizeLabel4.position.set(i, width / 2, 0);
-          //sizeLabel4.rotation.z = -Math.PI/2;
-          //sizeLabel2.rotation.z = -Math.PI / 2;
           labelsSideLeft.add(sizeLabel4);
           labelsSideLeft.rotation.z = -Math.PI;
         }
 
-        //var labelsSideLeft = labelsSideRight.clone();
-        //labelsSideLeft.rotation.z = -Math.PI;
-        //labelsSideLeft = labelsSideRight.clone().translateY(- width );
-
-        //var labelsBack = labelsFront.clone();
-        //labelsBack.rotation.z = -Math.PI;
       }
 
-      /*if (this.textLocation === "center") {
-        yLabelsRight.translateY(- length/ 2);
-        xLabelsFront.translateX(- width / 2);
-      } else {
-        yLabelsLeft = yLabelsRight.clone().translateY( -width );
-        xLabelsBack = xLabelsFront.clone().translateX( -length );
-
-        this.labels.add( yLabelsLeft );
-        this.labels.add( xLabelsBack) ;
-      }*/
-      //this.labels.add( yLabelsRight );
       this.labels.add(labelsFront);
       this.labels.add(labelsBack);
 
@@ -373,24 +348,12 @@ var LabeledGrid = function (_THREE$Object3D) {
       this.labels.traverse(function (child) {
         child.visible = textVisible;
       });
-
       this.mainGrid.add(this.labels);
     }
   },  {
-    key: "_rotateText",
-    value: function _rotateText(axis, rads){
-      if(axis == 'x'){
-        this.labels.rotateX(rads);
-      }
-      else if(axis == 'y'){
-        this.labels.rotateY(rads);
-      }
-      else if(axis == 'z'){
-        this.labels.rotateZ(rads);
-      }
-      else{
-        console.log("Invalid input.");
-      }
+    key: "_textRotateZ",
+    value: function _textRotateZ(rads){
+      this.labels.rotateZ(rads);
     }
   }, {
     key: "drawTextOnPlane",
