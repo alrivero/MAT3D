@@ -66,16 +66,29 @@ var app = function() {
             self.vue.populate_matrix_name = null;
 
             var entered_table = document.getElementById("retrieved_data_matrix");
+            var row_count = entered_table.rows.length;
 
             // Loop through all rows and columns of the table
             // and delete content of each cell.
+            /*
             for ( var i = 0; row = entered_table.rows[i]; i++ ) {
                 row = entered_table.rows[i];
                 entered_table.deleteRow(row);
+
                 for (var j = 0; col = row.cells[j]; j++) {
                     // set value of each cell to null
                     col.firstChild.nodeValue = null;
                 }
+
+
+            }
+            */
+
+            for ( var i = 0; i < row_count; i++ ) {
+                row = entered_table.rows[i];
+                entered_table.deleteRow(row);
+
+
             }
 
         }
@@ -88,6 +101,7 @@ var app = function() {
         enumerate(self.vue.matrices_data);
     };
 
+    /*
     self.get_this_matrix = function (matrix_idx) {
         // Retrieve name of Matrix
         self.vue.populate_matrix_name = self.vue.matrices[matrix_idx].name;
@@ -96,6 +110,7 @@ var app = function() {
         // To ensure the html codes goes to logic that only displays the matrix data
         self.vue.is_populating_matrix = false;
     };
+    */
 
     // Used to get all values from matrix based on the name
     self.get_matrix_by_name = function (matrix_name) {
