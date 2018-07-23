@@ -9,5 +9,5 @@ Ks 0.001176 0.001176 0.001176
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd objects/R2D2_obj/R2D2_Diffuse.jpg
-map_Ke objects/R2D2_obj/R2D2_Reflection.jpg
+map_Kd MAT3D/static/js/3D/objects/R2D2_obj/R2D2_Diffuse.jpg
+map_Ke MAT3D/static/js/3D/objects/R2D2_obj/R2D2_Reflection.jpg

@@ -48,14 +48,15 @@ https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_button_group_verti
 
 .canvas_display {
     margin-left: 10px;
-    margin-top: 10px;
+    margin-top: 120px;
     margin-bottom: 10px;
-    /* Fix canvas display
-    padding: 30px;
-    */
+    /*
     padding-left: 30px;
     padding-top: 30px;
     padding-right: 30px;
+    */
+    width: 920px;
+    height: 620px;
     border: black 5px;
     border-style: solid;
 }
@@ -163,18 +164,18 @@ td {
     padding: 15px;
 }
 
-#3D-container {
+#container3D {
     position: relative;
 }
 
-#3D-container #canvas1, #content {
+#container3D canvas, #content {
     position: absolute;
 }
 
 #a_gui {
     position: absolute;
-    left: 970px;
-    top: 500px;
+    left: 1015px;
+    top: 420px;
 }
 
 /* ============ Used in layout.html ============ */
