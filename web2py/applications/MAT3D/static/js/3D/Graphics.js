@@ -142,7 +142,7 @@ function init(){
 
   // APPLY MATRIX
   var applyTransfmMatData = {
-    apply: function(){  }
+    apply: function(){ applyMatrixOnScreen() }
   };
   gui.add(applyTransfmMatData, 'apply').name("Apply Matrix");
 
