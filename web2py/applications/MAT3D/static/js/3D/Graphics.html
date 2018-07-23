@@ -8,10 +8,10 @@
 			body{
 				margin: 0;
 			}
-			#container{
+			#container3D{
 				position: relative;
 			}
-			#container canvas, #content{
+			#container3D canvas, #content{
 				position: absolute;
 			}
 			#a_gui{
@@ -32,10 +32,11 @@
 		<script src="loaders/STLLoader.js"></script>
 		<script src="grids/LabeledGrid.js"></script>
 		<script src="geometries/TeapotBufferGeometry.js"></script>
+		<script src="MathJS Translation/tranQueue.js"></script>
 		<script src="Graphics.js"></script>
 		<script src="GraphicsFuncs.js"></script>
 
-		<div id="container3D" class="container">
+		<div class="container3D">
 			<div id="content"></div>
 			<canvas id="canvas1"></canvas>
 		</div>

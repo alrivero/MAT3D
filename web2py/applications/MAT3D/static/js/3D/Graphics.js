@@ -15,6 +15,7 @@ var GridYZ1, GridYZ2;
 var GridSizes, GridXYCol, GridXZCol, GridYZCol;
 var textColXY, textColXZ, textColYZ;
 var transformArr = [];
+var tranQueue = new TranQueue();
 
 /**
  * Initial function that calls all the helper functions in the GraphicsFuncs.js file.
@@ -138,6 +139,12 @@ function init(){
 
   // COORDINATE SYSTEM COLORS, OPACITY & SIZE
   loadGuiCoordSys(gui);
+
+  // APPLY MATRIX
+  var applyTransfmMatData = {
+    apply: function(){  }
+  };
+  gui.add(applyTransfmMatData, 'apply').name("Apply Matrix");
 
   // RESET TRANSFORMATIONS
   var resetData = {

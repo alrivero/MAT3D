@@ -1096,15 +1096,18 @@ function exprToNum(input){
 /**
  *
  *
- * @param {string}
  */
-function applyDefMatrix(rawIn){
+function applyMatrixOnScreen(){
+  // Clear the tranQueue object
   tranQueue.clear();
 
-  var parsedMat = parser.parseTransformMatrix(rawIn);
-  tranQueue.addMatrix(parsedMat, 0);
-  var currTransformMat = tranQueue.getThreeMatrix();
-  transformArr.push(currTransformMat);
-  objMesh.geometry.applyMatrix(currTransformMat);
+  // Convert the matrix on screen into a three.js Matrix4 object
+  var screenMatrix = APP.get_matrix_by_name(APP.vue.populate_matrix_name);
+  tranQueue.addMatrix(screenMatrix, 0);
+  screenMatrix = tranQueue.getThreeMatrix();
+
+  // Apply the matrix to the object on screen
+  transformArr.push(screenMatrix);
+  objMesh.geometry.applyMatrix(screenMatrix);
   objMesh.geometry.verticesNeedUpdate = true;
 }

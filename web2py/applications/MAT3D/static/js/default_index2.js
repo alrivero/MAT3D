@@ -101,7 +101,6 @@ var app = function() {
         enumerate(self.vue.matrices_data);
     };
 
-    /*
     self.get_this_matrix = function (matrix_idx) {
         // Retrieve name of Matrix
         self.vue.populate_matrix_name = self.vue.matrices[matrix_idx].name;
@@ -110,7 +109,7 @@ var app = function() {
         // To ensure the html codes goes to logic that only displays the matrix data
         self.vue.is_populating_matrix = false;
     };
-    */
+
 
     // Used to get all values from matrix based on the name
     self.get_matrix_by_name = function (matrix_name) {
