@@ -21,3 +21,10 @@ def add_matrix():
     )
     return response.json(dict(matrix=t))
 
+def ans_matrix():
+    t = dict(
+        name="ans",
+        row=request.vars.row,
+        col=request.vars.col
+    )
+    return response.json(dict(matrix=t))
