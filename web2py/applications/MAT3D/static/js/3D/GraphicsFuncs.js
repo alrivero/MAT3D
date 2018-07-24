@@ -229,9 +229,9 @@ function removeObjByType(){
  */
 function displayLoadScreen(){
   document.getElementById("content").innerHTML =
-  '<object id="loadScreen" type="text/html" data="loadingScreen/loadingScreen.html"></object>';
-  document.getElementById('loadScreen').setAttribute("height", 500);
-  document.getElementById('loadScreen').setAttribute("width", 540);
+  '<object id="loadScreen" type="text/html" data="MAT3D/static/js/3D/loadingScreen/loadingScreen.html"></object>';
+  document.getElementById('loadScreen').setAttribute("height", 610);
+  document.getElementById('loadScreen').setAttribute("width", 910);
 }
 
 /**
@@ -1095,9 +1095,8 @@ function exprToNum(input){
 
 /**
  *
- *
  */
-function applyMatrixOnScreen(){
+function applyMatrixOnScreen(tranQueue){
   // Clear the tranQueue object
   tranQueue.clear();
 

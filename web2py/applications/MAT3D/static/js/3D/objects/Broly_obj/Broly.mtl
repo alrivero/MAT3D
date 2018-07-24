@@ -8,7 +8,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd objects/Broly_obj/body.png
+map_Kd MAT3D/static/js/3D/objects/Broly_obj/body.png
 
 
 newmtl cloth.png
@@ -19,7 +19,7 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd objects/Broly_obj/cloth.png
+map_Kd MAT3D/static/js/3D/objects/Broly_obj/cloth.png
 
 
 newmtl hair.png
@@ -30,4 +30,4 @@ Ks 0.500000 0.500000 0.500000
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd objects/Broly_obj/hair.png
+map_Kd MAT3D/static/js/3D/objects/Broly_obj/hair.png
