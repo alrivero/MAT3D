@@ -174,8 +174,9 @@ td {
 
 #a_gui {
     position: absolute;
-    left: 1015px;
-    top: 420px;
+    /* adjusted left */
+    left: 1050px;
+    top: 500px;
 }
 
 /* ============ Used in layout.html ============ */

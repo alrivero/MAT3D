@@ -14,24 +14,20 @@ File name: index.html
 <script src="{{=URL('static', 'js/parser.js')}}"></script>
 <script src="{{=URL('static', 'js/parserFunctions.js')}}"></script>
 
-
 <script src="{{=URL('static', 'js/3D/lib/three.min.js')}}"></script>
 <script src="{{=URL('static', 'js/3D/lib/dat.gui.min.js')}}"></script>
 <script src="{{=URL('static', 'js/3D/lib/OrbitControls.js')}}"></script>
 <script src="{{=URL('static', 'js/3D/lib/jszip.min.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/lib/inflate.min.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/lib/stats.min.js')}}"></script>
 <script src="{{=URL('static', 'js/3D/loaders/OBJLoader.js')}}"></script>
 <script src="{{=URL('static', 'js/3D/loaders/MTLLoader.js')}}"></script>
 <script src="{{=URL('static', 'js/3D/loaders/STLLoader.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/loaders/GLTFLoader.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/loaders/LegacyGLTFLoader.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/loaders/FBXLoader.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/exporters/OBJExporter.js')}}"></script>
 <script src="{{=URL('static', 'js/3D/grids/LabeledGrid.js')}}"></script>
 <script src="{{=URL('static', 'js/3D/geometries/TeapotBufferGeometry.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/driver.js')}}"></script>
-<script src="{{=URL('static', 'js/3D/driverHelperFuncs.js')}}"></script>
+<!--Remove space between MathJS and Translation in filename as it doesnt work for Web2py -->
+<script src="{{=URL('static', 'js/3D/MathJSTranslation/tranQueue.js')}}"></script>
+<script src="{{=URL('static', 'js/3D/Graphics.js')}}"></script>
+<script src="{{=URL('static', 'js/3D/GraphicsFuncs.js')}}"></script>
+
 
 
 <!--
@@ -57,6 +53,7 @@ File name: index.html
 <script>
     // Define your URLs here.
     var add_matrix_url = "{{=URL('api', 'add_matrix')}}";
+    var ans_matrix_url = "{{=URL('api', 'ans_matrix')}}";
 </script>
 
 {{end}}
@@ -177,7 +174,6 @@ File name: index.html
 
                                 <br/>
 
-                                <!-- need to add return_message here -->
                                 ${return_message}
                             </div>
                         </form>
@@ -212,8 +208,7 @@ File name: index.html
                                 <h5>${populate_matrix_name}</h5>
                                 <br/>
                                 <tr v-for="rows in populate_rows">
-                                    <td v-for="cols in populate_cols" contenteditable='true'>
-
+                                    <td v-for="cols in populate_cols" id="table_cell" contenteditable='true'>
                                     </td>
                                 </tr>
                             </table>

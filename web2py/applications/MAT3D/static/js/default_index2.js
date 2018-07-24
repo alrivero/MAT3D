@@ -29,25 +29,36 @@ var app = function() {
 
     self.add_matrix = function () {
         // The submit button to add a matrix has been pressed.
-        $.post(add_matrix_url,
-            {
-                name: self.vue.form_name,
-                row: self.vue.form_row,
-                col: self.vue.form_col
-            },
-            function (data) {
-                $.web2py.enableElement($("#add_matrix_submit"));
-                self.vue.matrices.push(data.matrix);
-                enumerate(self.vue.matrices);
-                self.vue.populate_matrix_name = self.vue.form_name;
-                self.vue.populate_cols = self.vue.form_col;
-                self.vue.populate_rows = self.vue.form_row;
-                self.vue.form_name = "";
-                self.vue.form_row = "";
-                self.vue.form_col = "";
-                self.vue.is_adding_matrix = !self.vue.is_adding_matrix;
-                self.vue.is_populating_matrix = true;
-            });
+        //check if name entered on screen already exists in matrices
+        if (self.det_matrices_membership(self.vue.form_name)) {
+            // Popup Alert message
+            alert("Matrix name already exist");
+        }else
+        if (self.vue.form_name == 'ans') {
+            // Popup Alert message
+            alert("Matrix name 'ans' not allowed");
+        }else {
+
+            $.post(add_matrix_url,
+                {
+                    name: self.vue.form_name,
+                    row: self.vue.form_row,
+                    col: self.vue.form_col
+                },
+                function (data) {
+                    $.web2py.enableElement($("#add_matrix_submit"));
+                    self.vue.matrices.push(data.matrix);
+                    enumerate(self.vue.matrices);
+                    self.vue.populate_matrix_name = self.vue.form_name;
+                    self.vue.populate_cols = self.vue.form_col;
+                    self.vue.populate_rows = self.vue.form_row;
+                    self.vue.form_name = "";
+                    self.vue.form_row = "";
+                    self.vue.form_col = "";
+                    self.vue.is_adding_matrix = !self.vue.is_adding_matrix;
+                    self.vue.is_populating_matrix = true;
+                });
+        }
     };
 
     self.parse_string = function() {
@@ -57,6 +68,35 @@ var app = function() {
         // will return the data of the matrix based on the name (name would be A or B in this case).
         var parser = new Parser();
         self.vue.return_message = parser.parseTopBar(self.vue.form_parsertext);
+
+        // Add resulting array into matrices[0] and matrices_data[0]
+        $.post(ans_matrix_url,
+            {
+                row: self.vue.return_message.length,
+                col: self.vue.return_message[0].length
+            },
+            function (data) {
+                $.web2py.enableElement($("#ans_matrix"));
+                // if there is already a previous parser answer
+                if (self.vue.matrices[0].name == 'ans') {
+                    //remove existing ans using splice in idx: 0
+                    self.vue.matrices.splice(0, 1);
+                    enumerate(self.vue.matrices);
+                    self.vue.matrices_data.splice(0, 1);
+                    enumerate(self.vue.matrices_data);
+                }
+
+                // add answer as first item in array using unshift
+                self.vue.matrices.unshift(data.matrix);
+                enumerate(self.vue.matrices);
+                self.vue.matrices_data.unshift(self.vue.return_message);
+                enumerate(self.vue.matrices_data);
+
+
+
+
+
+            });
     };
 
     self.delete_matrix = function(matrix_idx) {
@@ -70,27 +110,12 @@ var app = function() {
 
             // Loop through all rows and columns of the table
             // and delete content of each cell.
-            /*
-            for ( var i = 0; row = entered_table.rows[i]; i++ ) {
-                row = entered_table.rows[i];
-                entered_table.deleteRow(row);
 
-                for (var j = 0; col = row.cells[j]; j++) {
-                    // set value of each cell to null
-                    col.firstChild.nodeValue = null;
-                }
-
-
-            }
-            */
 
             for ( var i = 0; i < row_count; i++ ) {
                 row = entered_table.rows[i];
                 entered_table.deleteRow(row);
-
-
             }
-
         }
 
         // Delete Main Matrix
@@ -155,7 +180,17 @@ var app = function() {
             row = entered_table.rows[i];
             for ( var j = 0; col = row.cells[j]; j++ ) {
                 // create individual array rows from HTML
-                individual_row.push(col.firstChild.nodeValue);
+
+                 var number = parseInt(col.firstChild.nodeValue);
+
+                 // if nodeValue is Not a Number
+                 if (isNaN(number)) {
+                     // Popup Alert message
+                    alert("Matrix has a none numeric value, defaulting to one");
+                    number = 1;
+                 }
+                 individual_row.push(number);
+
             }
             // Add the individual array row to the individual matrix
             individual_matrix.push(individual_row);

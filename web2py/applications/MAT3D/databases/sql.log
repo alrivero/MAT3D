@@ -86,3 +86,36 @@ CREATE TABLE "web2py_session_MAT3D_2"(
     "session_data" BLOB
 );
 success!
+timestamp: 2018-07-23T00:41:57.255000
+CREATE TABLE "web2py_session_MAT3D_07_22_9pm"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "locked" CHAR(1),
+    "client_ip" CHAR(64),
+    "created_datetime" TIMESTAMP,
+    "modified_datetime" TIMESTAMP,
+    "unique_key" CHAR(64),
+    "session_data" BLOB
+);
+success!
+timestamp: 2018-07-23T22:57:07.758000
+CREATE TABLE "web2py_session_MAT3D_07_24_6am"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "locked" CHAR(1),
+    "client_ip" CHAR(64),
+    "created_datetime" TIMESTAMP,
+    "modified_datetime" TIMESTAMP,
+    "unique_key" CHAR(64),
+    "session_data" BLOB
+);
+success!
+timestamp: 2018-07-24T01:28:36.701000
+CREATE TABLE "web2py_session_MAT3D_07_24_1am"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "locked" CHAR(1),
+    "client_ip" CHAR(64),
+    "created_datetime" TIMESTAMP,
+    "modified_datetime" TIMESTAMP,
+    "unique_key" CHAR(64),
+    "session_data" BLOB
+);
+success!
