@@ -10,8 +10,7 @@
 function Parser() {
   // Operator presedence dictionary used for Shunting-Yard
   /** @private */ this.ops = { "|": 0, "+": 1, "-": 1, "*": 2, "/": 2, "^": 3 };
-  /** @private */ this.scalars = {"pi": math.pi; "e": math.e, "i" : math.complex(0, 1)}
-
+  /** @private */ this.scalars = {"pi": math.pi; "e": math.e, "i" : math.complex(0, 1) };
   /** @private */ this.functions = { "+" : findAdd, "-": findSub, "/": findDiv,
   "*" : matrixMultiplication, "inv": findInverse, "transpose": findTranspose,
   "diag": findDiagonal, "det": findDeterminant, "sin": findSin, "cos": findCos,
