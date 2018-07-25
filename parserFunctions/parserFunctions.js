@@ -149,7 +149,11 @@ function findInverse(a){
  * @return {object} returns computed value
  */
 function findTranspose(a){
+	//MATRIX INPUT
 	var operator = a.pop();
+	if(!isArray(operator)){
+		throw "Input not a matrix";
+	}
 	var c = math.transpose(operator);
 	return c;
 }
@@ -161,7 +165,11 @@ function findTranspose(a){
  * @return {object} returns computed value
  */
 function findDiagonal(a){ 
+	//MATRIX INPUT
 	var operator = a.pop();
+	if(!isArray(operator)){
+		throw "Input not a matrix";
+	}
 	var c = math.diag(operator);
 	return c;
 }
@@ -173,7 +181,11 @@ function findDiagonal(a){
  * @return {object} returns computed value
  */
 function findDeterminant(a){
+	//MATRIX INPUT
 	var operator = a.pop();
+	if(!isArray(operator)){
+		throw "Not a matrix";
+	}
 	var c = math.det(operator);
 	return c;
 }
@@ -368,7 +380,11 @@ function findFactorial(a){
  * @return {object} returns computed value
  */
 function findLu(a){
+	//MATRIX INPUT
 	var operator = a.pop();
+	if(!isArray(operator)){
+		throw "Input for LU not a matrix";
+	}
 	var c = math.lup(operator);
 	return c;
 }
@@ -380,7 +396,11 @@ function findLu(a){
  * @return {object} returns computed value
  */
 function findRank(a){
+	//MATRIX INPUT
 	var operator = a.pop();
+	if(!isArray(operator)){
+		throw "Rank Input not a matrix";
+	}
 	var size = math.size(operator);
 	return rankOfMatrix(operator, size[0], size[1]);
 
@@ -476,8 +496,17 @@ function rankOfMatrix(mat, r, c){
  * @return {object} returns computed value
  */
 function findCholesky(a){
+	//MATRIX INPUT
 	var operator = a.pop();
-	return choleskyDecomp2(operator);
+	if(!isArray(operator)){
+		throw "Cholesky Input not a matrix";
+	}
+	var size = math.size(operator);
+	if(size[0] != size[1]){
+		console.log("size input error in cholesky!!!!");
+		console.log("check matrix sizes!!!!");
+	}
+	return choleskyDecomp2(operator, size[0]);
 }
 
 //function for cholesky decomposition
@@ -522,6 +551,26 @@ function choleskyDecomp2(matrix, n){
 //ADDITIONAL HELPER FUNCTIONS
 
 /**
+ * 
+ * Function isNumber checks if number 
+ * @param {object} arg input
+ * @return {boolean} true or false 
+ */
+function isNumber(arg){
+	return typeof arg == 'number';
+}
+
+/**
+ * 
+ * Function isArray checks if Matrix
+ * @param {object} arg input
+ * @return {boolean} true or false 
+ */
+function isArray(arg){
+	return typeof arg == 'object';
+}
+
+/**
  * Function changes input from radians to degrees
  * 
  * @param {object} angle integer
@@ -539,7 +588,9 @@ function toDegrees(angle){
  * @return {object} returns computed value
  */
 function toRadians(angle){
-	var val = angle * (Math.PI / 180);
+	//var val = angle * (Math.PI / 180);//NOT WORKING WITH MATRIX INPUT
+	var eo = Math.PI / 180;
+	var val = math.multiply(angle, eo);
 	//console.log("torad " + val);
 	return val;
 }
