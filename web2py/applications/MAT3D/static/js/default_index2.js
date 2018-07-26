@@ -91,11 +91,6 @@ var app = function() {
                 enumerate(self.vue.matrices);
                 self.vue.matrices_data.unshift(self.vue.return_message);
                 enumerate(self.vue.matrices_data);
-
-
-
-
-
             });
     };
 
@@ -110,7 +105,6 @@ var app = function() {
 
             // Loop through all rows and columns of the table
             // and delete content of each cell.
-
 
             for ( var i = 0; i < row_count; i++ ) {
                 row = entered_table.rows[i];
