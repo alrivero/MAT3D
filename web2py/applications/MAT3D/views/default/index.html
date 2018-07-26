@@ -23,7 +23,7 @@ File name: index.html
 <script src="{{=URL('static', 'js/3D/loaders/STLLoader.js')}}"></script>
 <script src="{{=URL('static', 'js/3D/grids/LabeledGrid.js')}}"></script>
 <script src="{{=URL('static', 'js/3D/geometries/TeapotBufferGeometry.js')}}"></script>
-<!--Remove space between MathJS and Translation in filename as it doesnt work for Web2py -->
+<!--Remove space between MathJS and Translation in filename as it doesn't work for Web2py -->
 <script src="{{=URL('static', 'js/3D/MathJSTranslation/tranQueue.js')}}"></script>
 <script src="{{=URL('static', 'js/3D/Graphics.js')}}"></script>
 <script src="{{=URL('static', 'js/3D/GraphicsFuncs.js')}}"></script>
@@ -50,23 +50,6 @@ File name: index.html
                     <b>[MAT3D]</b>
 
                     &nbsp;&nbsp;&nbsp;
-
-                    <!-- Toggle button between 2D and 3D mode
-                    <a class="btn blue pull-right" style="..." href="=URL('three_d_driver')">
-                        3D Mode
-                    </a> -->
-
-                    <!--
-                    <button v-if="!is_3D" class="rounded" id="toggle-btn" v-on:click="is_3D_button()">
-                        2D Mode
-                    </button>
-
-                    <a v-if="is_3D" href="=URL('default', 'threeDDriver')">
-
-                    <button v-if="is_3D" class="blue rounded" id="toggle-btn" v-on:click="is_3D_button()">
-                        3D Mode
-                    </button>
-                    -->
                 </div>
 
                 <br/><br/>
@@ -117,7 +100,7 @@ File name: index.html
                     <tbody v-for="matrix in matrices">
                         <tr class="center">
                             <th v-on:click="get_this_matrix(matrix._idx)">
-                                ${matrix.name} ${matrix._idx} (${matrix.row} x ${matrix.col})&nbsp;&nbsp;&nbsp;
+                                ${matrix.name} (${matrix.row} x ${matrix.col})&nbsp;&nbsp;&nbsp;
                                 <button class="btn rounded black" v-on:click="delete_matrix(matrix._idx)">
                                     <i class="fa fa-trash fa-lg"></i>
                                 </button>
@@ -164,7 +147,6 @@ File name: index.html
                 <div class="matrix_array">
 
                     <!-- Matrix displays here -->
-                    <!--<div v-if="!is_3D">-->
                     <div v-if="!is_populating_matrix">
 
                         <table id="retrieved_data_matrix">
@@ -210,7 +192,6 @@ File name: index.html
 
                 <div class="canvas_display">
                     <!-- Canvas goes here -->
-                    <!--<div v-if="is_3D">-->
                     <div class="container" id="3D-container">
                         <div id="content"></div>
                         <canvas class="canvas" id="canvas1"></canvas>
