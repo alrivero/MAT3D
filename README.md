@@ -5,7 +5,7 @@ With MAT3D, a user can define matrices and carry out complex matrix calculations
 
 By Matrix Masters:
 
-Alfredo Rivero (Product Owner)
+Alfredo Rivero
 
 Abraham Cardenas
 
